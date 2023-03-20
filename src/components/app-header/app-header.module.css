@@ -1,0 +1,43 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  max-width: 1920px;
+  width: 100vw;
+  max-height: 88px;
+  padding: 24px 0 24px 0;
+  background-color: #1c1c21;
+  justify-content: center;
+}
+
+.header__text {
+  margin: 0 0 0 8px;
+}
+
+.header__logo {
+  margin: 0 0 0 83px;
+}
+.header__listItem {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  grid-area: item;
+}
+.header__listItem_logo {
+  grid-area: logo;
+}
+
+.header__menu {
+  width: 100%;
+  list-style-type: none;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+}
+
+.header__nav {
+  display: flex;
+  max-width: 1082px;
+  width: 100%;
+}
