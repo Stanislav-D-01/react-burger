@@ -26,7 +26,7 @@ const AppHeader = () => {
           <li
             className={`${styles.header__listItem} ${styles.header__listItem_logo}`}
           >
-            <Logo className={styles.header__logo} />
+            <Logo />
           </li>
           <li className={styles.header__listItem}>
             <ProfileIcon type="secondary" />

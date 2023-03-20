@@ -19,11 +19,21 @@
 .header__listItem {
   display: flex;
   flex-direction: row;
-  margin: 0;
-  grid-area: item;
+  justify-content: center;
+  margin: 0 14px 0 0;
+  padding: 16px 0 0 0;
+  box-sizing: border-box;
+  max-width: 178px;
+  max-height: 56px;
+  width: 100%;
 }
 .header__listItem_logo {
-  grid-area: logo;
+  max-width: 746px;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 108px;
 }
 
 .header__menu {
@@ -38,6 +48,6 @@
 
 .header__nav {
   display: flex;
-  max-width: 1082px;
+  max-width: 1280px;
   width: 100%;
 }
