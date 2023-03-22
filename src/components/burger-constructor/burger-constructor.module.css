@@ -1,0 +1,8 @@
+.burger-constructor__list {
+  list-style: none;
+  list-style-image: url(../../image/Vector.svg);
+}
+
+.burger-constructor__list_type_lock {
+  list-style: none;
+}
