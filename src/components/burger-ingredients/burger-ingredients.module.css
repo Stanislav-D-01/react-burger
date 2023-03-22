@@ -1,6 +1,36 @@
 .section-burger-menu {
   max-width: 600px;
-  max-height: 912px;
+
   width: 100vw;
-  height: 100vh;
+  margin: 0 0 0 60px;
+}
+
+.section-burger-menu__ingridients {
+  height: 756px;
+  overflow-x: scroll;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+.section-burger-menu__ingridients::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.section-burger-menu__ingridients-list {
+  display: grid;
+  grid-template-columns: repeat(2, 272px);
+  grid-template-rows: repeat(auto, 208px);
+  grid-gap: 40px;
+  list-style-type: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+.section-burger-menu__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

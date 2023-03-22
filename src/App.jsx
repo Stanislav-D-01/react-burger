@@ -1,15 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+
+import styles from "./App.module.css";
 import AppHeader from "./components/app-header/app-header.jsx";
 import BurgerIngridients from "./components/burger-ingredients/burger-ingredients.jsx";
+import {data} from "../src/components/utils/utils.js"
+
 
 function App() {
   return (
     <>
       <AppHeader />
-      <main>
-        <BurgerIngridients />
+      <main className={styles.main}>
+        <BurgerIngridients data={data}  />
       </main>
     </>
   );

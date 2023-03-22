@@ -19,7 +19,7 @@ const AppHeader = () => {
           </li>
           <li className={styles.header__listItem}>
             <ListIcon type="secondary" />
-            <p className={`text text_type_main-default ${styles.header__text}`}>
+            <p className={`text text_type_main-default text_color_inactive ${styles.header__text}`}>
               Лента заказов
             </p>
           </li>
@@ -30,7 +30,7 @@ const AppHeader = () => {
           </li>
           <li className={styles.header__listItem}>
             <ProfileIcon type="secondary" />
-            <p className={`text text_type_main-default ${styles.header__text}`}>
+            <p className={`text text_type_main-default text_color_inactive ${styles.header__text}`}>
               Личный кабинет
             </p>
           </li>
