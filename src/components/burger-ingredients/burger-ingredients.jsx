@@ -6,6 +6,22 @@ import {
 import styles from "./burger-ingredients.module.css";
 import priceSym from "../../image/Subtract.svg";
 import React from "react";
+import PropTypes from "prop-types";
+
+const dataPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  proteins: PropTypes.number,
+  fat: PropTypes.number,
+  carbohydrates: PropTypes.number,
+  calories: PropTypes.number,
+  price: PropTypes.number,
+  image: PropTypes.string,
+  image_mobile: PropTypes.string,
+  image_large: PropTypes.string,
+  __v: PropTypes.number,
+});
 
 class BurgerIngredients extends React.Component {
   state = {
@@ -32,7 +48,7 @@ class BurgerIngredients extends React.Component {
 
   render() {
     return (
-      <section className={styles["section-burger-menu"]}>
+      <section className={styles["section-burger-ingridients"]}>
         <h2 className="text text_type_main-large mt-10">Соберите бургер</h2>
         <div style={{ display: "flex" }}>
           <Tab
@@ -58,19 +74,19 @@ class BurgerIngredients extends React.Component {
           </Tab>
         </div>
 
-        <div className={styles["section-burger-menu__ingridients"]}>
+        <div className={styles["section-burger-ingridients__list"]}>
           <h3 className="text text_type_main-medium mt-10">Булки</h3>
-          <ul className={styles["section-burger-menu__ingridients-list"]}>
+          <ul className={styles["section-burger-menu__cards-ingridients"]}>
             {this.loadingridients(this.props.data, "bun")}
           </ul>
 
           <h3 className="text text_type_main-medium mt-10">Соусы</h3>
-          <ul className={styles["section-burger-menu__ingridients-list"]}>
+          <ul className={styles["section-burger-menu__cards-ingridients"]}>
             {this.loadingridients(this.props.data, "sauce")}
           </ul>
 
           <h3 className="text text_type_main-medium mt-10">Начинки</h3>
-          <ul className={styles["section-burger-menu__ingridients-list"]}>
+          <ul className={styles["section-burger-menu__cards-ingridients"]}>
             {this.loadingridients(this.props.data, "main")}
           </ul>
         </div>
@@ -80,3 +96,6 @@ class BurgerIngredients extends React.Component {
 }
 
 export default BurgerIngredients;
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.shape(dataPropTypes)),
+};

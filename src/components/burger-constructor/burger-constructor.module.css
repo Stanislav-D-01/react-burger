@@ -2,12 +2,12 @@
   list-style: none;
   list-style-image: url(../../image/Vector.svg);
   overflow-x: scroll;
-  max-height: 696px;
+  max-width: 100%;
   max-width: 600px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-height: 100%;
 }
 .burger-constructor__list::-webkit-scrollbar {
   width: 8px;
@@ -35,7 +35,8 @@
 }
 
 .burger-constructor {
-  height: 696px;
+  max-height: calc(100% - 230px);
+  max-width: 100vw;
   margin-top: 84px;
   margin-left: 40px;
 }
