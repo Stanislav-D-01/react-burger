@@ -11,13 +11,16 @@
   margin: 0;
 }
 
-::-webkit-scrollbar {
+.section-burger-menu__ingridients::-webkit-scrollbar {
   width: 8px;
 }
 .section-burger-menu__ingridients::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
 
+.section-burger-menu__ingridients::-webkit-scrollbar-corner {
+  visibility: hidden;
+}
 .section-burger-menu__ingridients-list {
   display: grid;
   grid-template-columns: repeat(2, 272px);

@@ -16,7 +16,7 @@ class BurgerIngredients extends React.Component {
     return data.map((element) => {
       if (element.type === type) {
         return (
-          <li className={styles["section-burger-menu__card"]}>
+          <li key={element._id} className={styles["section-burger-menu__card"]}>
             <img src={element.image} />
             <p className="text text_type_digits-default">
               {element.price}

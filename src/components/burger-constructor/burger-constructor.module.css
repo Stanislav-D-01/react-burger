@@ -1,8 +1,46 @@
 .burger-constructor__list {
   list-style: none;
   list-style-image: url(../../image/Vector.svg);
+  overflow-x: scroll;
+  max-height: 696px;
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.burger-constructor__list::-webkit-scrollbar {
+  width: 8px;
+}
+.burger-constructor__list::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
 }
 
-.burger-constructor__list_type_lock {
+.burger-constructor__list::-webkit-scrollbar-corner {
+  visibility: hidden;
+}
+.burger-constructor__point {
+  margin: 16px 8px 0 0;
+  max-width: 536px;
+  width: 100%;
+}
+.burger-constructor__point_type_lock {
   list-style: none;
+  position: sticky;
+  top: 0;
+}
+.burger-constructor__point_type_lock:last-of-type {
+  position: sticky;
+  bottom: 0;
+}
+
+.burger-constructor {
+  height: 696px;
+  margin-top: 84px;
+  margin-left: 40px;
+}
+.burger-constructor__total-price-block {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 8px;
 }
