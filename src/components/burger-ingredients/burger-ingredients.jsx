@@ -1,30 +1,22 @@
 import {
   Tab,
-  ConstructorElement,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import priceSym from "../../image/Subtract.svg";
 import React from "react";
 import PropTypes from "prop-types";
-import { dataPropTypes, urlAdress } from "../utils/utils.js";
+import { dataPropTypes } from "../utils/utils.js";
 
 function BurgerIngredients(props) {
   const [current, setCurrent] = React.useState("bun");
- 
-
-
-
- 
-
-  
 
   const loadingridients = (data, type) => {
     return data.map((element) => {
       if (element.type === type) {
         return (
           <li key={element._id} className={styles["section-burger-menu__card"]}>
-            <img src={element.image} />
+            <img onClick={} src={element.image} />
             <p className="text text_type_digits-default">
               {element.price}
               <img className="pl-2" src={priceSym} />
@@ -69,12 +61,9 @@ function BurgerIngredients(props) {
         </Tab>
       </div>
 
-    
-        <div className={styles["section-burger-ingridients__list"]}>
-          {renderIngridients(props.data, current)}
-        </div>
-      
-  
+      <div className={styles["section-burger-ingridients__list"]}>
+        {renderIngridients(props.data, current)}
+      </div>
     </section>
   );
 }
