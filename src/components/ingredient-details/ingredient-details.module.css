@@ -2,22 +2,22 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  
-
 }
 
-.ingredient-details__block-info{
- text-align: center;
- max-width: 120px;
+.ingredient-details__block-info {
+  text-align: center;
+  max-width: 120px;
 }
-.ingredient-details__section-info{
+.ingredient-details__section-info {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   column-gap: 20px;
+  margin-bottom: 60px;
 }
 
-.ingredient-details__image{
+.ingredient-details__image {
   width: 480px;
   height: 240px;
-  object-fit:cover
+  object-fit: cover;
+  margin-top: 10px;
 }
