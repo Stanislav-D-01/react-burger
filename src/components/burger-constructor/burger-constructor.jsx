@@ -7,12 +7,13 @@ import priceSym from "../../image/Subtract_constructor.svg";
 import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../utils/utils";
-
+import Modal from "../modal/modal";
 
 
 function BurgerConstructor(props) {
   const [ingr, setIngr] = React.useState([]);
   const [total, setTotal] = React.useState(0);
+  const [stateModal, setStateModal] = React.useState(false);
 
 
 React.useEffect(()=>{
@@ -20,13 +21,16 @@ React.useEffect(()=>{
    totalPrice(props.data)
 },[props.data])
 
+const toggleModal=()=>{
+  setStateModal(!stateModal)
+}
 
 
  const renderListOrder = (data) => {
     return data.map((element) => {
       if (element.type !== "bun") {
         return (
-          <li key={element._id} className={styles["burger-constructor__point"]}>
+          <li onClick={toggleModal} key={element._id} className={styles["burger-constructor__point"]}>
             <ConstructorElement
               text={element.name}
               price={element.price}
@@ -44,11 +48,11 @@ React.useEffect(()=>{
   }
  
 
-  console.log(ingr)
+
   
   if (ingr.length>0) {
   return (
-      
+      <>
       <section className={styles["burger-constructor"]}>
         <ul className={styles["burger-constructor__list"]}>
           <li
@@ -85,7 +89,11 @@ React.useEffect(()=>{
             Оформить заказ
           </Button>
         </div>
-  </section>)}
+  </section>
+ 
+
+  </>)
+  }
    
   
   }

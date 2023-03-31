@@ -6,6 +6,7 @@ import { urlAdress } from "../utils/utils.js";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
 import ModalOverlay from "../modal-overlay/modal-overlay.jsx";
 import IngredientsDetails from "../ingredient-details/ingredient-details.jsx";
+import Modal from "../modal/modal.jsx"
 
 function App() {
   const [state, setState] = React.useState({
@@ -43,12 +44,9 @@ function App() {
         </main>
       )}
       {state.hasError && <div ref={errBlock}></div>}
-      {state.stateModal && (
-        <ModalOverlay>
-          <IngredientsDetails />
-        </ModalOverlay>
-      )}
-    </>
+    
+     
+   </>
   );
 }
 

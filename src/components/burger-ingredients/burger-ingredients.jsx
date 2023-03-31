@@ -7,16 +7,41 @@ import priceSym from "../../image/Subtract.svg";
 import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../utils/utils.js";
+import ModalOverlay from "../modal-overlay/modal-overlay";
+import IngredientsDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
 
-function BurgerIngredients(props) {
+const BurgerIngredients=(props)=> {
   const [current, setCurrent] = React.useState("bun");
+  const [stateModal, setStateModal] = React.useState(false)
+  const [dataIngredient, setDataIngredient] = React.useState({})
+
+const toggleModal=(e)=>{
+  setStateModal(!stateModal)
+  extractData(e.target);
+  console.log(dataIngredient)
+}
+
+React.useEffect(()=>{
+  document.addEventListener('keydown', (e)=>{
+if (e.key === "Escape") {setStateModal(false)}
+  })
+},[])
+
+
+const extractData = (element) =>{
+  if (element.closest('li') != undefined){
+    setDataIngredient((state)=>{
+      props.data.find((item)=>item._id === element.closest('li').id)})
+    }
+  }
 
   const loadingridients = (data, type) => {
     return data.map((element) => {
       if (element.type === type) {
         return (
-          <li key={element._id} className={styles["section-burger-menu__card"]}>
-            <img onClick={} src={element.image} />
+          <li key={element._id} id={element._id} onClick={toggleModal}  className={styles["section-burger-menu__card"]}>
+            <img  src={element.image} />
             <p className="text text_type_digits-default">
               {element.price}
               <img className="pl-2" src={priceSym} />
@@ -47,6 +72,7 @@ function BurgerIngredients(props) {
   };
 
   return (
+    <>
     <section className={styles["section-burger-ingridients"]}>
       <h2 className="text text_type_main-large mt-10">Соберите бургер</h2>
       <div style={{ display: "flex" }}>
@@ -65,6 +91,8 @@ function BurgerIngredients(props) {
         {renderIngridients(props.data, current)}
       </div>
     </section>
+   {stateModal && <Modal data={dataIngredient} closeModal={toggleModal}>Детали ингредиента</Modal>}
+    </>
   );
 }
 
