@@ -8,6 +8,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../utils/utils";
 import Modal from "../modal/modal";
+import OrderDetails from "../order-details/order-details";
 
 
 function BurgerConstructor(props) {
@@ -30,7 +31,7 @@ const toggleModal=()=>{
     return data.map((element) => {
       if (element.type !== "bun") {
         return (
-          <li onClick={toggleModal} key={element._id} className={styles["burger-constructor__point"]}>
+          <li  key={element._id} className={styles["burger-constructor__point"]}>
             <ConstructorElement
               text={element.name}
               price={element.price}
@@ -85,10 +86,11 @@ const toggleModal=()=>{
           <p className="text text_type_digits-medium mr-10">
             {total} <img className="pl-2" src={priceSym} />
           </p>
-          <Button htmlType="button" type="primary" size="medium">
+          <Button onClick={toggleModal} htmlType="button" type="primary" size="medium">
             Оформить заказ
           </Button>
         </div>
+        {stateModal && <OrderDetails/>}
   </section>
  
 

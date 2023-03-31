@@ -1,8 +1,16 @@
+import Modal from "../modal/modal";
 import styles from "./ingredient-details.module.css";
-
+import ModalOverlay from "../modal-overlay/modal-overlay";
+import ReactDOM from "react-dom"
 
 const IngredientsDetails = (props) => {
+  console.log(`!!!!!${props.data}`)
+  const modal = document.getElementById('modal')
   return (
+    
+    <ModalOverlay onClose={props.closeModal}>
+    <Modal closeModal={props.closeModal} name={"Детали ингредиента"}>
+
     <div onClick={(e)=>e.stopPropagation()} className={styles["ingredient-details"]}>
     <img src={props.data.image} className={styles['ingredient-details__image']}/>
     <h2 className="text text_type_main-medium mt-4 mb-8">{props.data.name}</h2>
@@ -25,7 +33,9 @@ const IngredientsDetails = (props) => {
       </div>
     </section>
     </div>
-  );
+    </Modal>
+    </ModalOverlay>
+  )
 };
 
 export default IngredientsDetails;

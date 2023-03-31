@@ -12,31 +12,31 @@ class Modal extends React.Component {
 }
 
 componentWillMount(){
-    this.root = document.createElement('div');
-    document.body.appendChild(this.root)
+   
     this.setState({data:this.props.data})
 
 }
 
 componentWillUnmount(){
-    document.body.removeChild(this.root)
+
   
 }
 
 
     render(){
+        const modalOverlay = document.getElementsByClassName(".modal-overlay")
             return ( 
            
-      ReactDOM.createPortal(
-        <ModalOverlay  onClose={this.props.closeModal}>
+     
+    
         <div  onClick={(e)=>e.stopPropagation()} className={styles.modal}>
         <section className={styles['modal__heading']}>
-        <h2 className="text text_type_main-large mt-10 ml-10">{this.props.children}</h2>
+        <h2 className="text text_type_main-large mt-10 ml-10">{this.props.name}</h2>
         <img onClick={this.props.closeModal} src={closeIco} alt={"Закрыть"} className={styles['modal__close-ico']}/>
         </section >
-        <IngredientsDetails data={this.state.data}/>
+        {this.props.children}
          </div>
-        </ModalOverlay>, this.root))
+            )
        
        
     }

@@ -19,7 +19,7 @@ const BurgerIngredients=(props)=> {
 const toggleModal=(e)=>{
   setStateModal(!stateModal)
   extractData(e.target);
-  console.log(dataIngredient)
+  console.log(`toggle${dataIngredient}`)
 }
 
 React.useEffect(()=>{
@@ -30,10 +30,14 @@ if (e.key === "Escape") {setStateModal(false)}
 
 
 const extractData = (element) =>{
+
   if (element.closest('li') != undefined){
-    setDataIngredient((state)=>{
-      props.data.find((item)=>item._id === element.closest('li').id)})
+    
+    setDataIngredient((state)=>props.data.find((item)=>item._id === element.closest('li').id))
+    
+
     }
+    
   }
 
   const loadingridients = (data, type) => {
@@ -70,7 +74,7 @@ const extractData = (element) =>{
       </>
     );
   };
-
+console.log(dataIngredient)
   return (
     <>
     <section className={styles["section-burger-ingridients"]}>
@@ -91,7 +95,8 @@ const extractData = (element) =>{
         {renderIngridients(props.data, current)}
       </div>
     </section>
-   {stateModal && <Modal data={dataIngredient} closeModal={toggleModal}>Детали ингредиента</Modal>}
+   {stateModal && <IngredientsDetails data={dataIngredient} closeModal={toggleModal}/>}
+ 
     </>
   );
 }
