@@ -8,16 +8,23 @@ import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../utils/utils";
 import OrderDetails from "../order-details/order-details";
+import ModalOverlay from "../modal-overlay/modal-overlay";
+import Modal from "../modal/modal";
 
-function BurgerConstructor(props) {
+function BurgerConstructor({ data }) {
   const [ingr, setIngr] = React.useState([]);
   const [total, setTotal] = React.useState(0);
   const [stateModal, setStateModal] = React.useState(false);
 
   React.useEffect(() => {
-    setIngr(...ingr, props.data);
-    totalPrice(props.data);
-  }, [props.data]);
+    setIngr(...ingr, data);
+    totalPrice(data);
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        setStateModal(false);
+      }
+    });
+  }, [data]);
 
   const toggleModal = () => {
     setStateModal(!stateModal);
@@ -56,7 +63,7 @@ function BurgerConstructor(props) {
               <ConstructorElement
                 type="top"
                 isLocked={true}
-                text={ingr[0].name}
+                text={`${ingr[0].name} (верх)`}
                 price={ingr[0].price}
                 thumbnail={ingr[0].image}
               />
@@ -69,9 +76,9 @@ function BurgerConstructor(props) {
               <ConstructorElement
                 type="bottom"
                 isLocked={true}
-                text={ingr[1].name}
-                price={ingr[1].price}
-                thumbnail={ingr[1].image}
+                text={`${ingr[0].name} (низ)`}
+                price={ingr[0].price}
+                thumbnail={ingr[0].image}
               />
             </li>
           </ul>
@@ -89,7 +96,12 @@ function BurgerConstructor(props) {
             </Button>
           </div>
           {stateModal && (
-            <OrderDetails numOrder={"000001"} closeModal={toggleModal} />
+            <>
+              <ModalOverlay onClose={toggleModal} />
+              <Modal closeModal={toggleModal} name={""}>
+                <OrderDetails numOrder={"000001"} />
+              </Modal>
+            </>
           )}
         </section>
       </>

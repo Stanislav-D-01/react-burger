@@ -8,8 +8,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../utils/utils.js";
 import IngredientsDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("bun");
   const [stateModal, setStateModal] = React.useState(false);
   const [dataIngredient, setDataIngredient] = React.useState({});
@@ -17,7 +19,6 @@ const BurgerIngredients = (props) => {
   const toggleModal = (e) => {
     setStateModal(!stateModal);
     extractData(e.target);
-    console.log(`toggle${dataIngredient}`);
   };
 
   React.useEffect(() => {
@@ -26,12 +27,15 @@ const BurgerIngredients = (props) => {
         setStateModal(false);
       }
     });
-  }, []);
+    if (document.getElementById(current)) {
+      document.getElementById(current).scrollIntoView({ behavior: "smooth" });
+    }
+  }, [current]);
 
   const extractData = (element) => {
     if (element.closest("li") != undefined) {
       setDataIngredient((state) =>
-        props.data.find((item) => item._id === element.closest("li").id)
+        data.find((item) => item._id === element.closest("li").id)
       );
     }
   };
@@ -59,23 +63,30 @@ const BurgerIngredients = (props) => {
     });
   };
 
-  const renderIngridients = (data, type) => {
+  const renderIngridients = (data) => {
     return (
       <>
-        <h3 className="text text_type_main-medium mt-10">
-          {current === "bun"
-            ? "Булки"
-            : current === "sauce"
-            ? "Соусы"
-            : "Начинки"}
+        <h3 id="bun" className="text text_type_main-medium mt-10">
+          Булки
         </h3>
         <ul className={styles["section-burger-menu__cards-ingridients"]}>
-          {loadingridients(data, type)}
+          {loadingridients(data, "bun")}
+        </ul>
+        <h3 id="sauce" className="text text_type_main-medium mt-10">
+          Соуcы
+        </h3>
+        <ul className={styles["section-burger-menu__cards-ingridients"]}>
+          {loadingridients(data, "sauce")}
+        </ul>
+        <h3 id="main" className="text text_type_main-medium mt-10">
+          Начинки
+        </h3>
+        <ul className={styles["section-burger-menu__cards-ingridients"]}>
+          {loadingridients(data, "main")}
         </ul>
       </>
     );
   };
-  console.log(dataIngredient);
   return (
     <>
       <section className={styles["section-burger-ingridients"]}>
@@ -93,11 +104,20 @@ const BurgerIngredients = (props) => {
         </div>
 
         <div className={styles["section-burger-ingridients__list"]}>
-          {renderIngridients(props.data, current)}
+          {renderIngridients(data)}
         </div>
       </section>
       {stateModal && (
-        <IngredientsDetails data={dataIngredient} closeModal={toggleModal} />
+        <>
+          <ModalOverlay onClose={toggleModal} />
+          <Modal
+            data={dataIngredient}
+            closeModal={toggleModal}
+            name={"Детали ингредиента"}
+          >
+            <IngredientsDetails data={dataIngredient} />
+          </Modal>
+        </>
       )}
     </>
   );

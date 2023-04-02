@@ -4,7 +4,7 @@ import AppHeader from "../app-header/app-header.jsx";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients.jsx";
 import { urlAdress } from "../utils/utils.js";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
-
+import { getIngridients } from "../utils/burger-api";
 function App() {
   const [state, setState] = React.useState({
     data: [],
@@ -15,8 +15,7 @@ function App() {
   React.useEffect(() => getDataIngridients(urlAdress), []);
 
   function getDataIngridients(url) {
-    fetch(url)
-      .then((res) => res.json())
+    getIngridients(url)
       .then((dat) =>
         setState({
           ...state,
@@ -34,13 +33,14 @@ function App() {
   return (
     <>
       <AppHeader />
-      {!state.hasError && (
+      {state.hasError ? (
+        <div ref={errBlock}></div>
+      ) : (
         <main className={styles.main}>
           <BurgerIngridients data={state.data} />
           <BurgerConstructor data={state.data} />
         </main>
       )}
-      {state.hasError && <div ref={errBlock}></div>}
     </>
   );
 }
