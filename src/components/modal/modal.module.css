@@ -1,0 +1,32 @@
+.modal {
+  max-width: 720px;
+  max-height: 718px;
+  width: 100vw;
+  height: min-content;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  opacity: 1;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.modal__close-ico {
+  height: 18px;
+  width: 18px;
+  margin-top: 54px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.modal__heading {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 28px;
+}

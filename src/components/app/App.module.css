@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+.App {
+  display: flex;
+  text-align: center;
+}
