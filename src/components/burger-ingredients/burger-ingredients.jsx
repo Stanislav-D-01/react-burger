@@ -40,7 +40,7 @@ const BurgerIngredients = ({ data }) => {
     }
   };
 
-  const loadingridients = (data, type) => {
+  const loadIngredients = (data, type) => {
     return data.map((element) => {
       if (element.type === type) {
         return (
@@ -63,26 +63,26 @@ const BurgerIngredients = ({ data }) => {
     });
   };
 
-  const renderIngridients = (data) => {
+  const renderIngredients = (data) => {
     return (
       <>
         <h3 id="bun" className="text text_type_main-medium mt-10">
           Булки
         </h3>
         <ul className={styles["section-burger-menu__cards-ingridients"]}>
-          {loadingridients(data, "bun")}
+          {loadIngredients(data, "bun")}
         </ul>
         <h3 id="sauce" className="text text_type_main-medium mt-10">
           Соуcы
         </h3>
         <ul className={styles["section-burger-menu__cards-ingridients"]}>
-          {loadingridients(data, "sauce")}
+          {loadIngredients(data, "sauce")}
         </ul>
         <h3 id="main" className="text text_type_main-medium mt-10">
           Начинки
         </h3>
         <ul className={styles["section-burger-menu__cards-ingridients"]}>
-          {loadingridients(data, "main")}
+          {loadIngredients(data, "main")}
         </ul>
       </>
     );
@@ -104,7 +104,7 @@ const BurgerIngredients = ({ data }) => {
         </div>
 
         <div className={styles["section-burger-ingridients__list"]}>
-          {renderIngridients(data)}
+          {renderIngredients(data)}
         </div>
       </section>
       {stateModal && (

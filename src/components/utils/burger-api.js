@@ -1,8 +1,8 @@
-export const getIngridients = (url) => {
-  return fetch(url).then((res) => checkReponse(res));
+export const getIngredients = (url) => {
+  return fetch(url).then((res) => checkResponse(res));
 };
 
-const checkReponse = (res) => {
+const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
@@ -13,5 +13,5 @@ export const getOrder = (ingr, url) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ ingredients: ingr }),
-  }).then((res) => checkReponse(res));
+  }).then((res) => checkResponse(res));
 };

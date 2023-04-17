@@ -1,4 +1,3 @@
 import React from "react";
 
-export const ConstructorIngridientsContext = React.createContext();
-export const ConstructorTotalPrice = React.createContext();
+export const ConstructorOrderContext = React.createContext();

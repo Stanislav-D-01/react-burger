@@ -4,7 +4,7 @@ import AppHeader from "../app-header/app-header.jsx";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients.jsx";
 import { urlAdress } from "../utils/utils.js";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
-import { getIngridients } from "../utils/burger-api";
+import { getIngredients } from "../utils/burger-api";
 function App() {
   const [state, setState] = React.useState({
     data: [],
@@ -12,13 +12,12 @@ function App() {
     successLoad: false,
   });
   const errBlock = React.useRef();
-  React.useEffect(() => getDataIngridients(urlAdress), []);
+  React.useEffect(() => getDataIngredients(urlAdress), []);
 
-  function getDataIngridients(url) {
-    getIngridients(url)
+  function getDataIngredients(url) {
+    getIngredients(url)
       .then((dat) =>
         setState({
-          ...state,
           data: dat.data,
           hasError: false,
           successLoad: true,
