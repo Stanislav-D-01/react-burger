@@ -8,6 +8,7 @@
   flex-direction: column;
   align-items: center;
   max-height: 100%;
+  position: relative;
 }
 .burger-constructor__list::-webkit-scrollbar {
   width: 8px;
@@ -26,10 +27,13 @@
 }
 .burger-constructor__point_type_lock {
   list-style: none;
+ 
+}
+.burger-constructor__point_position_top {
   position: sticky;
   top: 0;
 }
-.burger-constructor__point_type_lock:last-of-type {
+.burger-constructor__point_position_bottom {
   position: sticky;
   bottom: 0;
 }

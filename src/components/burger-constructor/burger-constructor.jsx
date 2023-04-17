@@ -10,34 +10,95 @@ import { dataPropTypes } from "../utils/utils";
 import OrderDetails from "../order-details/order-details";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import Modal from "../modal/modal";
-import {
-  ConstructorIngridientsContext,
-  ConstructorTotalPrice,
-} from "./burger-constructor-context";
+import {ConstructorIngridientsContext} from "./burger-constructor-context";
+import {getOrder} from '../utils/burger-api'
+import {urlOrders} from "../utils/utils"
+
+
 
 function BurgerConstructor({ data }) {
   const [ingr, setIngr] = React.useState([]);
+  const [order, setOrder] = React.useState({});
   const [total, setTotal] = React.useState(0);
   const [stateModal, setStateModal] = React.useState(false);
-  const [numBun, setNumBun] = React.useState(0);
 
+  
   React.useEffect(() => {
+   if (data.length>0) {
+    setIngr(getIngr(data));
+    totalPrice(ingr);}
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         setStateModal(false);
       }
     });
-  }, [data]);
+  },[data, ingr]);
+
+
+const getIngr = (data) => {
+const arrBun = [];
+let numBun = 0;
+data.forEach((el) => {
+  if (el.type == 'bun' && numBun == 0) {
+    arrBun.push(el)
+    numBun = 1;
+  }  if (el.type != 'bun') {arrBun.push(el)}
+
+});
+return arrBun;
+}
+
+const sendOrder = () =>{
+getOrder(ingr.map(el=>el._id), urlOrders)
+.then((order) => {setOrder(order)
+toggleModal();
+})
+}
 
   const toggleModal = () => {
     setStateModal(!stateModal);
   };
-
-  const renderListOrder = (data) => {
-    return data.map((element) => {
-      if (element.type !== "bun") {
-        setIngr(...ingr, element);
+const renderBun = (arr, type) => {
+  return arr.map(el=>{
+    if (el.type=='bun'){
+    switch (type) {
+      case 'top':
         return (
+            <li
+              key={'top_1'}
+              className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_top"]}`}
+            >
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${el.name} (верх)`}
+                price={el.price}
+                thumbnail={el.image}
+              />
+            </li>)
+            case 'bottom':
+              return (<li
+                key={'bottom_1'}
+                className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_bottom"]} `}
+              >
+                <ConstructorElement
+                  type="bottom"
+                  isLocked={true}
+                  text={`${el.name} (низ)`}
+                  price={el.price}
+                  thumbnail={el.image}
+                />
+              </li>)
+    }
+ } })
+}
+
+  const renderMain = (data) => {
+    return data.map((element) => {
+       
+      if (element.type !== "bun") {
+      
+          return (
           <li key={element._id} className={styles["burger-constructor__point"]}>
             <ConstructorElement
               text={element.name}
@@ -55,36 +116,14 @@ function BurgerConstructor({ data }) {
     setTotal(sum);
   };
 
-  if (data.length > 0) {
+  if (ingr.length>0) { 
     return (
-      <>
-        <section className={styles["burger-constructor"]}>
+    
+         <section className={styles["burger-constructor"]}>
           <ul className={styles["burger-constructor__list"]}>
-            <li
-              key={data[0]._id}
-              className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]}`}
-            >
-              <ConstructorElement
-                type="top"
-                isLocked={true}
-                text={`${data[0].name} (верх)`}
-                price={data[0].price}
-                thumbnail={data[0].image}
-              />
-            </li>
-            {renderListOrder({ data })}
-            <li
-              key={data[1]._id}
-              className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]}`}
-            >
-              <ConstructorElement
-                type="bottom"
-                isLocked={true}
-                text={`${data[0].name} (низ)`}
-                price={data[0].price}
-                thumbnail={data[0].image}
-              />
-            </li>
+            {renderBun(ingr, 'top')}
+            {renderMain(ingr)}
+            {renderBun(ingr, 'bottom')}
           </ul>
           <ConstructorIngridientsContext.Provider>
             <div className={styles["burger-constructor__total-price-block"]}>
@@ -93,7 +132,7 @@ function BurgerConstructor({ data }) {
               </p>
 
               <Button
-                onClick={toggleModal}
+                onClick={sendOrder}
                 htmlType="button"
                 type="primary"
                 size="medium"
@@ -105,16 +144,15 @@ function BurgerConstructor({ data }) {
               <>
                 <ModalOverlay onClose={toggleModal} />
                 <Modal closeModal={toggleModal} name={""}>
-                  <OrderDetails numOrder={"000001"} />
+                  <OrderDetails numOrder={order.order.number} />
                 </Modal>
               </>
             )}
           </ConstructorIngridientsContext.Provider>
-        </section>
-      </>
-    );
+        </section>);
   }
-}
+};
+
 
 export default BurgerConstructor;
 
