@@ -16,6 +16,3 @@ export const dataPropTypes = {
 };
 
 export const BASE_URL = "https://norma.nomoreparties.space/api/";
-
-export const urlAdress = "https://norma.nomoreparties.space/api/ingredients";
-export const urlOrders = "https://norma.nomoreparties.space/api/orders";
