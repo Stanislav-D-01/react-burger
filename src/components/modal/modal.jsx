@@ -3,33 +3,44 @@ import closeIco from "../../image/Close.svg";
 import styles from "./modal.module.css";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import ModalOverlay from "../modal-overlay/modal-overlay";
+import { ModalContext } from "./modal-context";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
-class Modal extends React.Component {
-  render() {
-    return ReactDOM.createPortal(
-      <div onClick={(e) => e.stopPropagation()} className={styles.modal}>
-        <section className={styles["modal__heading"]}>
-          <h2 className="text text_type_main-large mt-10 ml-10">
-            {this.props.name}
-          </h2>
-          <img
-            onClick={this.props.closeModal}
-            src={closeIco}
-            alt={"Закрыть"}
-            className={styles["modal__close-ico"]}
-          />
-        </section>
-        {this.props.children}
-      </div>,
-      document.getElementById("root")
-    );
-  }
-}
+const Modal = (props) => {
+  const [setStateModal] = React.useContext(ModalContext);
+
+  React.useEffect(() => {
+    document.addEventListener("keydown", keydownEsc);
+
+    return () => {
+      document.addEventListener("keydown", keydownEsc);
+    };
+  }, []);
+
+  const keydownEsc = (e) => {
+    if (e.key === "Escape") {
+      setStateModal(false);
+    }
+  };
+
+  return ReactDOM.createPortal(
+    <div onClick={(e) => e.stopPropagation()} className={styles.modal}>
+      <ModalOverlay onClose={props.closeModal} />
+      <section className={styles["modal__heading"]}>
+        <h2 className="text text_type_main-large mt-10 ">{props.name}</h2>
+        <CloseIcon onClick={props.closeModal} type="primary" className="mr-4" />
+      </section>
+      {props.children}
+    </div>,
+    document.getElementById("modals")
+  );
+};
 
 export default Modal;
 
 Modal.propTypes = {
   name: PropTypes.string.isRequired,
   closeModal: PropTypes.func.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };

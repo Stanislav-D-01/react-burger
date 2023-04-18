@@ -6,11 +6,10 @@ import styles from "./burger-ingredients.module.css";
 import priceSym from "../../image/Subtract.svg";
 import React from "react";
 import PropTypes from "prop-types";
-import { dataPropTypes } from "../utils/utils.js";
+import { dataPropTypes } from "../../utils/utils.js";
 import IngredientsDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-import ModalOverlay from "../modal-overlay/modal-overlay";
-
+import { ModalContext } from "../modal/modal-context";
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("bun");
   const [stateModal, setStateModal] = React.useState(false);
@@ -22,11 +21,6 @@ const BurgerIngredients = ({ data }) => {
   };
 
   React.useEffect(() => {
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        setStateModal(false);
-      }
-    });
     if (document.getElementById(current)) {
       document.getElementById(current).scrollIntoView({ behavior: "smooth" });
     }
@@ -109,14 +103,15 @@ const BurgerIngredients = ({ data }) => {
       </section>
       {stateModal && (
         <>
-          <ModalOverlay onClose={toggleModal} />
-          <Modal
-            data={dataIngredient}
-            closeModal={toggleModal}
-            name={"Детали ингредиента"}
-          >
-            <IngredientsDetails data={dataIngredient} />
-          </Modal>
+          <ModalContext.Provider value={[setStateModal]}>
+            <Modal
+              data={dataIngredient}
+              closeModal={toggleModal}
+              name={"Детали ингредиента"}
+            >
+              <IngredientsDetails data={dataIngredient} />
+            </Modal>
+          </ModalContext.Provider>
         </>
       )}
     </>

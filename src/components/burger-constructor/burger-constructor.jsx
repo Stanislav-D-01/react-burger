@@ -6,13 +6,12 @@ import styles from "./burger-constructor.module.css";
 import priceSym from "../../image/Subtract_constructor.svg";
 import React from "react";
 import PropTypes from "prop-types";
-import { dataPropTypes } from "../utils/utils";
 import OrderDetails from "../order-details/order-details";
-import ModalOverlay from "../modal-overlay/modal-overlay";
 import Modal from "../modal/modal";
 import { ConstructorOrderContext } from "./burger-constructor-context";
-import { getOrder } from "../utils/burger-api";
-import { urlOrders } from "../utils/utils";
+import { ModalContext } from "../modal/modal-context";
+import { request } from "../../utils/burger-api";
+import { urlOrders, dataPropTypes, BASE_URL } from "../../utils/utils";
 
 function BurgerConstructor({ data }) {
   const [ingr, setIngr] = React.useState([]);
@@ -21,15 +20,9 @@ function BurgerConstructor({ data }) {
   const [stateModal, setStateModal] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(data);
     if (data.length > 0) {
       setIngr(getIngr(data));
     }
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        setStateModal(false);
-      }
-    });
   }, [data]);
 
   React.useEffect(() => {
@@ -52,10 +45,13 @@ function BurgerConstructor({ data }) {
   };
 
   const sendOrder = () => {
-    getOrder(
-      ingr.map((el) => el._id),
-      urlOrders
-    )
+    request(`${BASE_URL}orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ingredients: ingr.map((el) => el._id) }),
+    })
       .then((order) => {
         setOrder(order);
         toggleModal();
@@ -132,7 +128,7 @@ function BurgerConstructor({ data }) {
         <ul className={styles["burger-constructor__list"]}>
           {renderBun(ingr, "top")}
           <ul className={styles["burger-constructor__list-main"]}>
-          {renderMain(ingr)}
+            {renderMain(ingr)}
           </ul>
           {renderBun(ingr, "bottom")}
         </ul>
@@ -153,10 +149,11 @@ function BurgerConstructor({ data }) {
           </div>
           {stateModal && (
             <>
-              <ModalOverlay onClose={toggleModal} />
-              <Modal closeModal={toggleModal} name={""}>
-                <OrderDetails />
-              </Modal>
+              <ModalContext.Provider value={[setStateModal]}>
+                <Modal closeModal={toggleModal} name={""}>
+                  <OrderDetails />
+                </Modal>
+              </ModalContext.Provider>
             </>
           )}
         </ConstructorOrderContext.Provider>

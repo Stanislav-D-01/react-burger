@@ -1,6 +1,6 @@
 import styles from "./ingredient-details.module.css";
 import PropTypes from "prop-types";
-import { dataPropTypes } from "../utils/utils.js";
+import { dataPropTypes } from "../../utils/utils.js";
 
 const IngredientsDetails = ({ data }) => {
   return (

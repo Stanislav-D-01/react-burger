@@ -5,6 +5,9 @@
   height: min-content;
   background-color: #1c1c21;
   border-radius: 40px;
+  padding-right: 43px;
+  padding-left: 43px;
+  box-sizing: border-box;
   opacity: 1;
   z-index: 4;
   display: flex;

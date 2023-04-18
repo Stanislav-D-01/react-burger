@@ -1,10 +1,11 @@
 import React from "react";
-import styles from "./App.module.css";
+import styles from "./app.module.css";
 import AppHeader from "../app-header/app-header.jsx";
 import BurgerIngridients from "../burger-ingredients/burger-ingredients.jsx";
-import { urlAdress } from "../utils/utils.js";
+import { BASE_URL } from "../../utils/utils";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
-import { getIngredients } from "../utils/burger-api";
+import { request } from "../../utils/burger-api";
+
 function App() {
   const [state, setState] = React.useState({
     data: [],
@@ -13,11 +14,11 @@ function App() {
   });
   const errBlock = React.useRef();
   React.useEffect(() => {
-    
-    getDataIngredients(urlAdress)}, []);
+    getDataIngredients(BASE_URL);
+  }, []);
 
   function getDataIngredients(url) {
-    getIngredients(url)
+    request(`${url}ingredients`)
       .then((dat) =>
         setState({
           data: dat.data,
