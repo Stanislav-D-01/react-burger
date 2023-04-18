@@ -12,7 +12,9 @@ function App() {
     successLoad: false,
   });
   const errBlock = React.useRef();
-  React.useEffect(() => getDataIngredients(urlAdress), []);
+  React.useEffect(() => {
+    
+    getDataIngredients(urlAdress)}, []);
 
   function getDataIngredients(url) {
     getIngredients(url)

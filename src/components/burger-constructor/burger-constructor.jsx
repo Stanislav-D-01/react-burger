@@ -131,7 +131,9 @@ function BurgerConstructor({ data }) {
       <section className={styles["burger-constructor"]}>
         <ul className={styles["burger-constructor__list"]}>
           {renderBun(ingr, "top")}
+          <ul className={styles["burger-constructor__list-main"]}>
           {renderMain(ingr)}
+          </ul>
           {renderBun(ingr, "bottom")}
         </ul>
         <ConstructorOrderContext.Provider value={order}>

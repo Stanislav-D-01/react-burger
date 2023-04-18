@@ -7,10 +7,10 @@ import Modal from "./components/modal/modal";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <body className={styles.body}>
+
     <App />
     
-  </body>
+
 );
 
 reportWebVitals();
