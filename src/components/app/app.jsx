@@ -5,43 +5,29 @@ import BurgerIngridients from "../burger-ingredients/burger-ingredients.jsx";
 import { BASE_URL } from "../../utils/utils";
 import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
 import { request } from "../../utils/burger-api";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/burger-ingredients";
 
 function App() {
-  const [state, setState] = React.useState({
-    data: [],
-    hasError: false,
-    successLoad: false,
-  });
   const errBlock = React.useRef();
-  React.useEffect(() => {
-    getDataIngredients(BASE_URL);
-  }, []);
+  const dispatch = useDispatch();
+  const { ingredientsFailed } = useSelector(
+    (store) => store.ingredients.ingredients
+  );
 
-  function getDataIngredients(url) {
-    request(`${url}ingredients`)
-      .then((dat) =>
-        setState({
-          data: dat.data,
-          hasError: false,
-          successLoad: true,
-        })
-      )
-      .catch((err) => {
-        setState({ ...state, hasError: true });
-        errBlock.current.textContent = `Ошибка при получении данных с сервера(${err})`;
-      });
-  }
+  React.useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
-      {state.hasError ? (
-        <div ref={errBlock}></div>
-      ) : (
+      {!ingredientsFailed ? (
         <main className={styles.main}>
-          <BurgerIngridients data={state.data} />
-          <BurgerConstructor data={state.data} />
+          <BurgerIngridients />
         </main>
+      ) : (
+        <main className={styles.main}>Ошибка загрузки данных с сервера</main>
       )}
     </>
   );

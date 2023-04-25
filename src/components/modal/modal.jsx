@@ -14,7 +14,7 @@ const Modal = (props) => {
     document.addEventListener("keydown", keydownEsc);
 
     return () => {
-      document.addEventListener("keydown", keydownEsc);
+      document.removeEventListener("keydown", keydownEsc);
     };
   }, []);
 

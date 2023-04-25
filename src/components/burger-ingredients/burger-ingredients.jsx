@@ -4,33 +4,43 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import priceSym from "../../image/Subtract.svg";
-import React from "react";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../../utils/utils.js";
 import IngredientsDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import { ModalContext } from "../modal/modal-context";
-const BurgerIngredients = ({ data }) => {
-  const [current, setCurrent] = React.useState("bun");
-  const [stateModal, setStateModal] = React.useState(false);
-  const [dataIngredient, setDataIngredient] = React.useState({});
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { SET_INGREDIENT_IN_MODAL } from "../../services/actions/ingredient-details";
+
+const BurgerIngredients = () => {
+  const [current, setCurrent] = useState("bun");
+  const [stateModal, setStateModal] = useState(false);
+  const dataIngredients = useSelector((store) => store.ingredients.ingredients);
+
+  const dispatch = useDispatch();
 
   const toggleModal = (e) => {
     setStateModal(!stateModal);
-    extractData(e.target);
+    findIngredient(e.target);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (document.getElementById(current)) {
       document.getElementById(current).scrollIntoView({ behavior: "smooth" });
     }
   }, [current]);
 
-  const extractData = (element) => {
+  const findIngredient = (element) => {
     if (element.closest("li") != undefined) {
-      setDataIngredient((state) =>
-        data.find((item) => item._id === element.closest("li").id)
+      const ingr = dataIngredients.find(
+        (item) => item._id === element.closest("li").id
       );
+      console.log(`ffff${dataIngredients}`);
+      dispatch({
+        type: "SET_INGREDIENT_IN_MODAL",
+        value: ingr,
+      });
     }
   };
 
@@ -81,6 +91,7 @@ const BurgerIngredients = ({ data }) => {
       </>
     );
   };
+  console.log(`asdsad${dataIngredients}`);
   return (
     <>
       <section className={styles["section-burger-ingridients"]}>
@@ -98,18 +109,18 @@ const BurgerIngredients = ({ data }) => {
         </div>
 
         <div className={styles["section-burger-ingridients__list"]}>
-          {renderIngredients(data)}
+          {renderIngredients(dataIngredients)}
         </div>
       </section>
       {stateModal && (
         <>
           <ModalContext.Provider value={[setStateModal]}>
             <Modal
-              data={dataIngredient}
               closeModal={toggleModal}
+              data={dataIngredients}
               name={"Детали ингредиента"}
             >
-              <IngredientsDetails data={dataIngredient} />
+              <IngredientsDetails />
             </Modal>
           </ModalContext.Provider>
         </>
