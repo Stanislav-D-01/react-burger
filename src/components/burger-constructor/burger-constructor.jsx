@@ -11,54 +11,66 @@ import Modal from "../modal/modal";
 
 import { ModalContext } from "../modal/modal-context";
 
-import {dataPropTypes} from "../../utils/utils";
-import {useDispatch, useSelector} from 'react-redux'
-import {ADD_INGR_IN_CONSTRUCTOR, TOGGLE_MODAL_ORDER, CALC_TOTAL_PRICE, sendOrder} from '../../services/actions/index'
-
+import { dataPropTypes } from "../../utils/utils";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  ADD_INGR_IN_CONSTRUCTOR,
+  TOGGLE_MODAL_ORDER,
+  CALC_TOTAL_PRICE,
+  sendOrder,
+} from "../../services/actions/index";
+import { useDrop } from "react-dnd";
 
 function BurgerConstructor() {
-  const  {ingr, ingrConstr, order, total, orderRequest, orderFailed} = useSelector(store=>({
-    ingr: store.state.ingredients,
-    ingrConstr: store.state.ingredientsConstructor,
-    order: store.state.order,
-    total: store.state.total,
-    orderRequest: store.state.orderRequest,
-    orderFailed: store.state.orderFailed
-   
-  }))
-  const [isModal,setIsModal]=React.useState(false)
+  const { ingr, ingrConstr, order, total, orderRequest, orderFailed } =
+    useSelector((store) => ({
+      ingr: store.state.ingredients,
+      ingrConstr: store.state.ingredientsConstructor,
+      order: store.state.order,
+      total: store.state.total,
+      orderRequest: store.state.orderRequest,
+      orderFailed: store.state.orderFailed,
+    }));
+  const [isModal, setIsModal] = React.useState(false);
   const dispatch = useDispatch();
+
+  const [, dropRef] = useDrop({
+    accept: "ingredients",
+    drop: (id) => {
+      console.log("asdasda");
+    },
+  });
 
   React.useEffect(() => {
     totalPrice(ingrConstr);
   }, [ingrConstr]);
 
-  React.useEffect(()=>{
-    addBunStart(ingr)
-  },[ingr])
+  React.useEffect(() => {
+    addBunStart(ingr);
+  }, [ingr]);
 
-const addIngr = (objIngr)=>{
-
-}
-
-const addBunStart = (arrIngr)=>{
-  if (arrIngr.length>0){
-const bun = arrIngr.find(item=>item.type =='bun');
-dispatch({type: ADD_INGR_IN_CONSTRUCTOR,
-  value: bun
-})}
-}
-
-  const toggleModal = () => {
-    setIsModal(!isModal)
+  const addIngr = (objIngr) => {
+    dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: objIngr });
   };
 
-  const createOrder =()=>{
-    if (ingrConstr.length>0){
-    dispatch(sendOrder(ingrConstr));
-    toggleModal()}
-  }
-  
+  const addBunStart = (arrIngr) => {
+    if (arrIngr.length > 0) {
+      const bun = arrIngr.find((item) => item.type == "bun");
+      dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: bun });
+    }
+  };
+
+  const toggleModal = () => {
+    setIsModal(!isModal);
+  };
+
+  const createOrder = () => {
+    if (ingrConstr.length > 0) {
+      dispatch(sendOrder(ingrConstr));
+      toggleModal();
+    }
+  };
+
   const renderBun = (arr, type) => {
     return arr.map((el) => {
       if (el.type == "bun") {
@@ -115,47 +127,48 @@ dispatch({type: ADD_INGR_IN_CONSTRUCTOR,
   };
 
   const totalPrice = (data) => {
-    const sum = data.reduce((sum, element) => 
-      element.type === 'bun' ? sum + element.price*2 : sum + element.price,0)
-    dispatch({type: CALC_TOTAL_PRICE, value: sum})
+    const sum = data.reduce(
+      (sum, element) =>
+        element.type === "bun" ? sum + element.price * 2 : sum + element.price,
+      0
+    );
+    dispatch({ type: CALC_TOTAL_PRICE, value: sum });
   };
 
   if (ingrConstr.length > 0) {
-   
     return (
-      <section className={styles["burger-constructor"]}>
-        <ul className={styles["burger-constructor__list"]}>
+      <section ref={dropRef} className={styles["burger-constructor"]}>
+        <ul ref={dropRef} className={styles["burger-constructor__list"]}>
           {renderBun(ingrConstr, "top")}
           <ul className={styles["burger-constructor__list-main"]}>
-          {renderMain(ingrConstr)}
+            {renderMain(ingrConstr)}
           </ul>
           {renderBun(ingrConstr, "bottom")}
         </ul>
-   
-          <div className={styles["burger-constructor__total-price-block"]}>
-            <p className="text text_type_digits-medium mr-10">
-              {total} <img className="pl-2" src={priceSym} />
-            </p>
 
-            <Button
-              onClick={createOrder}
-              htmlType="button"
-              type="primary"
-              size="medium"
-            >
-              Оформить заказ
-            </Button>
-          </div>
-          {isModal && !orderRequest && !orderFailed && (
-            <>
-             <ModalContext.Provider value={[setIsModal]}>
-                <Modal name={""}>
-                 <OrderDetails/>
-                </Modal>
-                </ModalContext.Provider>
-            </>
-          )}
-    
+        <div className={styles["burger-constructor__total-price-block"]}>
+          <p className="text text_type_digits-medium mr-10">
+            {total} <img className="pl-2" src={priceSym} />
+          </p>
+
+          <Button
+            onClick={createOrder}
+            htmlType="button"
+            type="primary"
+            size="medium"
+          >
+            Оформить заказ
+          </Button>
+        </div>
+        {isModal && !orderRequest && !orderFailed && (
+          <>
+            <ModalContext.Provider value={[setIsModal]}>
+              <Modal name={""}>
+                <OrderDetails />
+              </Modal>
+            </ModalContext.Provider>
+          </>
+        )}
       </section>
     );
   }
