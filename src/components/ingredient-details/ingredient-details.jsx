@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 const IngredientsDetails = () => {
-  const data = useSelector((store) => store.ingredient.ingredient);
+  const data = useSelector((store) => store.state.ingredient);
 
   console.log(data);
   return (

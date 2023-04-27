@@ -10,20 +10,48 @@ import IngredientsDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import { ModalContext } from "../modal/modal-context";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { SET_INGREDIENT_IN_MODAL } from "../../services/actions/ingredient-details";
+import { useEffect, useState} from "react";
+import { DEL_INGREDIENT_IN_MODAL, SET_INGREDIENT_IN_MODAL} from "../../services/actions/index";
+import {useInView} from 'react-intersection-observer'
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
-  const [stateModal, setStateModal] = useState(false);
-  const dataIngredients = useSelector((store) => store.ingredients.ingredients);
-
+  const [isModal, setIsModal] = useState(false);
+  const {dataIngredients} = useSelector((store) => ({
+    dataIngredients: store.state.ingredients,
+  }));
   const dispatch = useDispatch();
 
+
   const toggleModal = (e) => {
-    setStateModal(!stateModal);
-    findIngredient(e.target);
+    if (!isModal)  {
+    setIsModal(true);
+    addIngredientInModal(e.target)} else {
+    (setIsModal(false))
+      dispatch({type: DEL_INGREDIENT_IN_MODAL})
+  }
   };
+  
+  const [ refBun, inViewBun] = useInView({threshold: 1});
+  const [ refMain, inViewMain] = useInView({threshold: 0.4});
+  const [ refSauce, inViewSauce] = useInView({threshold: 1, delay: 300});
+
+
+useEffect(()=>{
+ if (!inViewBun && !inViewMain && inViewSauce ) {
+  setCurrent("sauce")
+ }
+ if (!inViewBun && inViewMain && !inViewSauce ) {
+  setCurrent("main")
+ } if (inViewBun && !inViewMain && !inViewSauce  ) {setCurrent("bun")}
+ 
+ console.log(`bun -${inViewBun} suace-${inViewSauce} main-${inViewMain}`);
+}, [inViewBun, inViewMain, inViewSauce]);
+
+
+
+
+
 
   useEffect(() => {
     if (document.getElementById(current)) {
@@ -31,18 +59,18 @@ const BurgerIngredients = () => {
     }
   }, [current]);
 
-  const findIngredient = (element) => {
+  const addIngredientInModal = (element) => {
     if (element.closest("li") != undefined) {
       const ingr = dataIngredients.find(
         (item) => item._id === element.closest("li").id
       );
-      console.log(`ffff${dataIngredients}`);
       dispatch({
-        type: "SET_INGREDIENT_IN_MODAL",
+        type: SET_INGREDIENT_IN_MODAL,
         value: ingr,
       });
     }
   };
+  
 
   const loadIngredients = (data, type) => {
     return data.map((element) => {
@@ -60,7 +88,7 @@ const BurgerIngredients = () => {
               <img className="pl-2" src={priceSym} />
             </p>
             <p className="text text_type_main-small mt-2">{element.name}</p>
-            <Counter count={1} size="default" extraClass="m-1" />
+            <Counter count={0} size="default" extraClass="m-1" />
           </li>
         );
       }
@@ -70,28 +98,28 @@ const BurgerIngredients = () => {
   const renderIngredients = (data) => {
     return (
       <>
-        <h3 id="bun" className="text text_type_main-medium mt-10">
+        <h3  id="bun" className="text text_type_main-medium mt-10">
           Булки
         </h3>
-        <ul className={styles["section-burger-menu__cards-ingridients"]}>
+        <ul ref={refBun}  className={styles["section-burger-menu__cards-ingridients"]}>
           {loadIngredients(data, "bun")}
         </ul>
-        <h3 id="sauce" className="text text_type_main-medium mt-10">
+        <h3  id="sauce" className="text text_type_main-medium mt-10">
           Соуcы
         </h3>
-        <ul className={styles["section-burger-menu__cards-ingridients"]}>
+        <ul  ref={refSauce} className={styles["section-burger-menu__cards-ingridients"]}>
           {loadIngredients(data, "sauce")}
         </ul>
-        <h3 id="main" className="text text_type_main-medium mt-10">
+        <h3  id="main" className="text text_type_main-medium mt-10">
           Начинки
         </h3>
-        <ul className={styles["section-burger-menu__cards-ingridients"]}>
+        <ul ref={refMain}  className={styles["section-burger-menu__cards-ingridients"]}>
           {loadIngredients(data, "main")}
         </ul>
       </>
     );
   };
-  console.log(`asdsad${dataIngredients}`);
+
   return (
     <>
       <section className={styles["section-burger-ingridients"]}>
@@ -112,17 +140,17 @@ const BurgerIngredients = () => {
           {renderIngredients(dataIngredients)}
         </div>
       </section>
-      {stateModal && (
+      {isModal && (
         <>
-          <ModalContext.Provider value={[setStateModal]}>
-            <Modal
-              closeModal={toggleModal}
-              data={dataIngredients}
+          <ModalContext.Provider value={[setIsModal]}>
+            <Modal>
+              
+           
               name={"Детали ингредиента"}
-            >
+            
               <IngredientsDetails />
             </Modal>
-          </ModalContext.Provider>
+            </ModalContext.Provider>
         </>
       )}
     </>

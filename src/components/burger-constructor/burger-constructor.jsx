@@ -8,60 +8,57 @@ import React from "react";
 import PropTypes from "prop-types";
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
-import { ConstructorOrderContext } from "./burger-constructor-context";
+
 import { ModalContext } from "../modal/modal-context";
-import { request } from "../../utils/burger-api";
-import { urlOrders, dataPropTypes, BASE_URL } from "../../utils/utils";
 
-function BurgerConstructor({ data }) {
-  const [ingr, setIngr] = React.useState([]);
-  const [order, setOrder] = React.useState({});
-  const [total, setTotal] = React.useState(0);
-  const [stateModal, setStateModal] = React.useState(false);
+import {dataPropTypes} from "../../utils/utils";
+import {useDispatch, useSelector} from 'react-redux'
+import {ADD_INGR_IN_CONSTRUCTOR, TOGGLE_MODAL_ORDER, CALC_TOTAL_PRICE, sendOrder} from '../../services/actions/index'
+
+
+function BurgerConstructor() {
+  const  {ingr, ingrConstr, order, total, orderRequest, orderFailed} = useSelector(store=>({
+    ingr: store.state.ingredients,
+    ingrConstr: store.state.ingredientsConstructor,
+    order: store.state.order,
+    total: store.state.total,
+    orderRequest: store.state.orderRequest,
+    orderFailed: store.state.orderFailed
+   
+  }))
+  const [isModal,setIsModal]=React.useState(false)
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (data.length > 0) {
-      setIngr(getIngr(data));
-    }
-  }, [data]);
+    totalPrice(ingrConstr);
+  }, [ingrConstr]);
 
-  React.useEffect(() => {
-    totalPrice(ingr);
-  }, [ingr]);
+  React.useEffect(()=>{
+    addBunStart(ingr)
+  },[ingr])
 
-  const getIngr = (data) => {
-    const arrBun = [];
-    let numBun = 0;
-    data.forEach((el) => {
-      if (el.type == "bun" && numBun == 0) {
-        arrBun.push(el);
-        numBun = 1;
-      }
-      if (el.type != "bun") {
-        arrBun.push(el);
-      }
-    });
-    return arrBun;
-  };
+const addIngr = (objIngr)=>{
 
-  const sendOrder = () => {
-    request(`${BASE_URL}orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ingredients: ingr.map((el) => el._id) }),
-    })
-      .then((order) => {
-        setOrder(order);
-        toggleModal();
-      })
-      .catch((err) => console.log(`Ошибка ${err}`));
-  };
+}
+
+const addBunStart = (arrIngr)=>{
+  if (arrIngr.length>0){
+const bun = arrIngr.find(item=>item.type =='bun');
+dispatch({type: ADD_INGR_IN_CONSTRUCTOR,
+  value: bun
+})}
+}
 
   const toggleModal = () => {
-    setStateModal(!stateModal);
+    setIsModal(!isModal)
   };
+
+  const createOrder =()=>{
+    if (ingrConstr.length>0){
+    dispatch(sendOrder(ingrConstr));
+    toggleModal()}
+  }
+  
   const renderBun = (arr, type) => {
     return arr.map((el) => {
       if (el.type == "bun") {
@@ -118,28 +115,30 @@ function BurgerConstructor({ data }) {
   };
 
   const totalPrice = (data) => {
-    const sum = data.reduce((sum, element) => sum + element.price, 0);
-    setTotal(sum);
+    const sum = data.reduce((sum, element) => 
+      element.type === 'bun' ? sum + element.price*2 : sum + element.price,0)
+    dispatch({type: CALC_TOTAL_PRICE, value: sum})
   };
 
-  if (ingr.length > 0) {
+  if (ingrConstr.length > 0) {
+   
     return (
       <section className={styles["burger-constructor"]}>
         <ul className={styles["burger-constructor__list"]}>
-          {renderBun(ingr, "top")}
+          {renderBun(ingrConstr, "top")}
           <ul className={styles["burger-constructor__list-main"]}>
-            {renderMain(ingr)}
+          {renderMain(ingrConstr)}
           </ul>
-          {renderBun(ingr, "bottom")}
+          {renderBun(ingrConstr, "bottom")}
         </ul>
-        <ConstructorOrderContext.Provider value={order}>
+   
           <div className={styles["burger-constructor__total-price-block"]}>
             <p className="text text_type_digits-medium mr-10">
               {total} <img className="pl-2" src={priceSym} />
             </p>
 
             <Button
-              onClick={sendOrder}
+              onClick={createOrder}
               htmlType="button"
               type="primary"
               size="medium"
@@ -147,16 +146,16 @@ function BurgerConstructor({ data }) {
               Оформить заказ
             </Button>
           </div>
-          {stateModal && (
+          {isModal && !orderRequest && !orderFailed && (
             <>
-              <ModalContext.Provider value={[setStateModal]}>
-                <Modal closeModal={toggleModal} name={""}>
-                  <OrderDetails />
+             <ModalContext.Provider value={[setIsModal]}>
+                <Modal name={""}>
+                 <OrderDetails/>
                 </Modal>
-              </ModalContext.Provider>
+                </ModalContext.Provider>
             </>
           )}
-        </ConstructorOrderContext.Provider>
+    
       </section>
     );
   }

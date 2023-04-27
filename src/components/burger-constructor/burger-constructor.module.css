@@ -12,7 +12,8 @@
   overflow: hidden;
   max-width: 600px;
   
-  height: calc(100% - 196px);
+  min-height: 200px;
+  max-height: calc(100% - 196px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,11 +62,13 @@
 .burger-constructor__list-main {
   margin: 0;
   scroll-snap-type: y mandatory;
+  scroll-snap-align: start;
+  scroll-padding-bottom: 100px;
   display: flex;
   flex-direction: column;
   row-gap: 16px;
   max-height: calc(100% - 192px);  
-  margin: 16px 0 16px 0;
+  margin: 16px 0 96px 0;
   
 
 
