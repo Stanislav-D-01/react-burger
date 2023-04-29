@@ -1,33 +1,34 @@
 import { combineReducers } from "redux";
 
-
 import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_SUCCSESS,
   GET_INGREDIENTS_ERROR,
   SET_INGREDIENT_IN_MODAL,
   DEL_INGREDIENT_IN_MODAL,
-  TOGGLE_MODAL_INGR, ADD_INGR_IN_CONSTRUCTOR, 
+  TOGGLE_MODAL_INGR,
+  ADD_INGR_IN_CONSTRUCTOR,
   CALC_TOTAL_PRICE,
-  TOGGLE_MODAL_ORDER, 
-  SEND_ORDER_REQUEST, 
-  SEND_ORDER_SUCCSESS, 
+  TOGGLE_MODAL_ORDER,
+  SEND_ORDER_REQUEST,
+  SEND_ORDER_SUCCSESS,
   SEND_ORDER_ERROR,
-  ADD_BUN_IN_CONSTRUCTOR
-} from "../actions/index"
+  ADD_BUN_IN_CONSTRUCTOR,
+  DEL_INGR_CONSTRUCTOR,
+} from "../actions/index";
 
 const initialState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
-  ingredient:{},
+  ingredient: {},
   isModalIngr: false,
-  isModalOrder:false,
-  ingredientsConstructor:[],
-  order:{},
-  orderRequest:false,
-  orderFailed:false,
-  total:0
+  isModalOrder: false,
+  ingredientsConstructor: [],
+  order: {},
+  orderRequest: false,
+  orderFailed: false,
+  total: 0,
 };
 
 export const ingredientsReducer = (state = initialState, action) => {
@@ -52,29 +53,48 @@ export const ingredientsReducer = (state = initialState, action) => {
     case DEL_INGREDIENT_IN_MODAL: {
       return { ...state, ingredient: {} };
     }
-    case TOGGLE_MODAL_INGR:{
-      return {...state, isModalIngr: !state.isModalIngr}
+    case TOGGLE_MODAL_INGR: {
+      return { ...state, isModalIngr: !state.isModalIngr };
     }
-    case TOGGLE_MODAL_ORDER:{
-      return {...state, isModalOrder: !state.isModalOrder}
+    case TOGGLE_MODAL_ORDER: {
+      return { ...state, isModalOrder: !state.isModalOrder };
     }
-    case ADD_INGR_IN_CONSTRUCTOR:{
-      return {...state, ingredientsConstructor: ([...state.ingredientsConstructor, action.value])}
+    case ADD_INGR_IN_CONSTRUCTOR: {
+      return {
+        ...state,
+        ingredientsConstructor: [...state.ingredientsConstructor, action.value],
+      };
     }
-    case ADD_BUN_IN_CONSTRUCTOR:{
-      return {...state, ingredientsConstructor}
+    case ADD_BUN_IN_CONSTRUCTOR: {
+      return {
+        ...state,
+        state: [
+          state.ingredientsConstructor.splice(0, 2, action.value, action.value),
+        ],
+      };
     }
-    case CALC_TOTAL_PRICE:{
-      return{...state, total: action.value}
+    case CALC_TOTAL_PRICE: {
+      return { ...state, total: action.value };
     }
-    case SEND_ORDER_REQUEST:{
-      return {...state, orderRequest: true}
+    case SEND_ORDER_REQUEST: {
+      return { ...state, orderRequest: true };
     }
-    case SEND_ORDER_SUCCSESS:{
-      return {...state, orderRequest: false, orderFailed: false, order: action.order}
+    case SEND_ORDER_SUCCSESS: {
+      return {
+        ...state,
+        orderRequest: false,
+        orderFailed: false,
+        order: action.order,
+      };
     }
-    case SEND_ORDER_ERROR:{
-      return{...state, orderRequest:false, orderFailed: true}
+    case SEND_ORDER_ERROR: {
+      return { ...state, orderRequest: false, orderFailed: true };
+    }
+    case DEL_INGR_CONSTRUCTOR: {
+      return {
+        ...state,
+        state: [state.ingredientsConstructor.splice(action.value, 1)],
+      };
     }
     default: {
       return state;
@@ -82,12 +102,6 @@ export const ingredientsReducer = (state = initialState, action) => {
   }
 };
 
-
-
-
-
-
 export const rootReducer = combineReducers({
   state: ingredientsReducer,
-
 });

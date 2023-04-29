@@ -18,8 +18,11 @@ import {
   TOGGLE_MODAL_ORDER,
   CALC_TOTAL_PRICE,
   sendOrder,
+  ADD_BUN_IN_CONSTRUCTOR,
+  DEL_INGR_CONSTRUCTOR,
 } from "../../services/actions/index";
 import { useDrop } from "react-dnd";
+import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 
 function BurgerConstructor() {
   const { ingr, ingrConstr, order, total, orderRequest, orderFailed } =
@@ -35,13 +38,22 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
 
   const [, dropRef] = useDrop({
-    accept: 'ingred',
-    
+    accept: "ingred",
+
     drop(item) {
-      dispatch({type:ADD_INGR_IN_CONSTRUCTOR,
-        value: ingr.find(el=>el._id===item._id)
-      })
-      console.log(item._id);
+      if (ingr.find((el) => el._id === item._id && el.type !== "bun")) {
+        dispatch({
+          type: ADD_INGR_IN_CONSTRUCTOR,
+          value: ingr.find((el) => el._id === item._id),
+        });
+        console.log(item);
+      } else {
+        dispatch({
+          type: ADD_BUN_IN_CONSTRUCTOR,
+          value: ingr.find((el) => el._id === item._id),
+        });
+        totalPrice(ingrConstr);
+      }
     },
   });
 
@@ -76,71 +88,55 @@ function BurgerConstructor() {
     }
   };
 
+  const deleteIngr = (e) => {
+    dispatch({ type: DEL_INGR_CONSTRUCTOR, value: e.target.closest("li").id });
+  };
+
   const renderBun = (arr, type) => {
-if (type === "top") {   
-    
+    if (type === "top") {
       return (
-          
-            
-              <li
-                key={"top_1"}
-                className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_top"]}`}
-              >
-                <ConstructorElement
-                  type="top"
-                  isLocked={true}
-                  text={`${arr[0].name} (верх)`}
-                  price={arr[0].price}
-                  thumbnail={arr[0].image}
-                />
-              </li>)} else
-    
-          
-            
-            {return (
-              <li
-                key={"bottom_1"}
-                className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_bottom"]} `}
-              >
-                <ConstructorElement
-                  type="bottom"
-                  isLocked={true}
-                  text={`${arr[1].name} (низ)`}
-                  price={arr[1].price}
-                  thumbnail={arr[1].image}
-                />
-              </li>)}
-           
-            
-            
+        <BurgerConstructorElement
+          data={arr[0]}
+          id={0}
+          type={type}
+          isLocked={true}
+        />
+      );
+    } else {
+      return (
+        <BurgerConstructorElement
+          data={arr[1]}
+          id={1}
+          type={type}
+          isLocked={true}
+        />
+      );
     }
-      
- 
+  };
+
   const renderMain = (data) => {
-    return data.map((element) => {
+    return data.map((element, index) => {
       if (element.type !== "bun") {
         return (
-          <li key={element.index} className={styles["burger-constructor__point"]}>
-            <ConstructorElement
-              text={element.name}
-              price={element.price}
-              thumbnail={element.image}
-            />
-          </li>
+          <BurgerConstructorElement
+            data={element}
+            id={index}
+            deleteIngr={deleteIngr}
+          />
         );
       }
     });
   };
 
   const totalPrice = (data) => {
-    const sum = data.reduce((sum, element) => sum + element.price,0);
+    const sum = data.reduce((sum, element) => sum + element.price, 0);
     dispatch({ type: CALC_TOTAL_PRICE, value: sum });
   };
 
   if (ingrConstr.length > 0) {
     return (
       <section ref={dropRef} className={styles["burger-constructor"]}>
-        <ul  className={styles["burger-constructor__list"]}>
+        <ul className={styles["burger-constructor__list"]}>
           {renderBun(ingrConstr, "top")}
           <ul className={styles["burger-constructor__list-main"]}>
             {renderMain(ingrConstr)}

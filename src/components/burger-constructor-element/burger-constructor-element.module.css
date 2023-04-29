@@ -1,0 +1,17 @@
+.burger-constructor__point {
+  max-width: 536px;
+  width: 536px;
+  scroll-snap-align: start;
+}
+.burger-constructor__point_type_lock {
+  list-style: none;
+  margin: 0 0 0 25px;
+}
+.burger-constructor__point_position_top {
+  position: sticky;
+  top: 0;
+}
+.burger-constructor__point_position_bottom {
+  position: absolute;
+  bottom: 0;
+}
