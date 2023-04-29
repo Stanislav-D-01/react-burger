@@ -19,17 +19,23 @@ function App() {
 
   return (
     <>
+
       <AppHeader />
+    
       {!ingredientsFailed ? (
+        
         <main className={styles.main}>
-          <DndProvider backend={HTML5Backend}>
+            <DndProvider backend={HTML5Backend}>
             <BurgerIngridients />
             <BurgerConstructor />
-          </DndProvider>
+            </DndProvider>
         </main>
+     
       ) : (
         <main className={styles.main}>Ошибка загрузки данных с сервера</main>
       )}
+
+
     </>
   );
 }

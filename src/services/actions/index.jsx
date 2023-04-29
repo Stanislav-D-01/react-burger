@@ -13,6 +13,7 @@ export const CALC_TOTAL_PRICE = "CALC_TOTAL_PRICE"
 export const SEND_ORDER_REQUEST = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCSESS = "SEND_ORDER_SUCCSESS";
 export const SEND_ORDER_ERROR = "SEND_ORDER_ERROR";
+export const ADD_BUN_IN_CONSTRUCTOR = "ADD_BUN_IN_CONSTRUCTOR"
 
 export function getIngredients() {
     return function (dispatch) {

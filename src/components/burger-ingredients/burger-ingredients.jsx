@@ -16,21 +16,21 @@ import {
   SET_INGREDIENT_IN_MODAL,
 } from "../../services/actions/index";
 import { useInView } from "react-intersection-observer";
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
+import Ingredient from "../ingredient/ingredient";
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
-  const [id, setId] = useState("");
+  const [ids, setId] = useState();
   const [isModal, setIsModal] = useState(false);
-  const { dataIngredients } = useSelector((store) => ({
+  const { dataIngredients,ingredientsConstructor } = useSelector((store) => ({
     dataIngredients: store.state.ingredients,
+    ingredientsConstructor: store.state.ingredientsConstructor,
   }));
   const dispatch = useDispatch();
 
-  const [, refIng] = useDrag({
-    type: "ingredients",
-    item: { id },
-  });
+
+
 
   const toggleModal = (e) => {
     if (!isModal) {
@@ -75,29 +75,15 @@ const BurgerIngredients = () => {
         type: SET_INGREDIENT_IN_MODAL,
         value: ingr,
       });
-    }
+    } 
   };
 
   const loadIngredients = (data, type) => {
-    return data.map((element) => {
+    return data.map((element, index) => {
       if (element.type === type) {
+        const counter = ingredientsConstructor.filter(item=>item._id===element._id).length
         return (
-          <li
-            ref={refIng}
-            key={element._id}
-            id={element._id}
-            onClick={toggleModal}
-            onMouseDown={(e) => setId(e.target.parentElement.id)}
-            className={styles["section-burger-menu__card"]}
-          >
-            <img src={element.image} />
-            <p className="text text_type_digits-default">
-              {element.price}
-              <img className="pl-2" src={priceSym} />
-            </p>
-            <p className="text text_type_main-small mt-2">{element.name}</p>
-            <Counter count={0} size="default" extraClass="m-1" />
-          </li>
+         <Ingredient key={index} ingr={element} toggleModal={toggleModal} counter={counter}/>
         );
       }
     });
@@ -142,7 +128,7 @@ const BurgerIngredients = () => {
       <section className={styles["section-burger-ingridients"]}>
         <h2 className="text text_type_main-large mt-10">Соберите бургер</h2>
         <div style={{ display: "flex" }}>
-          <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+          <Tab  value="bun" active={current === "bun"} onClick={setCurrent}>
             Булки
           </Tab>
           <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
@@ -153,7 +139,7 @@ const BurgerIngredients = () => {
           </Tab>
         </div>
 
-        <div className={styles["section-burger-ingridients__list"]}>
+        <div  className={styles["section-burger-ingridients__list"]}>
           {renderIngredients(dataIngredients)}
         </div>
       </section>

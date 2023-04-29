@@ -35,9 +35,13 @@ function BurgerConstructor() {
   const dispatch = useDispatch();
 
   const [, dropRef] = useDrop({
-    accept: "ingredients",
-    drop: (id) => {
-      console.log("asdasda");
+    accept: 'ingred',
+    
+    drop(item) {
+      dispatch({type:ADD_INGR_IN_CONSTRUCTOR,
+        value: ingr.find(el=>el._id===item._id)
+      })
+      console.log(item._id);
     },
   });
 
@@ -57,6 +61,7 @@ function BurgerConstructor() {
     if (arrIngr.length > 0) {
       const bun = arrIngr.find((item) => item.type == "bun");
       dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: bun });
+      dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: bun });
     }
   };
 
@@ -72,11 +77,11 @@ function BurgerConstructor() {
   };
 
   const renderBun = (arr, type) => {
-    return arr.map((el) => {
-      if (el.type == "bun") {
-        switch (type) {
-          case "top":
-            return (
+if (type === "top") {   
+    
+      return (
+          
+            
               <li
                 key={"top_1"}
                 className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_top"]}`}
@@ -84,14 +89,15 @@ function BurgerConstructor() {
                 <ConstructorElement
                   type="top"
                   isLocked={true}
-                  text={`${el.name} (верх)`}
-                  price={el.price}
-                  thumbnail={el.image}
+                  text={`${arr[0].name} (верх)`}
+                  price={arr[0].price}
+                  thumbnail={arr[0].image}
                 />
-              </li>
-            );
-          case "bottom":
-            return (
+              </li>)} else
+    
+          
+            
+            {return (
               <li
                 key={"bottom_1"}
                 className={`${styles["burger-constructor__point"]} ${styles["burger-constructor__point_type_lock"]} ${styles["burger-constructor__point_position_bottom"]} `}
@@ -99,22 +105,22 @@ function BurgerConstructor() {
                 <ConstructorElement
                   type="bottom"
                   isLocked={true}
-                  text={`${el.name} (низ)`}
-                  price={el.price}
-                  thumbnail={el.image}
+                  text={`${arr[1].name} (низ)`}
+                  price={arr[1].price}
+                  thumbnail={arr[1].image}
                 />
-              </li>
-            );
-        }
-      }
-    });
-  };
-
+              </li>)}
+           
+            
+            
+    }
+      
+ 
   const renderMain = (data) => {
     return data.map((element) => {
       if (element.type !== "bun") {
         return (
-          <li key={element._id} className={styles["burger-constructor__point"]}>
+          <li key={element.index} className={styles["burger-constructor__point"]}>
             <ConstructorElement
               text={element.name}
               price={element.price}
@@ -127,18 +133,14 @@ function BurgerConstructor() {
   };
 
   const totalPrice = (data) => {
-    const sum = data.reduce(
-      (sum, element) =>
-        element.type === "bun" ? sum + element.price * 2 : sum + element.price,
-      0
-    );
+    const sum = data.reduce((sum, element) => sum + element.price,0);
     dispatch({ type: CALC_TOTAL_PRICE, value: sum });
   };
 
   if (ingrConstr.length > 0) {
     return (
       <section ref={dropRef} className={styles["burger-constructor"]}>
-        <ul ref={dropRef} className={styles["burger-constructor__list"]}>
+        <ul  className={styles["burger-constructor__list"]}>
           {renderBun(ingrConstr, "top")}
           <ul className={styles["burger-constructor__list-main"]}>
             {renderMain(ingrConstr)}

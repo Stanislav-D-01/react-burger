@@ -12,7 +12,8 @@ import {
   TOGGLE_MODAL_ORDER, 
   SEND_ORDER_REQUEST, 
   SEND_ORDER_SUCCSESS, 
-  SEND_ORDER_ERROR
+  SEND_ORDER_ERROR,
+  ADD_BUN_IN_CONSTRUCTOR
 } from "../actions/index"
 
 const initialState = {
@@ -59,6 +60,9 @@ export const ingredientsReducer = (state = initialState, action) => {
     }
     case ADD_INGR_IN_CONSTRUCTOR:{
       return {...state, ingredientsConstructor: ([...state.ingredientsConstructor, action.value])}
+    }
+    case ADD_BUN_IN_CONSTRUCTOR:{
+      return {...state, ingredientsConstructor}
     }
     case CALC_TOTAL_PRICE:{
       return{...state, total: action.value}
