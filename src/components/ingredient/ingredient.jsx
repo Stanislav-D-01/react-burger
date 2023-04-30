@@ -6,12 +6,10 @@ import {useEffect} from 'react'
 const Ingredient = ({ingr, toggleModal, counter}) =>{
 const {_id} = ingr;
   
-    const [ {i}, ref, refImg] = useDrag({
+    const [ , ref, refImg] = useDrag({
         type: "ingred",
         item: {_id}
-   
-      
-     })
+       })
         
       
     

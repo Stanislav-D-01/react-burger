@@ -15,6 +15,7 @@ export const SEND_ORDER_SUCCSESS = "SEND_ORDER_SUCCSESS";
 export const SEND_ORDER_ERROR = "SEND_ORDER_ERROR";
 export const ADD_BUN_IN_CONSTRUCTOR = "ADD_BUN_IN_CONSTRUCTOR";
 export const DEL_INGR_CONSTRUCTOR = "DEL_INGR_CONSTRUCTOR";
+export const MOVE_INGR_CONSTRUCTOR = "MOVE_INGR_CONSTRUCTOR"
 
 export function getIngredients() {
   return function (dispatch) {

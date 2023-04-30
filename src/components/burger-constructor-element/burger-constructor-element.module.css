@@ -2,10 +2,13 @@
   max-width: 536px;
   width: 536px;
   scroll-snap-align: start;
+  cursor: grab;
 }
+
 .burger-constructor__point_type_lock {
   list-style: none;
   margin: 0 0 0 25px;
+  cursor: no-drop;
 }
 .burger-constructor__point_position_top {
   position: sticky;

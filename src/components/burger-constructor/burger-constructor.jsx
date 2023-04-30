@@ -15,8 +15,7 @@ import { dataPropTypes } from "../../utils/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   ADD_INGR_IN_CONSTRUCTOR,
-  TOGGLE_MODAL_ORDER,
-  CALC_TOTAL_PRICE,
+   CALC_TOTAL_PRICE,
   sendOrder,
   ADD_BUN_IN_CONSTRUCTOR,
   DEL_INGR_CONSTRUCTOR,
@@ -65,9 +64,7 @@ function BurgerConstructor() {
     addBunStart(ingr);
   }, [ingr]);
 
-  const addIngr = (objIngr) => {
-    dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: objIngr });
-  };
+  
 
   const addBunStart = (arrIngr) => {
     if (arrIngr.length > 0) {

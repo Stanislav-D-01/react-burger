@@ -15,6 +15,7 @@ import {
   SEND_ORDER_ERROR,
   ADD_BUN_IN_CONSTRUCTOR,
   DEL_INGR_CONSTRUCTOR,
+  MOVE_INGR_CONSTRUCTOR
 } from "../actions/index";
 
 const initialState = {
@@ -96,6 +97,23 @@ export const ingredientsReducer = (state = initialState, action) => {
         state: [state.ingredientsConstructor.splice(action.value, 1)],
       };
     }
+    case MOVE_INGR_CONSTRUCTOR: {
+    const arrayIngr = state.ingredientsConstructor;
+    console.log(arrayIngr);
+    const ingDrop = arrayIngr.find((item, index)=>action.indexDrop == index)
+    const ingrDrag = arrayIngr.find((item, index)=>action.indexDrag == index)
+    arrayIngr.splice(action.indexDrag, 1)
+    arrayIngr.splice(action.indexDrop, 0, ingrDrag)
+ 
+   
+      
+          return {
+        ...state, 
+ingredientsConstructor: arrayIngr
+      }
+
+    }
+  
     default: {
       return state;
     }

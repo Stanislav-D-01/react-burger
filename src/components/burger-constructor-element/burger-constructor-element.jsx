@@ -2,6 +2,8 @@ import styles from "./burger-constructor-element.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import {useDispatch, useSelector} from 'react-redux'
+import { MOVE_INGR_CONSTRUCTOR } from "../../services/actions";
 
 const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
   const [, dragRef] = useDrag({
@@ -9,10 +11,22 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
     item: { id },
   });
 
-  const [, dropRef] = useDrop({
+  const ingrConstr = useSelector(store=>store.state.ingredientsConstructor)
+const dispatch = useDispatch();
+  
+const [, dropRef] = useDrop({
     accept: "element-ingr",
-    hover(item) {
-      console.log(ref.current.id);
+    drop(id) {
+
+      if (id.id != ref.current.id){
+      dispatch({
+        type: MOVE_INGR_CONSTRUCTOR,
+        indexDrop: ref.current.id,
+        valueDrag:ingrConstr.find((item, index) => index == id.id),
+        indexDrag:id.id,
+        valueDrop: ingrConstr.find((item, index) => index == ref.current.id),
+      })}
+      
     },
   });
   const ref = useRef(null);
