@@ -1,9 +1,7 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
-import styles from "./index.css";
 import App from "./components/app/app";
 import reportWebVitals from "./reportWebVitals";
-import { rootReducer } from "./services/reducers";
+import { rootReducer } from "./services/reducers/index";
 import {
   compose,
   legacy_createStore as createStore,

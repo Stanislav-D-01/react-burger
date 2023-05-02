@@ -1,13 +1,9 @@
 import styles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
-import { dataPropTypes } from "../../utils/utils.js";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const IngredientsDetails = () => {
-  const data = useSelector((store) => store.state.ingredient);
+  const data = useSelector((store) => store.modal.ingredient);
 
-  console.log(data);
   return (
     <div className={styles["ingredient-details"]}>
       <img
