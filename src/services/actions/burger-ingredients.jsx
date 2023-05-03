@@ -1,5 +1,6 @@
 import { request } from "../../utils/burger-api";
 import { BASE_URL } from "../../utils/utils";
+import { CLEAN_CONSTRUCTOR } from "./burger-constructor";
 
 export const GET_INGREDIENTS_REQUEST = "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCSESS = "GET_INGREDIENTS_SUCCSESS";
@@ -16,6 +17,7 @@ export function getIngredients() {
       })
       .catch((err) => {
         dispatch({ type: GET_INGREDIENTS_ERROR, error: err });
+        dispatch({ type: CLEAN_CONSTRUCTOR });
       });
   };
 }

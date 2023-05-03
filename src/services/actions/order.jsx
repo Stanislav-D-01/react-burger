@@ -5,7 +5,7 @@ import { CLEAN_CONSTRUCTOR } from "./burger-constructor";
 export const SEND_ORDER_REQUEST = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCSESS = "SEND_ORDER_SUCCSESS";
 export const SEND_ORDER_ERROR = "SEND_ORDER_ERROR";
-export const CLEAN_ORDER= "CLEAR_ORDER"
+export const CLEAN_ORDER = "CLEAR_ORDER";
 
 export function sendOrder(ingr) {
   return function (dispatch) {
@@ -20,10 +20,11 @@ export function sendOrder(ingr) {
     })
       .then((order) => {
         dispatch({ type: SEND_ORDER_SUCCSESS, order: order.order });
-        dispatch({type: CLEAN_CONSTRUCTOR})
+        dispatch({ type: CLEAN_CONSTRUCTOR });
       })
       .catch((err) => {
         dispatch({ type: SEND_ORDER_ERROR, error: err });
+        dispatch({ type: CLEAN_CONSTRUCTOR });
       });
   };
 }

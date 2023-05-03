@@ -2,7 +2,7 @@ import {
   SEND_ORDER_REQUEST,
   SEND_ORDER_SUCCSESS,
   SEND_ORDER_ERROR,
-  CLEAN_ORDER
+  CLEAN_ORDER,
 } from "../actions/order";
 
 const initialState = {
@@ -26,6 +26,9 @@ export const orderReducer = (state = initialState, action) => {
     }
     case SEND_ORDER_ERROR: {
       return { ...state, orderRequest: false, orderFailed: true };
+    }
+    case CLEAN_ORDER: {
+      return { ...state, order: {} };
     }
 
     default: {

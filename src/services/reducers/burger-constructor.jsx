@@ -4,7 +4,7 @@ import {
   DEL_INGR_CONSTRUCTOR,
   MOVE_INGR_CONSTRUCTOR,
   CALC_TOTAL_PRICE,
-  CLEAN_CONSTRUCTOR
+  CLEAN_CONSTRUCTOR,
 } from "../actions/burger-constructor";
 
 const initialState = {
@@ -27,7 +27,12 @@ export const burgerConstructorReducer = (state = initialState, action) => {
       return {
         ...state,
         state: [
-          state.ingredientsConstructor.splice(0, 2, action.valueTop, action.valueBottom),
+          state.ingredientsConstructor.splice(
+            0,
+            2,
+            action.valueTop,
+            action.valueBottom
+          ),
         ],
       };
     }
@@ -35,12 +40,12 @@ export const burgerConstructorReducer = (state = initialState, action) => {
     case DEL_INGR_CONSTRUCTOR: {
       return {
         ...state,
-        state: [state.ingredientsConstructor.splice(action.value, 1)],
+        state: [...state.ingredientsConstructor.splice(action.value, 1)],
       };
     }
     case MOVE_INGR_CONSTRUCTOR: {
       const arrayIngr = state.ingredientsConstructor;
-   
+
       const ingDrop = arrayIngr.find(
         (item, index) => action.indexDrop == index
       );
@@ -55,8 +60,16 @@ export const burgerConstructorReducer = (state = initialState, action) => {
         ingredientsConstructor: arrayIngr,
       };
     }
-    case CLEAN_CONSTRUCTOR:{
-      return {...state, state:[...state.ingredientsConstructor.splice(2,state.ingredientsConstructor.length)]}
+    case CLEAN_CONSTRUCTOR: {
+      return {
+        ...state,
+        state: [
+          ...state.ingredientsConstructor.splice(
+            2,
+            state.ingredientsConstructor.length
+          ),
+        ],
+      };
     }
 
     default: {

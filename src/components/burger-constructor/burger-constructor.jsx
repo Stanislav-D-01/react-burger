@@ -1,7 +1,4 @@
-import {
-  ConstructorElement,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
 import priceSym from "../../image/Subtract_constructor.svg";
 import React from "react";
@@ -21,6 +18,7 @@ import {
 } from "../../services/actions/burger-constructor";
 import { sendOrder } from "../../services/actions/order";
 import { v4 as uuidv4 } from "uuid";
+import { useMemo } from "react";
 
 function BurgerConstructor() {
   const { ingr, ingrConstr, order, total, orderRequest, orderFailed } =
@@ -40,24 +38,21 @@ function BurgerConstructor() {
 
     drop(item) {
       const ingredient = ingr.find((el) => el._id === item._id);
-   
-    
+
       if (ingredient && ingredient.type !== "bun") {
-        const  uuid = uuidv4();
+        const uuid = uuidv4();
         dispatch({
           type: ADD_INGR_IN_CONSTRUCTOR,
-          value: {...ingredient, uuid: uuid},
-
+          value: { ...ingredient, uuid: uuid },
         });
       } else {
-        
-        const  uuidBunTop = uuidv4();
-        const  uuidBunBottom = uuidv4();
+        const uuidBunTop = uuidv4();
+        const uuidBunBottom = uuidv4();
         dispatch({
           type: ADD_BUN_IN_CONSTRUCTOR,
-         
-          valueTop: {...ingredient, uuid: uuidBunTop},
-          valueBottom: {...ingredient, uuid: uuidBunBottom},
+
+          valueTop: { ...ingredient, uuid: uuidBunTop },
+          valueBottom: { ...ingredient, uuid: uuidBunBottom },
         });
         totalPrice(ingrConstr);
       }
@@ -100,6 +95,7 @@ function BurgerConstructor() {
 
   const deleteIngr = (e) => {
     dispatch({ type: DEL_INGR_CONSTRUCTOR, value: e.target.closest("li").id });
+    totalPrice(ingrConstr);
   };
 
   const renderBun = (arr, type) => {
@@ -141,10 +137,13 @@ function BurgerConstructor() {
     });
   };
 
-  const totalPrice = (data) => {
-    const sum = data.reduce((sum, element) => sum + element.price, 0);
-    dispatch({ type: CALC_TOTAL_PRICE, value: sum });
-  };
+  const totalPrice = useMemo(
+    () => (data) => {
+      const sum = data.reduce((sum, element) => sum + element.price, 0);
+      dispatch({ type: CALC_TOTAL_PRICE, value: sum });
+    },
+    [ingrConstr]
+  );
 
   if (ingrConstr.length > 0) {
     return (

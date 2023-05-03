@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MOVE_INGR_CONSTRUCTOR } from "../../services/actions/burger-constructor";
-import { v4 as uuidv4 } from "uuid";
+
 const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
   const [, dragRef] = useDrag({
     type: "element-ingr",
@@ -15,10 +15,6 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
     (store) => store.burgerConstructor.ingredientsConstructor
   );
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(data.uuid);
-  }, [data]);
 
   const [, dropRef] = useDrop({
     accept: "element-ingr",

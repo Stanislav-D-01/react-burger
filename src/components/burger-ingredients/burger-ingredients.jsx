@@ -6,7 +6,7 @@ import IngredientsDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import { ModalContext } from "../modal/modal-context";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   DEL_INGREDIENT_IN_MODAL,
   SET_INGREDIENT_IN_MODAL,
@@ -17,6 +17,7 @@ import Ingredient from "../ingredient/ingredient";
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
   const [isModal, setIsModal] = useState(false);
+
   const { dataIngredients, ingredientsConstructor } = useSelector((store) => ({
     dataIngredients: store.ingredients.ingredients,
     ingredientsConstructor: store.burgerConstructor.ingredientsConstructor,
@@ -47,8 +48,6 @@ const BurgerIngredients = () => {
     if (inViewBun && !inViewMain && inViewSauce) {
       setCurrent("bun");
     }
-
-
   }, [inViewBun, inViewMain, inViewSauce]);
 
   useEffect(() => {
@@ -69,23 +68,26 @@ const BurgerIngredients = () => {
     }
   };
 
-  const loadIngredients = (data, type) => {
-    return data.map((element, index) => {
-      if (element.type === type) {
-        const counter = ingredientsConstructor.filter(
-          (item) => item._id === element._id
-        ).length;
-        return (
-          <Ingredient
-            key={index}
-            ingr={element}
-            toggleModal={toggleModal}
-            counter={counter}
-          />
-        );
-      }
-    });
-  };
+  const loadIngredients = useMemo(
+    () => (data, type) => {
+      return data.map((element, index) => {
+        if (element.type === type) {
+          const counter = ingredientsConstructor.filter(
+            (item) => item._id === element._id
+          ).length;
+          return (
+            <Ingredient
+              key={index}
+              ingr={element}
+              toggleModal={toggleModal}
+              counter={counter}
+            />
+          );
+        }
+      });
+    },
+    [ingredientsConstructor]
+  );
 
   const renderIngredients = (data) => {
     return (
@@ -144,8 +146,7 @@ const BurgerIngredients = () => {
       {isModal && (
         <>
           <ModalContext.Provider value={[setIsModal]}>
-            <Modal>
-              name={"Детали ингредиента"}
+            <Modal name={"Детали ингредиента"}>
               <IngredientsDetails />
             </Modal>
           </ModalContext.Provider>
