@@ -2,6 +2,7 @@ import {
   SEND_ORDER_REQUEST,
   SEND_ORDER_SUCCSESS,
   SEND_ORDER_ERROR,
+  CLEAN_ORDER
 } from "../actions/order";
 
 const initialState = {

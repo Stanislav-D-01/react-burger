@@ -33,9 +33,9 @@ const BurgerIngredients = () => {
     }
   };
 
-  const [refBun, inViewBun] = useInView({ threshold: 0.8 });
-  const [refMain, inViewMain] = useInView({ threshold: 0 });
-  const [refSauce, inViewSauce] = useInView({ threshold: 0.5, delay: 500 });
+  const [refBun, inViewBun] = useInView({ threshold: 0.2 });
+  const [refMain, inViewMain] = useInView({ threshold: 0.3 });
+  const [refSauce, inViewSauce] = useInView({ threshold: 0.8, delay: 500 });
 
   useEffect(() => {
     if (!inViewBun && !inViewMain && inViewSauce) {
@@ -44,11 +44,11 @@ const BurgerIngredients = () => {
     if (!inViewBun && inViewMain && !inViewSauce) {
       setCurrent("main");
     }
-    if (inViewBun && !inViewMain && !inViewSauce) {
+    if (inViewBun && !inViewMain && inViewSauce) {
       setCurrent("bun");
     }
 
-    console.log(`bun -${inViewBun} suace-${inViewSauce} main-${inViewMain}`);
+
   }, [inViewBun, inViewMain, inViewSauce]);
 
   useEffect(() => {

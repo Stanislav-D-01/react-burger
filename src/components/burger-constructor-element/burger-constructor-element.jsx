@@ -44,7 +44,7 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
       : `${styles["burger-constructor__point"]}`;
   if (type) {
     return (
-      <li id={id} key={data.uuid} className={className}>
+      <li id={id} className={className}>
         <ConstructorElement
           type={type}
           isLocked={isLocked}
@@ -57,7 +57,7 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
     );
   } else {
     return (
-      <li ref={ref} id={id} key={data.uuid} className={className}>
+      <li ref={ref} id={id} className={className}>
         <ConstructorElement
           type={type}
           isLocked={isLocked}

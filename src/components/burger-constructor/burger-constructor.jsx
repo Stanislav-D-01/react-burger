@@ -39,19 +39,25 @@ function BurgerConstructor() {
     accept: "ingred",
 
     drop(item) {
-      const ingredient = {
-        ...ingr.find((el) => el._id === item._id),
-        uuid: uuidv4(),
-      };
+      const ingredient = ingr.find((el) => el._id === item._id);
+   
+    
       if (ingredient && ingredient.type !== "bun") {
+        const  uuid = uuidv4();
         dispatch({
           type: ADD_INGR_IN_CONSTRUCTOR,
-          value: ingredient,
+          value: {...ingredient, uuid: uuid},
+
         });
       } else {
+        
+        const  uuidBunTop = uuidv4();
+        const  uuidBunBottom = uuidv4();
         dispatch({
           type: ADD_BUN_IN_CONSTRUCTOR,
-          value: ingredient,
+         
+          valueTop: {...ingredient, uuid: uuidBunTop},
+          valueBottom: {...ingredient, uuid: uuidBunBottom},
         });
         totalPrice(ingrConstr);
       }
@@ -86,7 +92,7 @@ function BurgerConstructor() {
   };
 
   const createOrder = () => {
-    if (ingrConstr.length > 0) {
+    if (ingrConstr.length > 2) {
       dispatch(sendOrder(ingrConstr));
       toggleModal();
     }
@@ -104,6 +110,7 @@ function BurgerConstructor() {
           id={0}
           type={type}
           isLocked={true}
+          key={arr[0].uuid}
         />
       );
     } else {
@@ -113,6 +120,7 @@ function BurgerConstructor() {
           id={1}
           type={type}
           isLocked={true}
+          key={arr[1].uuid}
         />
       );
     }
@@ -126,6 +134,7 @@ function BurgerConstructor() {
             data={element}
             id={index}
             deleteIngr={deleteIngr}
+            key={element.uuid}
           />
         );
       }
