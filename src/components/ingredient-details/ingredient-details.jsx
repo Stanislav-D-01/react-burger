@@ -1,8 +1,9 @@
 import styles from "./ingredient-details.module.css";
-import PropTypes from "prop-types";
-import { dataPropTypes } from "../utils/utils.js";
+import { useSelector } from "react-redux";
 
-const IngredientsDetails = ({ data }) => {
+const IngredientsDetails = () => {
+  const data = useSelector((store) => store.modal.ingredient);
+
   return (
     <div className={styles["ingredient-details"]}>
       <img
@@ -49,7 +50,3 @@ const IngredientsDetails = ({ data }) => {
 };
 
 export default IngredientsDetails;
-
-IngredientsDetails.propTypes = {
-  data: PropTypes.shape(dataPropTypes).isRequired,
-};

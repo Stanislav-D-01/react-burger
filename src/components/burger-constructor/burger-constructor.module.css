@@ -1,13 +1,23 @@
+.burger-constructor {
+  max-height: 100%;
+  max-width: 100vw;
+  margin-left: 40px;
+}
+
 .burger-constructor__list {
+  margin: 80px 0 40px 0;
   list-style: none;
   list-style-image: url(../../image/Vector.svg);
-  overflow-x: scroll;
-  max-width: 100%;
+  overflow: hidden;
   max-width: 600px;
+
+  min-height: 200px;
+  max-height: calc(100% - 196px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 100%;
+  justify-content: flex-start;
+  position: relative;
 }
 .burger-constructor__list::-webkit-scrollbar {
   width: 8px;
@@ -20,28 +30,50 @@
   visibility: hidden;
 }
 .burger-constructor__point {
-  margin: 16px 8px 0 0;
   max-width: 536px;
-  width: 100%;
+  width: 536px;
+  scroll-snap-align: start;
 }
 .burger-constructor__point_type_lock {
   list-style: none;
+  margin: 0 0 0 25px;
+}
+.burger-constructor__point_position_top {
   position: sticky;
   top: 0;
 }
-.burger-constructor__point_type_lock:last-of-type {
-  position: sticky;
+.burger-constructor__point_position_bottom {
+  position: absolute;
   bottom: 0;
 }
 
-.burger-constructor {
-  max-height: calc(100% - 230px);
-  max-width: 100vw;
-  margin-top: 84px;
-  margin-left: 40px;
-}
 .burger-constructor__total-price-block {
   display: flex;
   justify-content: flex-end;
   margin-right: 8px;
+}
+
+.burger-constructor__list-main {
+  margin: 0;
+  scroll-snap-type: y mandatory;
+  scroll-snap-align: start;
+  scroll-padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  max-height: calc(100% - 192px);
+  margin: 16px 0 96px 0;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.burger-constructor__list-main::-webkit-scrollbar {
+  width: 8px;
+}
+.burger-constructor__list-main::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.burger-constructor__list-main::-webkit-scrollbar-corner {
+  visibility: hidden;
 }

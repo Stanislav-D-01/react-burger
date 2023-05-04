@@ -1,0 +1,12 @@
+.section-burger-menu__card {
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .section-burger-menu__image {
+    width: 200px;
+   
+  }
