@@ -1,38 +1,25 @@
-import React from "react";
-import styles from "./app.module.css";
+
+import HomePage from "../../pages/home-page.jsx";
 import AppHeader from "../app-header/app-header.jsx";
-import BurgerIngridients from "../burger-ingredients/burger-ingredients.jsx";
-import BurgerConstructor from "../burger-constructor/burger-constructor.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/burger-ingredients";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginPage from "../../pages/login-page.jsx";
+import ForgotPassword from "../../pages/forgot-password.jsx";
+
+
 
 function App() {
-  const errBlock = React.useRef();
-  const dispatch = useDispatch();
-  const { ingredientsFailed } = useSelector(
-    (store) => store.ingredients.ingredientsFailed
-  );
-
-  React.useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
+  
 
   return (
     <>
       <AppHeader />
-
-      {!ingredientsFailed ? (
-        <main className={styles.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngridients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      ) : (
-        <main className={styles.main}>Ошибка загрузки данных с сервера</main>
-      )}
+      <BrowserRouter>
+      <Routes>
+       <Route path='/' element={<HomePage/>}/> 
+       <Route path='/login' element={<LoginPage/>}/>
+       <Route path='/forgot-password' element={<ForgotPassword/>}/>
+      </Routes>
+      </BrowserRouter>
     </>
   );
 }
