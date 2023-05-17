@@ -4,14 +4,28 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./login-page.module.css";
+import { authorizationReducer } from "../services/reducers/authorization";
+import { sendRegitration } from "../services/actions/authorization";
+import { useDispatch } from "react-redux";
 
 const RegisterPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+
+const dispatch = useDispatch();
+
+const registrUser = (name, email, pass) =>{
+if (name && email && pass) {
+  dispatch(sendRegitration(email, pass, name));
+}
+
+
+
+}
 
   return (
     <div className={styles["login-page"]}>
@@ -23,7 +37,7 @@ const RegisterPage = () => {
           onChange={(e) => setName(e.target.value)}
           value={name}
           name={"name"}
-          error={false}
+          error={false} 
           errorText={"Ошибка"}
           size={"default"}
           extraClass="mt-6"
@@ -35,18 +49,22 @@ const RegisterPage = () => {
           placeholder={"E-mail"}
           isIcon={false}
           extraClass="mt-6"
+          onKeyUp={(e)=>console.log(e.target.validity.typeMismatch)}
+
         />
         <PasswordInput
           onChange={(e) => setPass(e.target.value)}
           value={pass}
           name={"password"}
           extraClass="mt-6"
+         
         />
         <Button
           extraClass="mt-6 mb-20"
           htmlType="button"
           type="primary"
           size="medium"
+         onClick={()=>registrUser(name, email, pass)}
         >
           Зарегистрироваться
         </Button>
