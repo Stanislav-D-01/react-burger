@@ -3,13 +3,29 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./login-page.module.css";
+import { authorization } from "../services/actions/authorization";
+import { getCookie } from "../utils/utils";
+
 const LoginPage = () => {
-  const [value, setValue] = useState("bob@example.com");
-  const onChange = (e) => {
-    setValue(e.target.value);
+  const [login, setLogin] = useState("");
+  const [pass, setPass] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { email } = useSelector((store) => ({
+    email: store.auth.email,
+  }));
+  useEffect(() => {
+    if (email) {
+      navigate("/");
+      console.log(getCookie("token"));
+    }
+  }, [email]);
+  const logIn = (login, pass) => {
+    dispatch(authorization(login, pass));
   };
 
   return (
@@ -17,15 +33,15 @@ const LoginPage = () => {
       <form className={styles["login-page__form"]}>
         <h2 className="text text_type_main-medium">Вход</h2>
         <EmailInput
-          onChange={onChange}
-          value={value}
+          onChange={(e) => setLogin(e.target.value)}
+          value={login}
           name={"email"}
           isIcon={false}
           extraClass="mt-6"
         />
         <PasswordInput
-          onChange={onChange}
-          value={value}
+          onChange={(e) => setPass(e.target.value)}
+          value={pass}
           name={"password"}
           extraClass="mt-6"
         />
@@ -34,6 +50,7 @@ const LoginPage = () => {
           htmlType="button"
           type="primary"
           size="medium"
+          onClick={() => logIn(login, pass)}
         >
           Войти
         </Button>
