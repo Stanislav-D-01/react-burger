@@ -1,20 +1,28 @@
 import {
   PasswordInput,
   EmailInput,
-  Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import styles from "./profile-page.module.css";
 
 const ProfilePage = () => {
-  const { name, setName } = useState("");
-  const { email, setEmail } = useState("");
-  const { pass, setPass } = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
   const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.addEventListener("focusout", (e) => {
+      e.target.disabled = true;
+      inputRef.current.style.cursor = "not-allowed";
+      inputRef.current.style.color = "#8585AD";
+    });
+  }, []);
+
   return (
-    <div>
-      <menu>
-        <ul>
+    <div className={styles["profile-page"]}>
+      <menu className={styles["profile-page__menu"]}>
+        <ul className={styles["profile-page__ul"]}>
           <li className="text text_type_main-medium">Профиль</li>
           <li className="text text_type_main-medium text_color_inactive">
             История заказов
@@ -38,10 +46,10 @@ const ProfilePage = () => {
           icon={"EditIcon"}
           extraClass="mt-6"
           ref={inputRef}
-          onFocus={(e) => console.log(e.target.onFocus)}
           onIconClick={(e) => {
             inputRef.current.disabled = false;
             inputRef.current.style.cursor = "text";
+            inputRef.current.style.color = "white";
             setTimeout(() => inputRef.current.focus(), 0);
           }}
         />
