@@ -38,7 +38,7 @@ const AppHeader = () => {
           <li className={styles.header__listItem}>
             <ProfileIcon type="secondary" />
             <Link
-              to="/login"
+              to="/profile"
               className={`text text_type_main-default text_color_inactive ${styles.header__text}`}
             >
               Личный кабинет

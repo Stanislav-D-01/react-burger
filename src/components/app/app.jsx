@@ -6,6 +6,8 @@ import ForgotPassword from "../../pages/forgot-password.jsx";
 import RegisterPage from "../../pages/register-page.jsx";
 import ResetPasswordPage from "../../pages/reset-password-page.jsx";
 import ProfilePage from "../../pages/profile-page.jsx";
+import ProtectedRouteElement from "../protected-route-element/protected-route-element.jsx";
+import { useEffect } from "react";
 
 function App() {
   return (
@@ -18,7 +20,10 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
+          />
         </Routes>
       </BrowserRouter>
     </>
