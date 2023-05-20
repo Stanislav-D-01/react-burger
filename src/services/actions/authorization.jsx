@@ -14,6 +14,8 @@ export const AUTHORIZATION_REQUEST = "AUTHORIZATION_REQUEST";
 export const AUTHORIZATION_SUCCESS = "AUTHORIZATION_SUCCESS";
 export const AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR";
 
+
+
 export const authorization = (email, pass) => {
   return function (dispatch) {
     dispatch({ type: "AUTHORIZATION_REQUEST" });
@@ -33,6 +35,7 @@ export const authorization = (email, pass) => {
         if (authToken) {
           setCookie("token", authToken);
         }
+        setCookie("refreshToken", data.refreshToken);
       })
       .catch((err) => dispatch({ type: "AUTHORIZATION_ERROR", err: err }));
   };

@@ -6,24 +6,23 @@ import styles from "./home-page.module.css";
 import {useRef, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../services/actions/burger-ingredients";
+import { checkAuthorization } from "../services/actions/check-autorization.jsx";
 
-
-const HomePage = ()=>{
+const HomePage = () => {
   const errBlock = useRef();
   const dispatch = useDispatch();
-  const { ingredientsFailed } = useSelector(
-    (store) => store.ingredients.ingredientsFailed
-  );
+  const { ingredientsFailed, name } = useSelector((store) => ({
+    ingredientsFailed: store.ingredients.ingredientsFailed,
+    name: store.auth.name,
+  }));
 
   useEffect(() => {
+    dispatch(checkAuthorization(name, "token", "refreshToken"));
+
     dispatch(getIngredients());
-  }, [dispatch]);
+  }, []);
 
-
-
-
-return(
-  !ingredientsFailed ? (
+  return !ingredientsFailed ? (
     <main className={styles.home}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngridients />
@@ -32,7 +31,7 @@ return(
     </main>
   ) : (
     <main className={styles.main}>Ошибка загрузки данных с сервера</main>
-  ))
-}
+  );
+};
 
 export default HomePage;

@@ -8,7 +8,17 @@ import {
   AUTHORIZATION_REQUEST,
   AUTHORIZATION_SUCCESS,
   AUTHORIZATION_ERROR,
+
 } from "../actions/authorization";
+
+import {
+  CHECK_AUTHORIZATION_TOKEN_REQUEST,
+  CHECK_AUTHORIZATION_TOKEN_SUCCESS,
+  CHECK_AUTHORIZATION_TOKEN_ERROR,
+  GET_NEW_TOKEN_REQUEST,
+  GET_NEW_TOKEN_SUCCESS,
+  GET_NEW_TOKEN_ERROR,
+} from "../actions/check-autorization";
 
 const initialState = {
   name: "",
@@ -92,6 +102,30 @@ export const authorizationReducer = (state = initialState, action) => {
         authorizationSuccess: false,
         authorizationError: true,
       };
+    }
+    case CHECK_AUTHORIZATION_TOKEN_REQUEST: {
+      return {
+        ...state,
+        authorizationRequest: true,
+        authorizationSuccess: false,
+        authorizationError: false,
+      };
+    }
+    case CHECK_AUTHORIZATION_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        authorizationRequest: false,
+        authorizationSuccess: true,
+        authorizationError: false,
+        name: action.data.user.name,
+        email: action.data.user.email,
+      };
+    }
+    case GET_NEW_TOKEN_REQUEST: {
+      return { ...state };
+    }
+    case GET_NEW_TOKEN_SUCCESS: {
+      return { ...state };
     }
     default: {
       return state;
