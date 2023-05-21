@@ -10,33 +10,15 @@ import ProtectedRouteElement from "../protected-route-element/protected-route-el
 import { useEffect } from "react";
 import { checkAuthorization } from "../../services/actions/check-autorization.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import ModalIngredient from "../../pages/modal-ingredient.jsx";
+import ModalSwitch from "../modal-switch/modal-switch.jsx";
 
 function App() {
-  const name = useSelector((store) => store.auth.name);
-  const request = useSelector((store) => store.auth.request);
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(checkAuthorization(name, "token", "refreshToken"));
-  }, []);
-
   return (
     <>
       <BrowserRouter>
         <AppHeader />
-        {!request && (
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="/profile"
-              element={<ProtectedRouteElement element={<ProfilePage />} />}
-            />
-          </Routes>
-        )}
+        <ModalSwitch />
       </BrowserRouter>
     </>
   );

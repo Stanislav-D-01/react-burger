@@ -170,6 +170,7 @@ function BurgerConstructor() {
             Оформить заказ
           </Button>
         </div>
+
         {isModal && !orderRequest && !orderFailed && (
           <>
             <ModalContext.Provider value={[setIsModal]}>

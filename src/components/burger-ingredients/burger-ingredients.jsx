@@ -13,7 +13,7 @@ import {
 } from "../../services/actions/modal";
 import { useInView } from "react-intersection-observer";
 import Ingredient from "../ingredient/ingredient";
-
+import { useLocation, Outlet } from "react-router-dom";
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
   const [isModal, setIsModal] = useState(false);
@@ -26,13 +26,14 @@ const BurgerIngredients = () => {
     })
   );
   const dispatch = useDispatch();
-
+  let location = useLocation();
   const toggleModal = (e) => {
     if (!isModal) {
-      setIsModal(true);
+      // setIsModal(true);
+
       addIngredientInModal(e.target);
     } else {
-      setIsModal(false);
+      //  setIsModal(false);
       dispatch({ type: DEL_INGREDIENT_IN_MODAL });
     }
   };
@@ -150,6 +151,7 @@ const BurgerIngredients = () => {
             {renderIngredients(dataIngredients)}
           </div>
         </section>
+
         {isModal && (
           <>
             <ModalContext.Provider value={[setIsModal]}>
