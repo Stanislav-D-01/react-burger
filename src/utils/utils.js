@@ -51,4 +51,6 @@ export function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-
+export function deleteCookie(name) {
+  setCookie(name, null, { expires: -1 });
+}

@@ -6,19 +6,23 @@ import {
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import styles from "./profile-page.module.css";
-
+import { checkAuthorization } from "../services/actions/check-autorization";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const ProfilePage = () => {
   const [name, setName] = useState(useSelector((state) => state.auth.name));
   const [email, setEmail] = useState(useSelector((state) => state.auth.email));
   const [pass, setPass] = useState("");
   const inputRef = useRef(null);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     inputRef.current.addEventListener("focusout", (e) => {
       e.target.disabled = true;
       inputRef.current.style.cursor = "not-allowed";
       inputRef.current.style.color = "#8585AD";
     });
+    navigate("", { state: { path: "/", url: "profile", title: "profile" } });
   }, []);
 
   return (

@@ -8,7 +8,6 @@ import {
   AUTHORIZATION_REQUEST,
   AUTHORIZATION_SUCCESS,
   AUTHORIZATION_ERROR,
-
 } from "../actions/authorization";
 
 import {
@@ -24,109 +23,158 @@ const initialState = {
   name: "",
   email: "",
   pass: "",
-  regRequest: false,
-  regError: false,
-  forgotPassEmailSendRequest: false,
-  forgotPassEmailSendSuccsess: false,
-  forgotPassEmailSendError: false,
-  authorizationRequest: false,
-  authorizationSuccess: false,
-  authorizationError: false,
-  token: "",
-  refreshToken: "",
+  request: false,
+  requestError: false,
+  requestSuccess: false,
+  autorization: false,
 };
 
 export const authorizationReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEND_REGISTRATION_REQUEST: {
-      return { ...state, regRequest: true, regSuccsess: false };
+      return {
+        ...state,
+        request: true,
+        requestSuccess: false,
+        autorization: false,
+        requestError: false,
+      };
     }
     case SEND_REGISTRATION_SUCCSESS: {
       return {
         ...state,
         name: action.data.user.name,
         email: action.data.user.email,
-        regRequest: false,
+        request: false,
+        requestSuccess: true,
+        autorization: true,
+        requestError: false,
       };
     }
     case SEND_REGISTRATION_ERROR: {
-      return { ...state, regRequest: false, regError: true };
+      return {
+        ...state,
+        request: false,
+        requestSuccess: false,
+        autorization: false,
+        requestError: true,
+      };
     }
     case FORGOT_PASS_SEND_EMAIL_REQUEST: {
       return {
         ...state,
-        forgotPassEmailSendRequest: true,
-        forgotPassEmailSendSuccsess: false,
-        forgotPassEmailSendError: false,
+        request: true,
+        requestSuccess: false,
+        autorization: false,
+        requestError: false,
       };
     }
     case FORGOT_PASS_SEND_EMAIL_SUCCSESS: {
       return {
         ...state,
-        forgotPassEmailSendRequest: false,
-        forgotPassEmailSendSuccsess: true,
-        forgotPassEmailSendError: false,
+        frequest: false,
+        requestSuccess: true,
+        autorization: false,
+        requestError: false,
       };
     }
     case FORGOT_PASS_SEND_EMAIL_ERROR: {
       return {
         ...state,
-        forgotPassEmailSendRequest: false,
-        forgotPassEmailSendSuccsess: false,
-        forgotPassEmailSendError: true,
+        request: false,
+        requestSuccess: false,
+        autorization: false,
+        requestError: true,
       };
     }
     case AUTHORIZATION_REQUEST: {
       return {
         ...state,
-        authorizationRequest: true,
-        authorizationSuccess: false,
-        authorizationError: false,
+        request: true,
+        requestSuccess: false,
+        autorization: false,
+        requestError: false,
       };
     }
     case AUTHORIZATION_SUCCESS: {
       return {
         ...state,
-        authorizationRequest: false,
-        authorizationSuccess: true,
-        authorizationError: false,
         name: action.data.user.name,
         email: action.data.user.email,
-        refreshToken: action.data.refreshToken,
+        request: false,
+        requestSuccess: true,
+        autorization: true,
+        requestError: false,
       };
     }
     case AUTHORIZATION_ERROR: {
       return {
         ...state,
-        authorizationRequest: false,
-        authorizationSuccess: false,
-        authorizationError: true,
+        request: false,
+        requestSuccess: false,
+        autorization: false,
+        requestError: true,
       };
     }
     case CHECK_AUTHORIZATION_TOKEN_REQUEST: {
       return {
         ...state,
-        authorizationRequest: true,
-        authorizationSuccess: false,
-        authorizationError: false,
+        request: true,
+        requestSuccess: false,
+        autorization: false,
+        requestError: false,
       };
     }
     case CHECK_AUTHORIZATION_TOKEN_SUCCESS: {
       return {
         ...state,
-        authorizationRequest: false,
-        authorizationSuccess: true,
-        authorizationError: false,
         name: action.data.user.name,
         email: action.data.user.email,
+        request: false,
+        requestSuccess: true,
+        autorization: true,
+        requestError: false,
+      };
+    }
+    case CHECK_AUTHORIZATION_TOKEN_ERROR: {
+      return {
+        ...state,
+        name: action.data.user.name,
+        email: action.data.user.email,
+        request: false,
+        requestSuccess: false,
+        autorization: false,
+        requestError: true,
       };
     }
     case GET_NEW_TOKEN_REQUEST: {
-      return { ...state };
+      return {
+        ...state,
+        request: true,
+        requestSuccess: false,
+        autorization: false,
+        requestError: false,
+      };
     }
     case GET_NEW_TOKEN_SUCCESS: {
-      return { ...state };
+      return {
+        ...state,
+        request: false,
+        requestSuccess: true,
+        autorization: false,
+        requestError: false,
+      };
     }
+    case GET_NEW_TOKEN_ERROR: {
+      return {
+        ...state,
+        request: false,
+        requestSuccess: false,
+        autorization: false,
+        requestError: true,
+      };
+    }
+
     default: {
       return state;
     }

@@ -12,7 +12,7 @@ export const GET_NEW_TOKEN_SUCCESS = "GET_NEW_TOKEN_SUCCESS";
 export const GET_NEW_TOKEN_ERROR = "GET_NEW_TOKEN_ERROR";
 
 export const checkAuthorization = (name, nameToken, nameRefreshToken) => {
-  const getData = (token) => {
+  const updateData = (token) => {
     return request(`${BASE_URL}auth/user`, {
       method: "GET",
       headers: {
@@ -36,10 +36,10 @@ export const checkAuthorization = (name, nameToken, nameRefreshToken) => {
 
   return function (dispatch) {
     let token = getCookie(nameToken);
-    dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_REQUEST" });
 
     if (!name && token) {
-      getData(token)
+      dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_REQUEST" });
+      updateData(token)
         .then((data) => {
           dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_SUCCESS", data: data });
         })
@@ -54,42 +54,44 @@ export const checkAuthorization = (name, nameToken, nameRefreshToken) => {
               setCookie("token", token);
             }
             setCookie("refreshToken", data.refreshToken);
-          });
-          getData(token)
-            .then((data) => {
-              dispatch({
-                type: "CHECK_AUTHORIZATION_TOKEN_SUCCESS",
-                data: data,
+            dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_REQUEST" });
+            updateData(token)
+              .then((data) => {
+                dispatch({
+                  type: "CHECK_AUTHORIZATION_TOKEN_SUCCESS",
+                  data: data,
+                });
+              })
+              .catch(() => {
+                dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_ERROR" });
               });
-            })
-
-            .catch(() => {
-              dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_ERROR" });
-            });
-        });
-    } else {
-      const refreshToken = getCookie(nameRefreshToken);
-      getNewToken(refreshToken).then((data) => {
-        debugger;
-        if (data.accessToken.indexOf("Bearer") === 0) {
-          token = data.accessToken.split("Bearer ")[1];
-        }
-        if (token) {
-          setCookie("token", token);
-        }
-        setCookie("refreshToken", data.refreshToken);
-      });
-      getData(token)
-        .then((data) => {
-          dispatch({
-            type: "CHECK_AUTHORIZATION_TOKEN_SUCCESS",
-            data: data,
           });
-        })
-
-        .catch(() => {
-          dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_ERROR" });
         });
+    }
+    if (!name && !token) {
+      const refreshToken = getCookie(nameRefreshToken);
+      if (refreshToken) {
+        getNewToken(refreshToken).then((data) => {
+          if (data.accessToken.indexOf("Bearer") === 0) {
+            token = data.accessToken.split("Bearer ")[1];
+          }
+          if (token) {
+            setCookie("token", token);
+          }
+          setCookie("refreshToken", data.refreshToken);
+        });
+        updateData(token)
+          .then((data) => {
+            dispatch({
+              type: "CHECK_AUTHORIZATION_TOKEN_SUCCESS",
+              data: data,
+            });
+          })
+
+          .catch(() => {
+            dispatch({ type: "CHECK_AUTHORIZATION_TOKEN_ERROR" });
+          });
+      }
     }
   };
 };

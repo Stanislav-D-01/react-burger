@@ -18,10 +18,13 @@ const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
   const [isModal, setIsModal] = useState(false);
 
-  const { dataIngredients, ingredientsConstructor } = useSelector((store) => ({
-    dataIngredients: store.ingredients.ingredients,
-    ingredientsConstructor: store.burgerConstructor.ingredientsConstructor,
-  }));
+  const { dataIngredients, ingredientsConstructor, ingrLoad } = useSelector(
+    (store) => ({
+      dataIngredients: store.ingredients.ingredients,
+      ingredientsConstructor: store.burgerConstructor.ingredientsConstructor,
+      ingrLoad: store.ingredients.ingredientsSuccess,
+    })
+  );
   const dispatch = useDispatch();
 
   const toggleModal = (e) => {
@@ -122,38 +125,43 @@ const BurgerIngredients = () => {
       </>
     );
   };
+  if (ingrLoad) {
+    return (
+      <>
+        <section className={styles["section-burger-ingridients"]}>
+          <h2 className="text text_type_main-large mt-10">Соберите бургер</h2>
+          <div style={{ display: "flex" }}>
+            <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
+              Булки
+            </Tab>
+            <Tab
+              value="sauce"
+              active={current === "sauce"}
+              onClick={setCurrent}
+            >
+              Соусы
+            </Tab>
+            <Tab value="main" active={current === "main"} onClick={setCurrent}>
+              Начинки
+            </Tab>
+          </div>
 
-  return (
-    <>
-      <section className={styles["section-burger-ingridients"]}>
-        <h2 className="text text_type_main-large mt-10">Соберите бургер</h2>
-        <div style={{ display: "flex" }}>
-          <Tab value="bun" active={current === "bun"} onClick={setCurrent}>
-            Булки
-          </Tab>
-          <Tab value="sauce" active={current === "sauce"} onClick={setCurrent}>
-            Соусы
-          </Tab>
-          <Tab value="main" active={current === "main"} onClick={setCurrent}>
-            Начинки
-          </Tab>
-        </div>
-
-        <div className={styles["section-burger-ingridients__list"]}>
-          {renderIngredients(dataIngredients)}
-        </div>
-      </section>
-      {isModal && (
-        <>
-          <ModalContext.Provider value={[setIsModal]}>
-            <Modal name={"Детали ингредиента"}>
-              <IngredientsDetails />
-            </Modal>
-          </ModalContext.Provider>
-        </>
-      )}
-    </>
-  );
+          <div className={styles["section-burger-ingridients__list"]}>
+            {renderIngredients(dataIngredients)}
+          </div>
+        </section>
+        {isModal && (
+          <>
+            <ModalContext.Provider value={[setIsModal]}>
+              <Modal name={"Детали ингредиента"}>
+                <IngredientsDetails />
+              </Modal>
+            </ModalContext.Provider>
+          </>
+        )}
+      </>
+    );
+  }
 };
 
 export default BurgerIngredients;

@@ -9,20 +9,23 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import styles from "./login-page.module.css";
 import { authorization } from "../services/actions/authorization";
 import { getCookie } from "../utils/utils";
+import { checkAuthorization } from "../services/actions/check-autorization";
 
 const LoginPage = () => {
   const [login, setLogin] = useState("");
   const [pass, setPass] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { email } = useSelector((store) => ({
+  const { name, email } = useSelector((store) => ({
     email: store.auth.email,
+    name: store.auth.name,
   }));
+
   useEffect(() => {
-    if (email) {
+    if (name) {
       navigate(-1);
     }
-  }, [email]);
+  }, [name]);
   const logIn = (login, pass) => {
     dispatch(authorization(login, pass));
   };

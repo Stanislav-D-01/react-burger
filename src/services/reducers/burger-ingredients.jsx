@@ -7,6 +7,7 @@ import {
 const initialState = {
   ingredients: [],
   ingredientsRequest: false,
+  ingredientsSuccess: false,
   ingredientsFailed: false,
 };
 
@@ -20,6 +21,7 @@ export const burgerIngredientsReducer = (state = initialState, action) => {
         ...state,
         ingredientsRequest: false,
         ingredientsFailed: false,
+        ingredientsSuccess: true,
         ingredients: action.ingr,
       };
     }

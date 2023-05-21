@@ -64,7 +64,7 @@ function BurgerConstructor() {
   }, [ingrConstr]);
 
   React.useEffect(() => {
-    addBunStart(ingr);
+    ingrConstr.length == 0 && addBunStart(ingr);
   }, [ingr]);
 
   const addBunStart = (arrIngr) => {
