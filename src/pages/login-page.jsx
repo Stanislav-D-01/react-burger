@@ -16,14 +16,18 @@ const LoginPage = () => {
   const [pass, setPass] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { name, email } = useSelector((store) => ({
+  const { name, email, resetPass } = useSelector((store) => ({
     email: store.auth.email,
     name: store.auth.name,
+    resetPass: store.auth.resetPassword,
   }));
 
   useEffect(() => {
-    if (name) {
+    if (name && !resetPass) {
       navigate(-1);
+    }
+    if (name && resetPass) {
+      navigate("/");
     }
   }, [name]);
   const logIn = (login, pass) => {

@@ -14,10 +14,12 @@ import ProtectedRouteElement from "../protected-route-element/protected-route-el
 import { useEffect } from "react";
 import { checkAuthorization } from "../../services/actions/check-autorization.jsx";
 import { useDispatch, useSelector } from "react-redux";
+import ModalOrder from "../../pages/modal-order";
 
 const ModalSwitch = () => {
   const name = useSelector((store) => store.auth.name);
-  const request = useSelector((store) => store.auth.request);
+  const requestAuth = useSelector((store) => store.auth.request);
+  const requestOrder = useSelector((store) => store.order.orderRequest);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -25,11 +27,10 @@ const ModalSwitch = () => {
   }, []);
   let location = useLocation();
   let background = location.state && location.state.background;
-  console.log(location);
 
   return (
     <>
-      <Routes location={background}>
+      <Routes location={background || location}>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -44,6 +45,9 @@ const ModalSwitch = () => {
       <Routes>
         {background && (
           <Route path="/ingredients/:_id" exact element={<ModalIngredient />} />
+        )}
+        {background && !requestOrder && (
+          <Route path="/order-details" exact element={<ModalOrder />} />
         )}
       </Routes>
     </>

@@ -1,20 +1,39 @@
 import { BASE_URL } from "../../utils/utils";
 import { request } from "../../utils/burger-api";
 import { authorizationReducer } from "../reducers/authorization";
-import { setCookie } from "../../utils/utils";
+import { setCookie, deleteCookie } from "../../utils/utils";
 export const SEND_REGISTRATION_REQUEST = "SEND_REGISTRATION_REQUEST";
 export const SEND_REGISTRATION_SUCCSESS = "SEND_REGISTRATION_SUCCSESS";
 export const SEND_REGISTRATION_ERROR = "SEND_REGISTRATION_ERROR";
 export const FORGOT_PASS_SEND_EMAIL_REQUEST = "FORGOT_PASS_SEND_EMAIL_REQUEST";
 export const FORGOT_PASS_SEND_EMAIL_SUCCSESS =
-  "FORGOT_PASS_SEND_EMAIL_ SUCCSESS";
+  "FORGOT_PASS_SEND_EMAIL_SUCCSESS";
 export const FORGOT_PASS_SEND_EMAIL_ERROR = "FORGOT_PASS_SEND_ERROR";
 
 export const AUTHORIZATION_REQUEST = "AUTHORIZATION_REQUEST";
 export const AUTHORIZATION_SUCCESS = "AUTHORIZATION_SUCCESS";
 export const AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR";
+export const LOGOUT = "LOGOUT";
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_ERROR = "RESET_PASSWORD_ERROR";
 
-
+export const resetPassword = (newPass, token) => {
+  return function (dispatch) {
+    dispatch({ type: "RESET_PASSWORD_REQUEST" });
+    request(`${BASE_URL}password-reset/reset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password: newPass, token: token }),
+    })
+      .then(() => {
+        dispatch({ type: "RESET_PASSWORD_SUCCESS" });
+      })
+      .catch((err) => dispatch({ type: "RESET_PASSWORD_ERROR", err: err }));
+  };
+};
 
 export const authorization = (email, pass) => {
   return function (dispatch) {
@@ -53,6 +72,14 @@ export const sendRegitration = (email, pass, name) => {
     })
       .then((data) => {
         dispatch({ type: "SEND_REGISTRATION_SUCCSESS", data: data });
+        let authToken;
+        if (data.accessToken.indexOf("Bearer") === 0) {
+          authToken = data.accessToken.split("Bearer ")[1];
+        }
+        if (authToken) {
+          setCookie("token", authToken);
+        }
+        setCookie("refreshToken", data.refreshToken);
       })
       .catch((err) => dispatch({ type: "SEND_REGISTRATION_ERROR", err: err }));
   };

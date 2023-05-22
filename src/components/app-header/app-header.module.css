@@ -14,12 +14,12 @@
 .header__text {
   margin: 0 0 0 8px;
   text-decoration: none;
- text-align: start;
- }
- .header__text_type_inactive{
+  text-align: start;
+  color: #8585ad;
+}
+.header__text_type_inactive {
   color: white;
- }
-
+}
 
 .header__logo {
   margin: 0 0 0 83px;

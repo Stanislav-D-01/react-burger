@@ -18,7 +18,7 @@ const Ingredient = ({ ingr, toggleModal, counter }) => {
       <Link
         onClick={toggleModal}
         className={styles["section-burger-menu__link"]}
-        to="/ingredients/${_id}"
+        to={`/ingredients/${_id}`}
         state={{ background: location }}
       >
         <img

@@ -20,6 +20,7 @@ const Modal = (props) => {
 
   const keydownEsc = (e) => {
     if (e.key === "Escape") {
+      navigate(-1);
       //  setIsModal(false);
     }
   };

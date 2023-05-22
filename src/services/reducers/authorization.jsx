@@ -8,6 +8,10 @@ import {
   AUTHORIZATION_REQUEST,
   AUTHORIZATION_SUCCESS,
   AUTHORIZATION_ERROR,
+  LOGOUT,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_ERROR,
 } from "../actions/authorization";
 
 import {
@@ -27,6 +31,8 @@ const initialState = {
   requestError: false,
   requestSuccess: false,
   autorization: false,
+  sendEmailSuccess: false,
+  resetPassword: false,
 };
 
 export const authorizationReducer = (state = initialState, action) => {
@@ -72,10 +78,11 @@ export const authorizationReducer = (state = initialState, action) => {
     case FORGOT_PASS_SEND_EMAIL_SUCCSESS: {
       return {
         ...state,
-        frequest: false,
+        request: false,
         requestSuccess: true,
         autorization: false,
         requestError: false,
+        sendEmailSuccess: true,
       };
     }
     case FORGOT_PASS_SEND_EMAIL_ERROR: {
@@ -173,6 +180,22 @@ export const authorizationReducer = (state = initialState, action) => {
         autorization: false,
         requestError: true,
       };
+    }
+    case LOGOUT: {
+      return {
+        ...state,
+        name: "",
+        email: "",
+      };
+    }
+    case RESET_PASSWORD_REQUEST: {
+      return { ...state, request: true };
+    }
+    case RESET_PASSWORD_SUCCESS: {
+      return { ...state, request: false, resetPassword: true };
+    }
+    case RESET_PASSWORD_SUCCESS: {
+      return { ...state, request: false, requestError: true };
     }
 
     default: {

@@ -5,7 +5,7 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const AppHeader = () => {
   return (
@@ -14,21 +14,29 @@ const AppHeader = () => {
         <ul className={styles.header__menu}>
           <li className={styles.header__listItem}>
             <BurgerIcon type="primary" />
-            <Link
+            <NavLink
               to="/"
-              className={` ${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`}
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
             >
               Конструктор
-            </Link>
+            </NavLink>
           </li>
           <li className={styles.header__listItem}>
             <ListIcon type="secondary" />
-            <a
-              href={"#"}
-              className={`text text_type_main-default ${styles.header__text} text_color_inactive`}
+            <NavLink
+              to="orderlist"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
             >
               Лента заказов
-            </a>
+            </NavLink>
           </li>
           <li
             className={`${styles.header__listItem} ${styles.header__listItem_logo}`}
@@ -37,12 +45,16 @@ const AppHeader = () => {
           </li>
           <li className={styles.header__listItem}>
             <ProfileIcon type="secondary" />
-            <Link
+            <NavLink
               to="/profile"
-              className={`text text_type_main-default text_color_inactive ${styles.header__text}`}
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
             >
               Личный кабинет
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </nav>

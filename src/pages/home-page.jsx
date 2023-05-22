@@ -18,7 +18,6 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(getIngredients());
-    console.log("!!!");
   }, []);
 
   return !ingredientsFailed ? (
