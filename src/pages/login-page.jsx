@@ -16,10 +16,11 @@ const LoginPage = () => {
   const [pass, setPass] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { name, email, resetPass } = useSelector((store) => ({
+  const { name, email, resetPass, request } = useSelector((store) => ({
     email: store.auth.email,
     name: store.auth.name,
     resetPass: store.auth.resetPassword,
+    request: store.auth.request,
   }));
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const LoginPage = () => {
     dispatch(authorization(login, pass));
   };
 
-  if (!email) {
+  if (!email && !request) {
     return (
       <div className={styles["login-page"]}>
         <form className={styles["login-page__form"]}>
@@ -76,7 +77,8 @@ const LoginPage = () => {
         </form>
       </div>
     );
-  } else {
+  }
+  if (email && !request) {
     return <Navigate to="/" replace />;
   }
 };

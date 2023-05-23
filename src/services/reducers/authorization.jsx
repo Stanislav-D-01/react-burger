@@ -12,6 +12,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_ERROR,
+  SAVE_NEW_PROFILE_REQUEST,
+  SAVE_NEW_PROFILE_SUCCESS,
+  SAVE_NEW_PROFILE_ERROR,
 } from "../actions/authorization";
 
 import {
@@ -146,8 +149,6 @@ export const authorizationReducer = (state = initialState, action) => {
     case CHECK_AUTHORIZATION_TOKEN_ERROR: {
       return {
         ...state,
-        name: action.data.user.name,
-        email: action.data.user.email,
         request: false,
         requestSuccess: false,
         autorization: false,
@@ -194,10 +195,35 @@ export const authorizationReducer = (state = initialState, action) => {
     case RESET_PASSWORD_SUCCESS: {
       return { ...state, request: false, resetPassword: true };
     }
-    case RESET_PASSWORD_SUCCESS: {
+    case RESET_PASSWORD_ERROR: {
       return { ...state, request: false, requestError: true };
     }
-
+    case SAVE_NEW_PROFILE_REQUEST: {
+      return {
+        ...state,
+        request: true,
+        requestSuccess: false,
+        requestError: false,
+      };
+    }
+    case SAVE_NEW_PROFILE_SUCCESS: {
+      return {
+        ...state,
+        request: false,
+        requestSuccess: true,
+        requestError: false,
+        name: action.data.name,
+        email: action.data.email,
+      };
+    }
+    case SAVE_NEW_PROFILE_ERROR: {
+      return {
+        ...state,
+        request: false,
+        requestError: true,
+        requestSuccess: false,
+      };
+    }
     default: {
       return state;
     }

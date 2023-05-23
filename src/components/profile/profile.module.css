@@ -33,3 +33,8 @@
   text-decoration: none;
   color: white;
 }
+
+.profile-page__button {
+  max-width: 166px;
+  width: 100%;
+}

@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { checkAuthorization } from "../../services/actions/check-autorization.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import ModalOrder from "../../pages/modal-order";
+import ViewIngredientPage from "../../pages/view-ingredient-page";
 
 const ModalSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -24,34 +25,40 @@ const ModalSwitch = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkAuthorization(name, "token", "refreshToken"));
-  }, []);
+  }, [name]);
   let location = useLocation();
   let background = location.state && location.state.background;
+  if (!requestAuth) {
+    return (
+      <>
+        <Routes location={background || location}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path="/profile"
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
+          />
+          <Route path="/ingredients/:_id" element={<ViewIngredientPage />} />
+        </Routes>
 
-  return (
-    <>
-      <Routes location={background || location}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route
-          path="/profile"
-          element={<ProtectedRouteElement element={<ProfilePage />} />}
-        />
-      </Routes>
-
-      <Routes>
-        {background && (
-          <Route path="/ingredients/:_id" exact element={<ModalIngredient />} />
-        )}
-        {background && !requestOrder && (
-          <Route path="/order-details" exact element={<ModalOrder />} />
-        )}
-      </Routes>
-    </>
-  );
+        <Routes>
+          {background && (
+            <Route
+              path="/ingredients/:_id"
+              exact
+              element={<ModalIngredient />}
+            />
+          )}
+          {background && !requestOrder && (
+            <Route path="/order-details" exact element={<ModalOrder />} />
+          )}
+        </Routes>
+      </>
+    );
+  }
 };
 
 export default ModalSwitch;

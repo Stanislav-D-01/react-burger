@@ -11,16 +11,16 @@ import { checkAuthorization } from "../services/actions/check-autorization.jsx";
 const HomePage = () => {
   const errBlock = useRef();
   const dispatch = useDispatch();
-  const { ingredientsFailed, name } = useSelector((store) => ({
-    ingredientsFailed: store.ingredients.ingredientsFailed,
-    name: store.auth.name,
+  const { ingredientsRequest, request } = useSelector((store) => ({
+    ingredientsRequest: store.ingredients.ingredientsRequest,
+    request: store.auth.request,
   }));
 
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
 
-  return !ingredientsFailed ? (
+  return !ingredientsRequest && !request ? (
     <main className={styles.home}>
       <DndProvider backend={HTML5Backend}>
         <BurgerIngridients />

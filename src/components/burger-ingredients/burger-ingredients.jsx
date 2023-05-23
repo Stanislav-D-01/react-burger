@@ -30,8 +30,7 @@ const BurgerIngredients = () => {
   const toggleModal = (e) => {
     if (!isModal) {
       // setIsModal(true);
-
-      addIngredientInModal(e.target);
+      //addIngredientInModal(e.target);
     } else {
       //  setIsModal(false);
       dispatch({ type: DEL_INGREDIENT_IN_MODAL });
