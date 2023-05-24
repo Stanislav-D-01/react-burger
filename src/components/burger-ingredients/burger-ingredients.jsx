@@ -18,24 +18,19 @@ const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
   const [isModal, setIsModal] = useState(false);
 
-  const { dataIngredients, ingredientsConstructor, ingrLoad } = useSelector(
-    (store) => ({
-      dataIngredients: store.ingredients.ingredients,
-      ingredientsConstructor: store.burgerConstructor.ingredientsConstructor,
-      ingrLoad: store.ingredients.ingredientsSuccess,
-    })
-  );
+  const {
+    dataIngredients,
+    ingredientsConstructor,
+    ingrLoad,
+    ingredientInModal,
+  } = useSelector((store) => ({
+    dataIngredients: store.ingredients.ingredients,
+    ingredientsConstructor: store.burgerConstructor.ingredientsConstructor,
+    ingrLoad: store.ingredients.ingredientsSuccess,
+    ingredientInModal: store.modal.ingredient,
+  }));
   const dispatch = useDispatch();
   let location = useLocation();
-  const toggleModal = (e) => {
-    if (!isModal) {
-      // setIsModal(true);
-      //addIngredientInModal(e.target);
-    } else {
-      //  setIsModal(false);
-      dispatch({ type: DEL_INGREDIENT_IN_MODAL });
-    }
-  };
 
   const [refBun, inViewBun] = useInView({ threshold: 0.2 });
   const [refMain, inViewMain] = useInView({ threshold: 0.3 });
@@ -59,18 +54,6 @@ const BurgerIngredients = () => {
     }
   }, [current]);
 
-  const addIngredientInModal = (element) => {
-    if (element.closest("li") != undefined) {
-      const ingr = dataIngredients.find(
-        (item) => item._id === element.closest("li").id
-      );
-      dispatch({
-        type: SET_INGREDIENT_IN_MODAL,
-        value: ingr,
-      });
-    }
-  };
-
   const loadIngredients = useMemo(
     () => (data, type) => {
       return data.map((element, index) => {
@@ -78,14 +61,7 @@ const BurgerIngredients = () => {
           const counter = ingredientsConstructor.filter(
             (item) => item._id === element._id
           ).length;
-          return (
-            <Ingredient
-              key={index}
-              ingr={element}
-              toggleModal={toggleModal}
-              counter={counter}
-            />
-          );
+          return <Ingredient key={index} ingr={element} counter={counter} />;
         }
       });
     },
@@ -150,16 +126,6 @@ const BurgerIngredients = () => {
             {renderIngredients(dataIngredients)}
           </div>
         </section>
-
-        {isModal && (
-          <>
-            <ModalContext.Provider value={[setIsModal]}>
-              <Modal name={"Детали ингредиента"}>
-                <IngredientsDetails />
-              </Modal>
-            </ModalContext.Provider>
-          </>
-        )}
       </>
     );
   }

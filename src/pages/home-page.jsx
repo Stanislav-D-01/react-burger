@@ -20,16 +20,17 @@ const HomePage = () => {
     dispatch(getIngredients());
   }, []);
 
-  return !ingredientsRequest && !request ? (
-    <main className={styles.home}>
-      <DndProvider backend={HTML5Backend}>
-        <BurgerIngridients />
-        <BurgerConstructor />
-      </DndProvider>
-    </main>
-  ) : (
-    <main className={styles.main}>Ошибка загрузки данных с сервера</main>
-  );
+  return (
+    !ingredientsRequest &&
+    !request && (
+      <main className={styles.home}>
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngridients />
+          <BurgerConstructor />
+        </DndProvider>
+      </main>
+    )
+  ); 
 };
 
 export default HomePage;

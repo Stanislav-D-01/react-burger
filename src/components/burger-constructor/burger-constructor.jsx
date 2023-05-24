@@ -92,9 +92,7 @@ function BurgerConstructor() {
     }
   };
 
-  const toggleModal = () => {
-    setIsModal(!isModal);
-  };
+
 
   const openModalOrder = () => {
     navigate("/order-details", { state: { background: location } });

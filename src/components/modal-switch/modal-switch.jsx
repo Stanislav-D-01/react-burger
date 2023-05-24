@@ -16,6 +16,7 @@ import { checkAuthorization } from "../../services/actions/check-autorization.js
 import { useDispatch, useSelector } from "react-redux";
 import ModalOrder from "../../pages/modal-order";
 import ViewIngredientPage from "../../pages/view-ingredient-page";
+import ErrorPage from "../../pages/404-page";
 
 const ModalSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -42,6 +43,7 @@ const ModalSwitch = () => {
             element={<ProtectedRouteElement element={<ProfilePage />} />}
           />
           <Route path="/ingredients/:_id" element={<ViewIngredientPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
 
         <Routes>

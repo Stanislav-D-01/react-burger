@@ -4,7 +4,10 @@ import IngredientsDetails from "../components/ingredient-details/ingredient-deta
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SET_INGREDIENT_IN_MODAL } from "../services/actions/modal";
+import {
+  SET_INGREDIENT_IN_MODAL,
+  DEL_INGREDIENT_IN_MODAL,
+} from "../services/actions/modal";
 import { getIngredients } from "../services/actions/burger-ingredients";
 
 export const ModalIngredient = () => {
@@ -14,10 +17,9 @@ export const ModalIngredient = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(ingredient);
-    if (ingredient) {
+    if (ingredient.length == 0) {
       const id = location.pathname.split("/")[2];
-
+      console.log("11111");
       if (ingredients.length > 0) {
         dispatch({
           type: SET_INGREDIENT_IN_MODAL,
@@ -25,6 +27,10 @@ export const ModalIngredient = () => {
         });
       }
     }
+    return () => {
+      console.log("sssss");
+      dispatch({ type: DEL_INGREDIENT_IN_MODAL });
+    };
   }, []);
 
   return (

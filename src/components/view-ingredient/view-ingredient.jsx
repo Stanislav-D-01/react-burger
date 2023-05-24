@@ -2,7 +2,10 @@ import IngredientsDetails from "../ingredient-details/ingredient-details";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { SET_INGREDIENT_IN_MODAL } from "../../services/actions/modal";
+import {
+  SET_INGREDIENT_IN_MODAL,
+  DEL_INGREDIENT_IN_MODAL,
+} from "../../services/actions/modal";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import styles from "./view-ingredient.module.css";
 
@@ -21,6 +24,9 @@ const ViewIngredient = () => {
         value: ingredients.find((item) => item._id === id),
       });
     }
+    return () => {
+      dispatch({ type: DEL_INGREDIENT_IN_MODAL });
+    };
   }, []);
 
   return (

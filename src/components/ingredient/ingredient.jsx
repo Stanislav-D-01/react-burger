@@ -4,7 +4,7 @@ import priceSym from "../../image/Subtract.svg";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 
-const Ingredient = ({ ingr, toggleModal, counter }) => {
+const Ingredient = ({ ingr, counter }) => {
   const { _id } = ingr;
   let location = useLocation();
 
@@ -16,7 +16,6 @@ const Ingredient = ({ ingr, toggleModal, counter }) => {
   return (
     <li ref={ref} id={ingr._id} className={styles["section-burger-menu__card"]}>
       <Link
-        onClick={toggleModal}
         className={styles["section-burger-menu__link"]}
         to={`/ingredients/${_id}`}
         state={{ background: location }}
