@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ModalOrder from "../../pages/modal-order";
 import ViewIngredientPage from "../../pages/view-ingredient-page";
 import ErrorPage from "../../pages/404-page";
+import Profile from "../profile/profile";
+import HistoryOrderPage from "../../pages/history-order-page";
 
 const ModalSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -25,11 +27,13 @@ const ModalSwitch = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(checkAuthorization(name, "token", "refreshToken"));
+    if (!name && !requestAuth) {
+      dispatch(checkAuthorization(name, "token", "refreshToken"));
+    }
   }, [name]);
   let location = useLocation();
   let background = location.state && location.state.background;
-  if (!requestAuth) {
+  if (!requestAuth && name) {
     return (
       <>
         <Routes location={background || location}>
@@ -37,11 +41,18 @@ const ModalSwitch = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<RegisterPage />} />
+
           <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route
-            path="/profile"
-            element={<ProtectedRouteElement element={<ProfilePage />} />}
-          />
+          <Route element={<ProtectedRouteElement element={<ProfilePage />} />}>
+            <Route
+              path="/profile"
+              element={<ProtectedRouteElement element={<Profile />} />}
+            />
+            <Route
+              path="/history-order"
+              element={<ProtectedRouteElement element={<HistoryOrderPage />} />}
+            />
+          </Route>
           <Route path="/ingredients/:_id" element={<ViewIngredientPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>

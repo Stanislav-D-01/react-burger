@@ -17,7 +17,7 @@ export const ModalIngredient = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (ingredient.length == 0) {
+    if (ingredient || ingredient.length == 0) {
       const id = location.pathname.split("/")[2];
       console.log("11111");
       if (ingredients.length > 0) {
@@ -31,7 +31,7 @@ export const ModalIngredient = () => {
       console.log("sssss");
       dispatch({ type: DEL_INGREDIENT_IN_MODAL });
     };
-  }, []);
+  }, [ingredients]);
 
   return (
     <Modal name={"Детали ингредиента"}>

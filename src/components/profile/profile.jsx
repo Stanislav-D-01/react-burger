@@ -20,6 +20,7 @@ const Profile = () => {
   const [name, setName] = useState(nameUser);
   const [email, setEmail] = useState(emailUser);
   const [pass, setPass] = useState("");
+  const [edit, setEdit] = useState(false);
   const inputRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,14 +34,11 @@ const Profile = () => {
     navigate("", { state: { path: "/", url: "profile", title: "profile" } });
   }, []);
 
-  const logout = () => {
-    dispatch({ type: "LOGOUT" });
-    deleteCookie("token");
-    deleteCookie("refreshToken");
-  };
   const undoInput = () => {
     setName(nameUser);
     setEmail(emailUser);
+    setEdit(false);
+    setPass("");
   };
 
   const saveProfile = (name, email, pass) => {
@@ -48,79 +46,65 @@ const Profile = () => {
       dispatch(saveNewProfile(name, email, pass));
     }
   };
+
+  const buttonToggleState = () => {
+    if (!edit) {
+      setEdit(true);
+    }
+  };
+
   if (!request) {
     return (
       <>
-        <div className={styles["profile-page"]}>
-          <menu className={styles["profile-page__menu"]}>
-            <ul className={styles["profile-page__ul"]}>
-              <li
-                className={`text text_type_main-medium ${styles["profile-page__li"]}`}
-              >
-                <Link
-                  className={styles["profile-page__link_active"]}
-                  to="/profile"
-                >
-                  Профиль
-                </Link>
-              </li>
-              <li
-                className={`text text_type_main-medium ${styles["profile-page__li"]} text_color_inactive`}
-              >
-                <Link className={styles["profile-page__link"]} to="/profile/">
-                  История заказов
-                </Link>
-              </li>
-              <li
-                className={`text text_type_main-medium ${styles["profile-page__li"]} text_color_inactive`}
-              >
-                <Link className={styles["profile-page__link"]} to="/profile/">
-                  <div onClick={logout}>Выход</div>
-                </Link>
-              </li>
-              <p className="text text_type_main-default text_color_inactive mt-20">
-                В этом разделе вы можете изменить свои персональные данные
-              </p>
-            </ul>
-          </menu>
-          <form>
-            <Input
-              type={"text"}
-              placeholder={"Имя"}
-              onChange={(e) => setName(e.target.value)}
-              disabled={true}
-              value={name}
-              name={"name"}
-              error={false}
-              errorText={"Ошибка"}
-              size={"default"}
-              icon={"EditIcon"}
-              extraClass="mt-6"
-              ref={inputRef}
-              onIconClick={(e) => {
-                inputRef.current.disabled = false;
-                inputRef.current.style.cursor = "text";
-                inputRef.current.style.color = "white";
-                setTimeout(() => inputRef.current.focus(), 0);
-              }}
-            />
-            <EmailInput
-              onChange={(e) => setEmail(e.target.value)}
-              name={"email"}
-              value={email}
-              placeholder={"E-mail"}
-              extraClass="mt-6"
-              isIcon={true}
-            />
-            <PasswordInput
-              onChange={(e) => setPass(e.target.value)}
-              value={pass}
-              name={"password"}
-              placeholder={"Изменить пароль"}
-              icon="EditIcon"
-              extraClass="mt-6"
-            />
+        <form name="profileForm">
+          <Input
+            type={"text"}
+            placeholder={"Имя"}
+            onChange={(e) => {
+              setName(e.target.value);
+              buttonToggleState();
+            }}
+            disabled={true}
+            value={name}
+            name={"name"}
+            error={false}
+            errorText={"Ошибка"}
+            size={"default"}
+            icon={"EditIcon"}
+            extraClass="mt-6"
+            ref={inputRef}
+            onIconClick={(e) => {
+              inputRef.current.disabled = false;
+              inputRef.current.style.cursor = "text";
+              inputRef.current.style.color = "white";
+              setTimeout(() => inputRef.current.focus(), 0);
+            }}
+          />
+          <EmailInput
+            onChange={(e) => {
+              setEmail(e.target.value);
+              buttonToggleState();
+            }}
+            name={"email"}
+            value={email}
+            placeholder={"E-mail"}
+            extraClass="mt-6"
+            isIcon={true}
+          />
+          <PasswordInput
+            onChange={(e) => {
+              setPass(e.target.value);
+              buttonToggleState();
+            }}
+            value={pass}
+            name={"password"}
+            placeholder={"Изменить пароль"}
+            icon="EditIcon"
+            extraClass="mt-6"
+          />
+          {edit && (
             <Button
+              name="saveButton"
               extraClass="mt-6 mr-6"
               htmlType="button"
               type="primary"
@@ -129,7 +113,10 @@ const Profile = () => {
             >
               Сохранить
             </Button>
+          )}
+          {edit && (
             <Button
+              name="undoButton"
               extraClass={`mt-6 ${styles["profile-page__button"]}`}
               htmlType="button"
               type="primary"
@@ -138,8 +125,8 @@ const Profile = () => {
             >
               Отмена
             </Button>
-          </form>
-        </div>
+          )}
+        </form>
       </>
     );
   }

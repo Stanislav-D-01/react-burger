@@ -212,8 +212,8 @@ export const authorizationReducer = (state = initialState, action) => {
         request: false,
         requestSuccess: true,
         requestError: false,
-        name: action.data.name,
-        email: action.data.email,
+        name: action.data.user.name,
+        email: action.data.user.email,
       };
     }
     case SAVE_NEW_PROFILE_ERROR: {
