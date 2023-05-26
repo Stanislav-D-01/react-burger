@@ -33,7 +33,7 @@ const ModalSwitch = () => {
   }, [name]);
   let location = useLocation();
   let background = location.state && location.state.background;
-  if (!requestAuth && name) {
+  if (!requestAuth) {
     return (
       <>
         <Routes location={background || location}>

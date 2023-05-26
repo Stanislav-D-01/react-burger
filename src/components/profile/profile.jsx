@@ -56,7 +56,7 @@ const Profile = () => {
   if (!request) {
     return (
       <>
-        <form name="profileForm">
+        <form className={styles["profile-page"]} name="profileForm">
           <Input
             type={"text"}
             placeholder={"Имя"}

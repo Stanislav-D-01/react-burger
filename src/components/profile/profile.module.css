@@ -1,8 +1,4 @@
 .profile-page {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-left: 261px;
   margin-top: 120px;
 }
 
