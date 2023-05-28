@@ -19,6 +19,7 @@ import ViewIngredientPage from "../../pages/view-ingredient-page";
 import ErrorPage from "../../pages/404-page";
 import Profile from "../profile/profile";
 import HistoryOrderPage from "../../pages/history-order-page";
+import { getCookie } from "../../utils/utils";
 
 const ModalSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -28,7 +29,7 @@ const ModalSwitch = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!name && !requestAuth) {
-      dispatch(checkAuthorization(name, "token", "refreshToken"));
+      dispatch(checkAuthorization());
     }
   }, [name]);
   let location = useLocation();
@@ -41,8 +42,8 @@ const ModalSwitch = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/register" element={<RegisterPage />} />
-
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+
           <Route element={<ProtectedRouteElement element={<ProfilePage />} />}>
             <Route
               path="/profile"

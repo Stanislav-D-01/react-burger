@@ -1,4 +1,4 @@
-import { getCookie, BASE_URL } from "./utils";
+import { getCookie, BASE_URL, setCookie } from "./utils";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -22,20 +22,39 @@ const getNewToken = (refreshToken) => {
 
 export const fetchWithRefresh = async (url, options) => {
   try {
-    const res = await request(url, options); //делаем запрос
+    const res = await fetch(url, options);
     return await checkResponse(res);
   } catch (err) {
     if (err.message === "jwt expired") {
       const refreshToken = getCookie("refreshToken");
-      const refreshData = await getNewToken(refreshToken); //обновляем токен
-      localStorage.setItem("refreshToken", refreshData.refreshToken);
-      localStorage.setItem("accessToken", refreshData.accessToken); //(или в cookies)
-      options.headers.authorization = refreshData.accessToken;
+      console.log(refreshToken);
+      const refreshData = await getNewToken(refreshToken);
 
-      const res = await request(url, options); //вызываем перезапрос данных
+      let authToken;
+      if (refreshData.accessToken.indexOf("Bearer") === 0) {
+        authToken = refreshData.accessToken.split("Bearer ")[1];
+        console.log("ififif");
+      }
+      if (authToken) {
+        console.log("ififif2");
+        setCookie("token", authToken);
+      }
+      setCookie("refreshToken", refreshData.refreshToken);
+
+      const res = await fetch(url, options);
       return await checkResponse(res);
     } else {
       return Promise.reject(err);
     }
   }
+};
+
+const updateData = (token) => {
+  return request(`${BASE_URL}auth/user`, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 };

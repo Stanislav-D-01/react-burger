@@ -18,9 +18,9 @@ import {
 } from "../actions/authorization";
 
 import {
-  CHECK_AUTHORIZATION_TOKEN_REQUEST,
-  CHECK_AUTHORIZATION_TOKEN_SUCCESS,
-  CHECK_AUTHORIZATION_TOKEN_ERROR,
+  CHECK_AUTHORIZATION_REQUEST,
+  CHECK_AUTHORIZATION_SUCCESS,
+  CHECK_AUTHORIZATION_ERROR,
   GET_NEW_TOKEN_REQUEST,
   GET_NEW_TOKEN_SUCCESS,
   GET_NEW_TOKEN_ERROR,
@@ -126,7 +126,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestError: true,
       };
     }
-    case CHECK_AUTHORIZATION_TOKEN_REQUEST: {
+    case CHECK_AUTHORIZATION_REQUEST: {
       return {
         ...state,
         request: true,
@@ -135,7 +135,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestError: false,
       };
     }
-    case CHECK_AUTHORIZATION_TOKEN_SUCCESS: {
+    case CHECK_AUTHORIZATION_SUCCESS: {
       return {
         ...state,
         name: action.data.user.name,
@@ -146,7 +146,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestError: false,
       };
     }
-    case CHECK_AUTHORIZATION_TOKEN_ERROR: {
+    case CHECK_AUTHORIZATION_ERROR: {
       return {
         ...state,
         request: false,
