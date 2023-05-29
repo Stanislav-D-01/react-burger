@@ -19,55 +19,87 @@ import ViewIngredientPage from "../../pages/view-ingredient-page";
 import ErrorPage from "../../pages/404-page";
 import Profile from "../profile/profile";
 import HistoryOrderPage from "../../pages/history-order-page";
-import { getCookie } from "../../utils/utils";
+import {
+  PATH_HOME_PAGE,
+  PATH_LOGIN,
+  PATH_FORGOT_PASS,
+  PATH_REGISTER,
+  PATH_RESET_PASS,
+  PATH_PROFILE,
+  PATH_HISTORY_ORDER,
+  PATH_INGREDIENTS,
+  PATH_ORDER,
+} from "../../utils/utils";
 
-const ModalSwitch = () => {
+const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
   const requestAuth = useSelector((store) => store.auth.request);
   const requestOrder = useSelector((store) => store.order.orderRequest);
+  const loadEnd = useSelector((store) => store.auth.loadEnd);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (!name && !requestAuth) {
       dispatch(checkAuthorization());
     }
-  }, [name]);
+  }, []);
+
   let location = useLocation();
   let background = location.state && location.state.background;
-  if (!requestAuth) {
+  if (!requestAuth && loadEnd) {
     return (
       <>
         <Routes location={background || location}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path={PATH_HOME_PAGE} element={<HomePage />} />
+          <Route
+            path={PATH_LOGIN}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<LoginPage />}
+              />
+            }
+          />
+          <Route path={PATH_FORGOT_PASS} element={<ForgotPassword />} />
+          <Route
+            path={PATH_REGISTER}
+            element={
+              <ProtectedRouteElement
+                onlyUnAuth={true}
+                element={<RegisterPage />}
+              />
+            }
+          />
+          <Route path={PATH_RESET_PASS} element={<ResetPasswordPage />} />
 
           <Route element={<ProtectedRouteElement element={<ProfilePage />} />}>
             <Route
-              path="/profile"
+              path={PATH_PROFILE}
               element={<ProtectedRouteElement element={<Profile />} />}
             />
             <Route
-              path="/history-order"
+              path={PATH_HISTORY_ORDER}
               element={<ProtectedRouteElement element={<HistoryOrderPage />} />}
             />
           </Route>
-          <Route path="/ingredients/:_id" element={<ViewIngredientPage />} />
+          <Route
+            path={`${PATH_INGREDIENTS}/:_id`}
+            element={<ViewIngredientPage />}
+          />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
 
         <Routes>
           {background && (
             <Route
-              path="/ingredients/:_id"
+              path={`${PATH_INGREDIENTS}/:_id`}
               exact
               element={<ModalIngredient />}
             />
           )}
           {background && !requestOrder && (
-            <Route path="/order-details" exact element={<ModalOrder />} />
+            <Route path={PATH_ORDER} exact element={<ModalOrder />} />
           )}
         </Routes>
       </>
@@ -75,4 +107,4 @@ const ModalSwitch = () => {
   }
 };
 
-export default ModalSwitch;
+export default RoutSwitch;

@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { deleteCookie, getCookie } from "../../utils/utils";
 
 const ProfileMenu = () => {
-  const logout = () => {
-    dispatch({ type: "LOGOUT" });
+  const dispatch = useDispatch();
+  const logoutProfile = () => {
+    dispatch(logout());
     deleteCookie("token");
     deleteCookie("refreshToken");
   };
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   return (
     <>
@@ -50,7 +51,7 @@ const ProfileMenu = () => {
               className={`text text_type_main-medium ${styles["profile-page__li"]} text_color_inactive`}
             >
               <NavLink className={styles["profile-page__link"]} to="/profile/">
-                <div onClick={logout}>Выход</div>
+                <div onClick={logoutProfile}>Выход</div>
               </NavLink>
             </li>
             <p className="text text_type_main-default text_color_inactive mt-20">

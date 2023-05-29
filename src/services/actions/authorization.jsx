@@ -14,6 +14,9 @@ export const AUTHORIZATION_REQUEST = "AUTHORIZATION_REQUEST";
 export const AUTHORIZATION_SUCCESS = "AUTHORIZATION_SUCCESS";
 export const AUTHORIZATION_ERROR = "AUTHORIZATION_ERROR";
 export const LOGOUT = "LOGOUT";
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_ERROR = "LOGOUT_ERROR";
 export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 export const RESET_PASSWORD_ERROR = "RESET_PASSWORD_ERROR";
@@ -55,9 +58,9 @@ export const authorization = (email, pass) => {
           authToken = data.accessToken.split("Bearer ")[1];
         }
         if (authToken) {
-          setCookie("token", authToken);
+          setCookie("token", authToken, { path: "/" });
         }
-        setCookie("refreshToken", data.refreshToken);
+        setCookie("refreshToken", data.refreshToken, { path: "/" });
       })
       .catch((err) => dispatch({ type: "AUTHORIZATION_ERROR", err: err }));
   };
@@ -122,5 +125,23 @@ export const saveNewProfile = (name, email, pass) => {
         dispatch({ type: "SAVE_NEW_PROFILE_SUCCESS", data: data });
       })
       .catch((err) => dispatch({ type: "SAVE_NEW_PROFILE_ERROR" }));
+  };
+};
+
+export const logout = () => {
+  return function (dispatch) {
+    dispatch({ type: "LOGOUT_REQUEST" });
+    const token = getCookie("refreshToken");
+    request(`${BASE_URL}auth/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token: token }),
+    })
+      .then((data) => {
+        dispatch({ type: "LOGOUT_SUCCESS" });
+      })
+      .catch((err) => dispatch({ type: "LOGOUT_ERROR" }));
   };
 };

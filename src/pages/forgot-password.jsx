@@ -7,7 +7,7 @@ import styles from "./login-page.module.css";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { forgotPassSendEmail } from "../services/actions/authorization";
-
+import { PATH_RESET_PASS } from "../utils/utils";
 const ForgotPassword = () => {
   const sendEmailSuccess = useSelector((store) => store.auth.sendEmailSuccess);
   const nameUser = useSelector((store) => store.auth.name);
@@ -15,14 +15,11 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (sendEmailSuccess) {
-      navigate("/reset-password");
+      navigate(PATH_RESET_PASS);
     }
   }, [sendEmailSuccess]);
 
   const [email, setEmail] = useState("");
-  const onChange = (e) => {
-    setEmail(e.target.value);
-  };
 
   const dispatch = useDispatch();
 
@@ -33,10 +30,13 @@ const ForgotPassword = () => {
   if (!nameUser) {
     return (
       <div className={styles["login-page"]}>
-        <form className={styles["login-page__form"]}>
+        <form
+          onSubmit={() => sendEmail(email)}
+          className={styles["login-page__form"]}
+        >
           <h2 className="text text_type_main-medium">Восстановление пароля</h2>
           <EmailInput
-            onChange={onChange}
+            onChange={(e) => setEmail(e.target.value)}
             name={"email"}
             value={email}
             isIcon={false}
@@ -44,9 +44,8 @@ const ForgotPassword = () => {
           />
 
           <Button
-            onClick={() => sendEmail(email)}
             extraClass="mt-6 mb-6"
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
           >

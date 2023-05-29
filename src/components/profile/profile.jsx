@@ -33,7 +33,9 @@ const Profile = () => {
       inputRef.current.style.color = "#8585AD";
     });
 
-    navigate("", { state: { path: "/", url: "profile", title: "profile" } });
+    navigate("/profile", {
+      state: { path: "/", url: "profile", title: "profile" },
+    });
   }, []);
 
   const saveForm = (e) => {

@@ -23,14 +23,7 @@ const LoginPage = () => {
     request: store.auth.request,
   }));
 
-  useEffect(() => {
-    if (name && !resetPass) {
-      navigate(-1);
-    }
-    if (name && resetPass) {
-      navigate("/");
-    }
-  }, [name]);
+  
   const logIn = (login, pass) => {
     dispatch(authorization(login, pass));
   };
@@ -38,7 +31,10 @@ const LoginPage = () => {
   if (!email && !request) {
     return (
       <div className={styles["login-page"]}>
-        <form className={styles["login-page__form"]}>
+        <form
+          onSubmit={() => logIn(login, pass)}
+          className={styles["login-page__form"]}
+        >
           <h2 className="text text_type_main-medium">Вход</h2>
           <EmailInput
             onChange={(e) => setLogin(e.target.value)}
@@ -55,10 +51,9 @@ const LoginPage = () => {
           />
           <Button
             extraClass="mt-6 mb-20"
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={() => logIn(login, pass)}
           >
             Войти
           </Button>

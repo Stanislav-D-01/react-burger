@@ -15,6 +15,9 @@ import {
   SAVE_NEW_PROFILE_REQUEST,
   SAVE_NEW_PROFILE_SUCCESS,
   SAVE_NEW_PROFILE_ERROR,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR,
 } from "../actions/authorization";
 
 import {
@@ -36,6 +39,7 @@ const initialState = {
   autorization: false,
   sendEmailSuccess: false,
   resetPassword: false,
+  loadEnd: false,
 };
 
 export const authorizationReducer = (state = initialState, action) => {
@@ -133,6 +137,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestSuccess: false,
         autorization: false,
         requestError: false,
+        loadEnd: false,
       };
     }
     case CHECK_AUTHORIZATION_SUCCESS: {
@@ -144,6 +149,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestSuccess: true,
         autorization: true,
         requestError: false,
+        loadEnd: true,
       };
     }
     case CHECK_AUTHORIZATION_ERROR: {
@@ -153,6 +159,7 @@ export const authorizationReducer = (state = initialState, action) => {
         requestSuccess: false,
         autorization: false,
         requestError: true,
+        loadEnd: true,
       };
     }
     case GET_NEW_TOKEN_REQUEST: {
@@ -182,13 +189,33 @@ export const authorizationReducer = (state = initialState, action) => {
         requestError: true,
       };
     }
-    case LOGOUT: {
+    case LOGOUT_REQUEST: {
       return {
         ...state,
+        request: true,
+      };
+    }
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        request: false,
+        requestSuccess: true,
+        autorization: false,
+        requestError: false,
         name: "",
         email: "",
       };
     }
+    case LOGOUT_ERROR: {
+      return {
+        ...state,
+        request: false,
+        requestSuccess: false,
+        autorization: true,
+        requestError: true,
+      };
+    }
+
     case RESET_PASSWORD_REQUEST: {
       return { ...state, request: true };
     }

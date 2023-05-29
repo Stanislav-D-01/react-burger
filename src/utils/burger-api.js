@@ -23,25 +23,31 @@ const getNewToken = (refreshToken) => {
 export const fetchWithRefresh = async (url, options) => {
   try {
     const res = await fetch(url, options);
+  
     return await checkResponse(res);
   } catch (err) {
+   
     if (err.message === "jwt expired") {
       const refreshToken = getCookie("refreshToken");
-      console.log(refreshToken);
+      
       const refreshData = await getNewToken(refreshToken);
 
       let authToken;
       if (refreshData.accessToken.indexOf("Bearer") === 0) {
         authToken = refreshData.accessToken.split("Bearer ")[1];
-        console.log("ififif");
       }
       if (authToken) {
-        console.log("ififif2");
-        setCookie("token", authToken);
+        setCookie("token", authToken, { path: "/" });
       }
-      setCookie("refreshToken", refreshData.refreshToken);
+      setCookie("refreshToken", refreshData.refreshToken, { path: "/" });
 
-      const res = await fetch(url, options);
+      const res = await fetch(url, {
+        ...options,
+        headers: {
+          authorization: `Bearer ${authToken}`,
+          "Content-Type": "application/json",
+        },
+      });
       return await checkResponse(res);
     } else {
       return Promise.reject(err);

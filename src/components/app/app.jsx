@@ -1,7 +1,7 @@
 import AppHeader from "../app-header/app-header.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ModalSwitch from "../modal-switch/modal-switch.jsx";
+import RoutSwitch from "../rout-switch/rout-switch.jsx";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <BrowserRouter>
         <AppHeader />
 
-        <ModalSwitch />
+        <RoutSwitch />
       </BrowserRouter>
     </>
   );

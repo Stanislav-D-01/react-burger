@@ -10,6 +10,7 @@ import { Link, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetPassword } from "../services/actions/authorization";
 import { useNavigate } from "react-router-dom";
+import { PATH_LOGIN } from "../utils/utils";
 const ResetPasswordPage = () => {
   const [pass, setPass] = useState("");
   const [code, setCode] = useState("");
@@ -22,14 +23,14 @@ const ResetPasswordPage = () => {
   };
   useEffect(() => {
     if (resetPassSuccess) {
-      navigate("/login");
+      navigate(PATH_LOGIN);
     }
   }, [resetPassSuccess]);
 
   if (sendEmailSuccess) {
     return (
       <div className={styles["login-page"]}>
-        <form className={styles["login-page__form"]}>
+        <form onSubmit={resetPass} className={styles["login-page__form"]}>
           <h2 className="text text_type_main-medium">Восстановление пароля</h2>
           <PasswordInput
             onChange={(e) => setPass(e.target.value)}
@@ -52,10 +53,9 @@ const ResetPasswordPage = () => {
 
           <Button
             extraClass="mt-6 mb-6"
-            htmlType="button"
+            htmlType="submit"
             type="primary"
             size="medium"
-            onClick={resetPass}
           >
             Сохранить
           </Button>
