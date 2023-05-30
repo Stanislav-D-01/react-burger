@@ -15,8 +15,11 @@ const ViewIngredient = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getIngredients());
+    if (ingredients.length == 0) {
+      dispatch(getIngredients());
+    }
     const id = location.pathname.split("/")[2];
+    console.log(ingredients.length);
     if (ingredients.length > 0) {
       console.log(ingredients);
       dispatch({
@@ -27,7 +30,7 @@ const ViewIngredient = () => {
     return () => {
       dispatch({ type: DEL_INGREDIENT_IN_MODAL });
     };
-  }, []);
+  }, [ingredients]);
 
   return (
     <section className={styles["view-ingredient"]}>

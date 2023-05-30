@@ -2,7 +2,7 @@ import styles from "./profile-menu.module.css";
 import { NavLink } from "react-router-dom";
 import { logout } from "../../services/actions/authorization";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { deleteCookie, getCookie } from "../../utils/utils";
 
 const ProfileMenu = () => {
@@ -13,7 +13,6 @@ const ProfileMenu = () => {
     deleteCookie("refreshToken");
   };
 
-  const navigate = useNavigate();
   return (
     <>
       <div className={styles["profile-page"]}>

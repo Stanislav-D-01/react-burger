@@ -2,6 +2,7 @@ import { BASE_URL } from "../../utils/utils";
 import { request } from "../../utils/burger-api";
 import { authorizationReducer } from "../reducers/authorization";
 import { setCookie, deleteCookie, getCookie } from "../../utils/utils";
+import { fetchWithRefresh } from "../../utils/burger-api";
 export const SEND_REGISTRATION_REQUEST = "SEND_REGISTRATION_REQUEST";
 export const SEND_REGISTRATION_SUCCSESS = "SEND_REGISTRATION_SUCCSESS";
 export const SEND_REGISTRATION_ERROR = "SEND_REGISTRATION_ERROR";
@@ -113,20 +114,28 @@ export const forgotPassSendEmail = (email) => {
 export const saveNewProfile = (name, email, pass) => {
   return function (dispatch) {
     dispatch({ type: "SAVE_NEW_PROFILE_REQUEST" });
-    request(`${BASE_URL}auth/user`, {
-      method: "PATCH",
-      headers: {
-        authorization: "Bearer " + getCookie("token"),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: name, email: email, password: pass }),
-    })
-      .then((data) => {
-        dispatch({ type: "SAVE_NEW_PROFILE_SUCCESS", data: data });
+    const token = getCookie("token");
+    if (token) {
+      fetchWithRefresh(`${BASE_URL}auth/user`, {
+        method: "PATCH",
+        headers: {
+          authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: name, email: email, password: pass }),
       })
-      .catch((err) => dispatch({ type: "SAVE_NEW_PROFILE_ERROR" }));
+        .then((data) => {
+          dispatch({ type: "SAVE_NEW_PROFILE_SUCCESS", data: data });
+        })
+        .catch((err) => dispatch({ type: "SAVE_NEW_PROFILE_ERROR" }));
+    } else {
+      dispatch({ type: "SAVE_NEW_PROFILE_ERROR" });
+    }
   };
 };
+
+
+
 
 export const logout = () => {
   return function (dispatch) {
