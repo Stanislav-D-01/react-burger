@@ -25,6 +25,7 @@ export const PATH_PROFILE = "/profile";
 export const PATH_HISTORY_ORDER = "/history-order";
 export const PATH_INGREDIENTS = "/ingredients";
 export const PATH_ORDER = "/order-details";
+export const PATH_FEEDS = "/feeds";
 
 export function setCookie(name, value, props) {
   props = props || {};

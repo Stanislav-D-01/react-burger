@@ -29,7 +29,9 @@ import {
   PATH_HISTORY_ORDER,
   PATH_INGREDIENTS,
   PATH_ORDER,
+  PATH_FEEDS,
 } from "../../utils/utils";
+import FeedsPage from "../../pages/feeds-page";
 
 const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -83,6 +85,7 @@ const RoutSwitch = () => {
               element={<ProtectedRouteElement element={<HistoryOrderPage />} />}
             />
           </Route>
+          <Route path={PATH_FEEDS} element={<FeedsPage />} />
           <Route
             path={`${PATH_INGREDIENTS}/:_id`}
             element={<ViewIngredientPage />}

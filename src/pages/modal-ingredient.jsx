@@ -19,7 +19,6 @@ export const ModalIngredient = () => {
   useEffect(() => {
     if (ingredient || ingredient.length == 0) {
       const id = location.pathname.split("/")[2];
-      console.log("11111");
       if (ingredients.length > 0) {
         dispatch({
           type: SET_INGREDIENT_IN_MODAL,
@@ -28,7 +27,6 @@ export const ModalIngredient = () => {
       }
     }
     return () => {
-      console.log("sssss");
       dispatch({ type: DEL_INGREDIENT_IN_MODAL });
     };
   }, [ingredients]);

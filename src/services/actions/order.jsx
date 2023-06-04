@@ -19,7 +19,11 @@ export function sendOrder(ingr) {
       body: JSON.stringify({ ingredients: ingr.map((el) => el._id) }),
     })
       .then((order) => {
-        dispatch({ type: SEND_ORDER_SUCCSESS, order: order.order });
+        dispatch({
+          type: SEND_ORDER_SUCCSESS,
+          order: order.order,
+          ingredients: ingr.map((el) => el._id),
+        });
         dispatch({ type: CLEAN_CONSTRUCTOR });
       })
       .catch((err) => {
