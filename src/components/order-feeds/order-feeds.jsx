@@ -2,6 +2,7 @@ import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-component
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import styles from "./order-feeds.module.css";
+import priceSym from "../../image/Subtract.svg";
 
 const OrderFeeds = () => {
   const { ingredients, orderIngredients } = useSelector((store) => ({
@@ -12,29 +13,35 @@ const OrderFeeds = () => {
 
   const ingredientsСircle = (orderIngredients, ingredients) => {
     if (orderIngredients.length > 0) {
-      let numRound = 0;
+      let numСircle = 0;
 
       let imageIngredients = orderIngredients.map((elem) => {
-        numRound = numRound + 1;
+        numСircle = numСircle + 1;
         const ingredient = ingredients.find((el) => el._id === elem);
         price = price + ingredient.price;
-        if (numRound <= 5) {
+
+        if (numСircle <= 6 && numСircle !== 1) {
           return (
-            <div className={styles["image-border"]}>
+            <div
+              className={`${styles["image-border"]} `}
+              style={{ zIndex: 6 - numСircle }}
+            >
               <img className={styles.image} src={ingredient.image} />
             </div>
           );
         }
-        if (numRound === 6) {
+        if (numСircle === 7) {
           const numOtherIngredient = orderIngredients.length - 5;
-          numRound = numRound + 1;
+          numСircle = numСircle + 1;
           return (
-            <div
-              className={`&{styles["image-border"]} z-index=${0 - numRound}`}
-            >
-              <img className={styles.image} src={ingredient.image} />{" "}
-              <p>{`+${numOtherIngredient}`}</p>
-            </div>
+            <>
+              <div className={`${styles["image-border"]}`}>
+                <img className={styles.image} src={ingredient.image} />
+                <p
+                  className={`${styles["image_text"]} text text_type_digits-default`}
+                >{`+${numOtherIngredient}`}</p>
+              </div>
+            </>
           );
         }
       });
@@ -44,16 +51,29 @@ const OrderFeeds = () => {
   };
   return (
     <div>
-      <section>
-        <h1>#213123</h1>
+      <section className={styles["order-feeds"]}>
+        <h1
+          className={`{styles["order-feeds__orderNum"]} text text_type_digits-default`}
+        >
+          #213123
+        </h1>
         <FormattedDate
+          className={`${styles["order-feeds__date"]} text text_type_main-default text_color_inactive`}
           date={new Date("Sun Jun 03 2023 17:07:11 GMT+0400 (GMT+04:00)")}
         />
-        <h2>Burger Name</h2>
+        <h2
+          className={`${styles["order-feeds__name"]} text text_type_main-medium`}
+        >
+          Burger Name
+        </h2>
         <section className={styles["ingredients-circle"]}>
           {ingredientsСircle(orderIngredients, ingredients)}
         </section>
-        <p>{price}</p>
+        <p
+          className={`${styles["order-feeds__price"]} text text_type_digits-default`}
+        >
+          {price} <img className="pl-2" src={priceSym} />
+        </p>
       </section>
     </div>
   );
