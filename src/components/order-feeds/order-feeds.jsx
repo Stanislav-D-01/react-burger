@@ -70,9 +70,9 @@ const OrderFeeds = () => {
           {ingredientsСircle(orderIngredients, ingredients)}
         </section>
         <p
-          className={`${styles["order-feeds__price"]} text text_type_digits-default`}
+          className={`${styles["order-feeds__price"]} text text_type_digits-default mt-4`}
         >
-          {price} <img className="pl-2" src={priceSym} />
+          {price} <img src={priceSym} />
         </p>
       </section>
     </div>
