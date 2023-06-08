@@ -1,6 +1,7 @@
 import OrderFeeds from "../order-feeds/order-feeds";
 import OrderTable from "../order-table/order-table";
 import styles from "./feeds.module.css";
+import { useEffect } from "react";
 
 const Feeds = () => {
   return (

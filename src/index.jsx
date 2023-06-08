@@ -9,13 +9,16 @@ import {
 } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { socketMiddleware } from "./services/middleware/socketMiddleware";
 
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(
+  applyMiddleware(thunk, socketMiddleware({ start: "WS_CONNECTION_START" }))
+);
 const store = createStore(rootReducer, enhancer);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
