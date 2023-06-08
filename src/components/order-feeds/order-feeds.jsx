@@ -4,21 +4,23 @@ import { useSelector } from "react-redux";
 import styles from "./order-feeds.module.css";
 import priceSym from "../../image/Subtract.svg";
 
-const OrderFeeds = () => {
-  const { ingredients, orderIngredients } = useSelector((store) => ({
+const OrderFeeds = (orderIngredients) => {
+  const { ingredients, orders } = useSelector((store) => ({
     ingredients: store.ingredients.ingredients,
-    orderIngredients: store.order.ingredients,
+    orders: store.feeds.orders,
   }));
   let price = 0;
 
   const ingredientsСircle = (orderIngredients, ingredients) => {
-    if (orderIngredients.length > 0) {
+    const orderIngr = orderIngredients.orderIngredients;
+    if (orderIngr.length > 0) {
       let numСircle = 0;
 
-      let imageIngredients = orderIngredients.map((elem) => {
+      let imageIngredients = orderIngr.map((elem) => {
         numСircle = numСircle + 1;
         const ingredient = ingredients.find((el) => el._id === elem);
         price = price + ingredient.price;
+        console.log(ingredient);
 
         if (numСircle <= 6 && numСircle !== 1) {
           return (
@@ -31,7 +33,7 @@ const OrderFeeds = () => {
           );
         }
         if (numСircle === 7) {
-          const numOtherIngredient = orderIngredients.length - 5;
+          const numOtherIngredient = orderIngr.length - 5;
           numСircle = numСircle + 1;
           return (
             <>

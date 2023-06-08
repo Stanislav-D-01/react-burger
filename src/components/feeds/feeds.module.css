@@ -17,3 +17,9 @@
   max-width: 1240px;
   width: 100vw;
 }
+.feeds__feeds {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+}
