@@ -23,6 +23,8 @@ export const socketMiddleware = () => {
               dispatch({
                 type: WS_GET_MESSAGE,
                 data: data.orders,
+                total: data.total,
+                totalTd: data.totalToday,
               });
             };
             break;

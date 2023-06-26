@@ -1,26 +1,30 @@
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import styles from "./order-feeds.module.css";
 import priceSym from "../../image/Subtract.svg";
 
-const OrderFeeds = (orderIngredients) => {
-  const { ingredients, orders } = useSelector((store) => ({
-    ingredients: store.ingredients.ingredients,
+const OrderFeeds = ({ order, ingredients }) => {
+  const { orders } = useSelector((store) => ({
     orders: store.feeds.orders,
   }));
   let price = 0;
 
+  useEffect(() => {
+    console.log(order);
+  }, []);
+
   const ingredientsСircle = (orderIngredients, ingredients) => {
-    const orderIngr = orderIngredients.orderIngredients;
+    const orderIngr = orderIngredients;
     if (orderIngr.length > 0) {
       let numСircle = 0;
 
       let imageIngredients = orderIngr.map((elem) => {
         numСircle = numСircle + 1;
+
         const ingredient = ingredients.find((el) => el._id === elem);
+
         price = price + ingredient.price;
-        console.log(ingredient);
 
         if (numСircle <= 6 && numСircle !== 1) {
           return (
@@ -52,32 +56,34 @@ const OrderFeeds = (orderIngredients) => {
     }
   };
   return (
-    <div>
-      <section className={styles["order-feeds"]}>
-        <h1
-          className={`{styles["order-feeds__orderNum"]} text text_type_digits-default`}
-        >
-          #213123
-        </h1>
-        <FormattedDate
-          className={`${styles["order-feeds__date"]} text text_type_main-default text_color_inactive`}
-          date={new Date("Sun Jun 03 2023 17:07:11 GMT+0400 (GMT+04:00)")}
-        />
-        <h2
-          className={`${styles["order-feeds__name"]} text text_type_main-medium`}
-        >
-          Burger Name
-        </h2>
-        <section className={styles["ingredients-circle"]}>
-          {ingredientsСircle(orderIngredients, ingredients)}
+    ingredients.length > 0 && (
+      <div>
+        <section className={styles["order-feeds"]}>
+          <h1
+            className={`{styles["order-feeds__orderNum"]} text text_type_digits-default`}
+          >
+            {`#${order.number}`}
+          </h1>
+          <FormattedDate
+            className={`${styles["order-feeds__date"]} text text_type_main-default text_color_inactive`}
+            date={new Date(order.createdAt)}
+          />
+          <h2
+            className={`${styles["order-feeds__name"]} text text_type_main-medium`}
+          >
+            {order.name}
+          </h2>
+          <section className={styles["ingredients-circle"]}>
+            {ingredientsСircle(order.ingredients, ingredients)}
+          </section>
+          <p
+            className={`${styles["order-feeds__price"]} text text_type_digits-default mt-4`}
+          >
+            {price} <img src={priceSym} />
+          </p>
         </section>
-        <p
-          className={`${styles["order-feeds__price"]} text text_type_digits-default mt-4`}
-        >
-          {price} <img src={priceSym} />
-        </p>
-      </section>
-    </div>
+      </div>
+    )
   );
 };
 

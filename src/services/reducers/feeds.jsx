@@ -9,6 +9,8 @@ import {
 const initialState = {
   wsConnected: false,
   orders: [],
+  total: "",
+  totalTd: "",
   error: undefined,
 };
 
@@ -24,7 +26,12 @@ export const feedsReducer = (state = initialState, action) => {
       return { ...state, wsConnected: false, error: undefined };
     }
     case WS_GET_MESSAGE: {
-      return { ...state, orders: action.data };
+      return {
+        ...state,
+        orders: action.data,
+        total: action.total,
+        totalTd: action.totalTd,
+      };
     }
     default: {
       return state;

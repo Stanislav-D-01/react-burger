@@ -1,16 +1,38 @@
+import { useEffect } from "react";
 import styles from "./order-table.module.css";
 
-const OrderTable = () => {
+const OrderTable = ({ data }) => {
+  useEffect(() => {
+    console.log(data);
+  }, []);
+
+  const getListOrder = (orders, status) => {
+    const doneOrders = orders.filter((el)=>el.status==='done');
+    const 
+    
+    
+    orders.map((el) => {
+      if (el.status === "done" && status === "done") {
+        return (
+          <li
+            className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
+          >
+            {el.number}
+          </li>
+        );
+      }
+    });
+    if (status === "done"){
+      return doneOrders
+    }
+  };
+
   return (
     <div className={styles["order-table"]}>
       <section className={styles["order-table__status-blocks"]}>
         <div className={styles["order-table__status-block"]}>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
-          <p
-            className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
-          >
-            123123123
-          </p>
+          <ul>{getListOrder(data.orders, "done")}</ul>
         </div>
         <div>
           <p className="text text_type_main-medium mb-6">В работе:</p>
@@ -22,7 +44,7 @@ const OrderTable = () => {
         <p
           className={`${styles["order-table__number"]} text text_type_digits-large`}
         >
-          123323
+          {data.total}
         </p>
       </section>
       <section>
@@ -30,7 +52,7 @@ const OrderTable = () => {
         <p
           className={`${styles["order-table__number"]} text text_type_digits-large`}
         >
-          1231
+          {data.totalTd}
         </p>
       </section>
     </div>

@@ -32,18 +32,23 @@ import {
   PATH_FEEDS,
 } from "../../utils/utils";
 import FeedsPage from "../../pages/feeds-page";
+import { getIngredients } from "../../services/actions/burger-ingredients";
 
 const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
   const requestAuth = useSelector((store) => store.auth.request);
   const requestOrder = useSelector((store) => store.order.orderRequest);
   const loadEnd = useSelector((store) => store.auth.loadEnd);
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!name && !requestAuth) {
       dispatch(checkAuthorization());
+    }
+    if (!ingredients) {
+      dispatch(getIngredients());
     }
   }, []);
 
