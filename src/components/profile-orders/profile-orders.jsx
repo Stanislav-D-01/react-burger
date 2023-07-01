@@ -27,15 +27,17 @@ const ProfileOrders = () => {
   }, []);
 
   const renderOrderFeeds = (orders, ingredients) => {
-    return orders.map((element) => {
-      return (
-        <OrderFeeds
-          statusFlag={true}
-          order={element}
-          ingredients={ingredients}
-        />
-      );
-    });
+    return orders
+      .map((element) => {
+        return (
+          <OrderFeeds
+            statusFlag={true}
+            order={element}
+            ingredients={ingredients}
+          />
+        );
+      })
+      .reverse();
   };
   return (
     orders &&
