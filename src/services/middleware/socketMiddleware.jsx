@@ -3,6 +3,7 @@ import {
   WS_CONNECTION_START,
   WS_CONNECTION_SUCCESS,
   WS_GET_MESSAGE,
+  WS_CLEAR_STATE,
 } from "../actions/feeds";
 
 export const socketMiddleware = () => {
@@ -13,7 +14,7 @@ export const socketMiddleware = () => {
       return (action) => {
         switch (action.type) {
           case WS_CONNECTION_START: {
-            console.log(action.url);
+            dispatch({ type: WS_CLEAR_STATE });
             socket = new WebSocket(action.url);
             socket.onopen = (event) => {
               dispatch({ type: WS_CONNECTION_SUCCESS });
@@ -31,8 +32,8 @@ export const socketMiddleware = () => {
           }
 
           case WS_CONNECTION_CLOSED: {
-            console.log("close");
             socket && socket.close();
+            dispatch({ type: WS_CLEAR_STATE });
           }
 
           default: {

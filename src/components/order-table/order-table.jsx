@@ -2,17 +2,11 @@ import { useEffect } from "react";
 import styles from "./order-table.module.css";
 
 const OrderTable = ({ data }) => {
-  useEffect(() => {
-    console.log(data);
-  }, []);
+  const getListOrders = (orders, status) => {
+    if (status === "done") {
+      const doneOrders = orders.filter((el) => el.status === "done");
 
-  const getListOrder = (orders, status) => {
-    const doneOrders = orders.filter((el)=>el.status==='done');
-    const 
-    
-    
-    orders.map((el) => {
-      if (el.status === "done" && status === "done") {
+      return doneOrders.map((el) => {
         return (
           <li
             className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
@@ -20,10 +14,16 @@ const OrderTable = ({ data }) => {
             {el.number}
           </li>
         );
-      }
-    });
-    if (status === "done"){
-      return doneOrders
+      });
+    }
+    if (status !== "done") {
+      const workOrders = orders.filter((el) => el.status !== "done");
+
+      return workOrders.map((el) => {
+        return (
+          <li className={` text text_type_digits-default mb-2`}>{el.number}</li>
+        );
+      });
     }
   };
 
@@ -32,11 +32,15 @@ const OrderTable = ({ data }) => {
       <section className={styles["order-table__status-blocks"]}>
         <div className={styles["order-table__status-block"]}>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
-          <ul>{getListOrder(data.orders, "done")}</ul>
+          <ul className={styles["order-table__ul"]}>
+            {getListOrders(data.orders, "done")}
+          </ul>
         </div>
-        <div>
+        <div className={styles["order-table__status-block"]}>
           <p className="text text_type_main-medium mb-6">В работе:</p>
-          <p className="text text_type_digits-default mb-2">123123123</p>
+          <ul className={styles["order-table__ul"]}>
+            {getListOrders(data.orders, "work")}
+          </ul>
         </div>
       </section>
       <section className={`${styles["order-table__order-statistics"]}`}>

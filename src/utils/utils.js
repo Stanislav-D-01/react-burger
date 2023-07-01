@@ -22,10 +22,10 @@ export const PATH_FORGOT_PASS = "/forgot-password";
 export const PATH_REGISTER = "/register";
 export const PATH_RESET_PASS = "/reset-password";
 export const PATH_PROFILE = "/profile";
-export const PATH_HISTORY_ORDER = "/history-order";
+export const PATH_PROFILE_ORDERS = "/profile/orders";
 export const PATH_INGREDIENTS = "/ingredients";
 export const PATH_ORDER = "/order-details";
-export const PATH_FEEDS = "/feeds";
+export const PATH_FEED = "/feed";
 
 export function setCookie(name, value, props) {
   props = props || {};

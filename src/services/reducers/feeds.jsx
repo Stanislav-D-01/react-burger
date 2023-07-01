@@ -4,6 +4,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_MESSAGE,
+  WS_CLEAR_STATE,
 } from "../actions/feeds";
 
 const initialState = {
@@ -31,6 +32,15 @@ export const feedsReducer = (state = initialState, action) => {
         orders: action.data,
         total: action.total,
         totalTd: action.totalTd,
+      };
+    }
+    case WS_CLEAR_STATE: {
+      return {
+        wsConnected: false,
+        orders: [],
+        total: "",
+        totalTd: "",
+        error: undefined,
       };
     }
     default: {

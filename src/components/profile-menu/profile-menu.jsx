@@ -28,6 +28,7 @@ const ProfileMenu = () => {
                     : styles["profile-page__link"]
                 }
                 to="/profile"
+                end
               >
                 Профиль
               </NavLink>
@@ -41,7 +42,8 @@ const ProfileMenu = () => {
                     ? styles["profile-page__link_active"]
                     : styles["profile-page__link"]
                 }
-                to="/history-order"
+                to="/profile/orders"
+                end
               >
                 История заказов
               </NavLink>

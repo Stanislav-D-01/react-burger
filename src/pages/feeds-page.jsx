@@ -1,7 +1,7 @@
-import Feeds from "../components/feeds/feeds";
+import Feed from "../components/feed/feed";
 
 const FeedsPage = () => {
-  return <Feeds />;
+  return <Feed />;
 };
 
 export default FeedsPage;

@@ -34,15 +34,14 @@
 
 .order-feeds {
   background-color: #1c1c21;
-  max-width: 584px;
-  max-height: 214px;
+  max-width: 100%;
+
   cursor: pointer;
-  height: 100vh;
   width: 100vw;
   border-radius: 40px;
   display: grid;
   grid-template-columns: 60% 40%;
-  grid-template-rows: 24px 30px 65px;
+  grid-template-rows: 24px max-content 65px;
   row-gap: 24px;
   padding: 24px;
   box-sizing: border-box;
@@ -50,6 +49,7 @@
     "orderNum date"
     "name name"
     "circle price";
+  margin-bottom: 16px;
 }
 
 .order-feeds__orderNum {
@@ -67,4 +67,13 @@
 .order-feeds__price {
   grid-area: price;
   text-align: end;
+}
+
+.order-view__status_type_done {
+  color: #00cccc;
+  margin: 0;
+}
+.order-view__status_type_no-done {
+  color: white;
+  margin: 0;
 }

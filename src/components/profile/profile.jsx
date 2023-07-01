@@ -39,7 +39,6 @@ const Profile = () => {
   }, []);
 
   const saveForm = (e) => {
-    console.log("ok");
     e.preventDefault();
     if (name !== nameUser || email !== emailUser || pass.length > 0) {
       dispatch(saveNewProfile(name, email, pass));
