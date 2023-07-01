@@ -40,7 +40,7 @@ const ProfileOrders = () => {
       .reverse();
   };
   return (
-    orders &&
+    orders.orders &&
     ingredients && (
       <div className={styles["profile-orders"]}>
         {renderOrderFeeds(orders.orders, ingredients)}
