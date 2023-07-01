@@ -19,20 +19,30 @@ import {
 import { sendOrder } from "../../services/actions/order";
 import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function BurgerConstructor() {
-  const { ingr, ingrConstr, order, total, orderRequest, orderFailed } =
-    useSelector((store) => ({
-      ingr: store.ingredients.ingredients,
-      ingrConstr: store.burgerConstructor.ingredientsConstructor,
-      order: store.order.order,
-      total: store.burgerConstructor.total,
-      orderRequest: store.order.orderRequest,
-      orderFailed: store.order.orderFailed,
-    }));
+  const {
+    ingr,
+    ingrConstr,
+    order,
+    total,
+    orderRequest,
+    orderFailed,
+    nameUser,
+  } = useSelector((store) => ({
+    ingr: store.ingredients.ingredients,
+    ingrConstr: store.burgerConstructor.ingredientsConstructor,
+    order: store.order.order,
+    total: store.burgerConstructor.total,
+    orderRequest: store.order.orderRequest,
+    orderFailed: store.order.orderFailed,
+    nameUser: store.auth.name,
+  }));
   const [isModal, setIsModal] = React.useState(false);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const [, dropRef] = useDrop({
     accept: "ingred",
 
@@ -64,7 +74,7 @@ function BurgerConstructor() {
   }, [ingrConstr]);
 
   React.useEffect(() => {
-    addBunStart(ingr);
+    ingrConstr.length == 0 && addBunStart(ingr);
   }, [ingr]);
 
   const addBunStart = (arrIngr) => {
@@ -82,14 +92,20 @@ function BurgerConstructor() {
     }
   };
 
-  const toggleModal = () => {
-    setIsModal(!isModal);
+
+
+  const openModalOrder = () => {
+    navigate("/order-details", { state: { background: location } });
   };
 
   const createOrder = () => {
-    if (ingrConstr.length > 2) {
-      dispatch(sendOrder(ingrConstr));
-      toggleModal();
+    if (nameUser) {
+      if (ingrConstr.length > 2) {
+        dispatch(sendOrder(ingrConstr));
+        openModalOrder();
+      }
+    } else {
+      navigate("/login");
     }
   };
 
@@ -170,6 +186,7 @@ function BurgerConstructor() {
             Оформить заказ
           </Button>
         </div>
+
         {isModal && !orderRequest && !orderFailed && (
           <>
             <ModalContext.Provider value={[setIsModal]}>

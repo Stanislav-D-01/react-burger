@@ -17,7 +17,7 @@ export const modalReducer = (state = initialState, action) => {
       return { ...state, ingredient: action.value };
     }
     case DEL_INGREDIENT_IN_MODAL: {
-      return { ...state, ingredient: {} };
+      return { ...state, ingredient: "" };
     }
     case TOGGLE_MODAL_INGR: {
       return { ...state, isModalIngr: !state.isModalIngr };

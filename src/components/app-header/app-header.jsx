@@ -5,9 +5,26 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-
+import { NavLink, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const AppHeader = () => {
+  let location = useLocation();
+  const [profileActive, setProfileActive] = useState(
+    location.pathname === ("/profile" || "/history-order") ? true : false
+  );
+
+  useEffect(() => {
+    if (
+      location.pathname === "/profile" ||
+      location.pathname === "/history-order"
+    ) {
+      setProfileActive(true);
+    } else {
+      setProfileActive(false);
+    }
+  }, [location.pathname]);
 
   return (
     <header className={styles.header}>
@@ -15,15 +32,29 @@ const AppHeader = () => {
         <ul className={styles.header__menu}>
           <li className={styles.header__listItem}>
             <BurgerIcon type="primary" />
-            <a href={'#'} className={` ${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`}>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
+            >
               Конструктор
-            </a>
+            </NavLink>
           </li>
           <li className={styles.header__listItem}>
             <ListIcon type="secondary" />
-            <a href={'#'} className={`text text_type_main-default ${styles.header__text} text_color_inactive`}>
+            <NavLink
+              to="/feeds"
+              className={({ isActive }) =>
+                isActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
+            >
               Лента заказов
-            </a>
+            </NavLink>
           </li>
           <li
             className={`${styles.header__listItem} ${styles.header__listItem_logo}`}
@@ -32,9 +63,16 @@ const AppHeader = () => {
           </li>
           <li className={styles.header__listItem}>
             <ProfileIcon type="secondary" />
-            <a href={'#'} className={`text text_type_main-default text_color_inactive ${styles.header__text}`}>
+            <NavLink
+              to="/profile"
+              className={
+                profileActive
+                  ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
+                  : `${styles.header__text} text text_type_main-default`
+              }
+            >
               Личный кабинет
-            </a>
+            </NavLink>
           </li>
         </ul>
       </nav>

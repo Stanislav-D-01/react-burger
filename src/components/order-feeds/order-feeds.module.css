@@ -1,0 +1,28 @@
+.image {
+  width: 62px;
+  height: 62px;
+  object-fit: cover;
+
+  border-radius: 100%;
+
+  background-color: black;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.image-border {
+  width: 64px;
+  height: 64px;
+  background-image: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: -10px;
+}
+
+.ingredients-circle {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}

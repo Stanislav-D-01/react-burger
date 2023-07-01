@@ -9,6 +9,7 @@ const initialState = {
   order: {},
   orderRequest: false,
   orderFailed: false,
+  ingredients: {},
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -22,6 +23,7 @@ export const orderReducer = (state = initialState, action) => {
         orderRequest: false,
         orderFailed: false,
         order: action.order,
+        ingredients: action.ingredients,
       };
     }
     case SEND_ORDER_ERROR: {
