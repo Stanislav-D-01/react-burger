@@ -5,6 +5,7 @@ import { orderReducer } from "./order";
 import { combineReducers } from "redux";
 import { authorizationReducer } from "./authorization";
 import { feedsReducer } from "./feeds";
+import { userOrdersReducer } from "./userOrders";
 
 export const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   order: orderReducer,
   auth: authorizationReducer,
   feeds: feedsReducer,
+  userOrders: userOrdersReducer,
 });

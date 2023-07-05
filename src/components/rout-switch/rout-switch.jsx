@@ -102,13 +102,6 @@ const RoutSwitch = () => {
         </Routes>
 
         <Routes>
-          {background && (
-            <Route
-              path={`${PATH_INGREDIENTS}/:_id`}
-              exact
-              element={<ModalIngredient />}
-            />
-          )}
           {background && !requestOrder && (
             <Route path={PATH_ORDER} exact element={<ModalOrder />} />
           )}

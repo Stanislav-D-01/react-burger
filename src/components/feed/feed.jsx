@@ -3,12 +3,13 @@ import OrderTable from "../order-table/order-table";
 import styles from "./feed.module.css";
 import { useEffect } from "react";
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START_FEED,
+  WS_CONNECTION_CLOSED_FEED,
 } from "../../services/actions/feeds";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/burger-ingredients";
+import Modal from "../modal/modal";
 
 const Feed = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Feed = () => {
 
   useEffect(() => {
     dispatch({
-      type: WS_CONNECTION_START,
+      type: WS_CONNECTION_START_FEED,
       url: "wss://norma.nomoreparties.space/orders/all",
     });
   }, []);

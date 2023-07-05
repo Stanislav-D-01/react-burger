@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { WS_CONNECTION_START } from "../../services/actions/feeds";
+import { WS_CONNECTION_START_FEED } from "../../services/actions/feeds";
 import { getCookie } from "../../utils/utils";
 import OrderFeeds from "../order-feeds/order-feeds";
 import { getIngredients } from "../../services/actions/burger-ingredients";
@@ -15,7 +15,7 @@ const ProfileOrders = () => {
     const accessToken = getCookie("token");
 
     dispatch({
-      type: WS_CONNECTION_START,
+      type: WS_CONNECTION_START_FEED,
       url: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
     });
   }, []);

@@ -1,10 +1,9 @@
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_CONNECTION_ERROR,
-  WS_CONNECTION_CLOSED,
-  WS_GET_MESSAGE,
-  WS_CLEAR_STATE,
+  WS_CONNECTION_SUCCESS_FEED,
+  WS_CONNECTION_ERROR_FEED,
+  WS_CONNECTION_CLOSED_FEED,
+  WS_GET_MESSAGE_FEED,
+  WS_CLEAR_STATE_FEED,
 } from "../actions/feeds";
 
 const initialState = {
@@ -17,16 +16,16 @@ const initialState = {
 
 export const feedsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case WS_CONNECTION_SUCCESS: {
+    case WS_CONNECTION_SUCCESS_FEED: {
       return { ...state, wsConnected: true, error: undefined };
     }
-    case WS_CONNECTION_ERROR: {
+    case WS_CONNECTION_ERROR_FEED: {
       return { ...state, wsConnected: false, error: action.error };
     }
-    case WS_CONNECTION_CLOSED: {
+    case WS_CONNECTION_CLOSED_FEED: {
       return { ...state, wsConnected: false, error: undefined };
     }
-    case WS_GET_MESSAGE: {
+    case WS_GET_MESSAGE_FEED: {
       return {
         ...state,
         orders: action.data,
@@ -34,7 +33,7 @@ export const feedsReducer = (state = initialState, action) => {
         totalTd: action.totalTd,
       };
     }
-    case WS_CLEAR_STATE: {
+    case WS_CLEAR_STATE_FEED: {
       return {
         wsConnected: false,
         orders: [],

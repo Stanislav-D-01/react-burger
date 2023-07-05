@@ -8,8 +8,8 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import {
-  WS_CONNECTION_START,
-  WS_CONNECTION_CLOSED,
+  WS_CONNECTION_START_FEED,
+  WS_CONNECTION_CLOSED_FEED,
 } from "../../services/actions/feeds";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 
@@ -28,7 +28,7 @@ const OrderView = () => {
   useEffect(() => {
     !feeds.wsConnected &&
       dispatch({
-        type: WS_CONNECTION_START,
+        type: WS_CONNECTION_START_FEED,
         url: "wss://norma.nomoreparties.space/orders/all",
       });
   }, []);
