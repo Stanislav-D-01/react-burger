@@ -3,17 +3,19 @@ import { useEffect, useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styles from "./order-feeds.module.css";
 import priceSym from "../../image/Subtract.svg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PATH_FEED } from "../../utils/utils";
 
 const OrderFeeds = ({ order, ingredients, statusFlag }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { orders } = useSelector((store) => ({
     orders: store.feeds.orders,
   }));
   const [total, setTotal] = useState(0);
   const [ingredientsOrder, setIngredientsOrder] = useState([]);
   useEffect(() => {
+    console.log(location);
     order.ingredients.length > 0 && createListIngredientsOrder(order);
   }, [order]);
 
@@ -145,7 +147,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
   return (
     ingredientsOrder.length > 0 && (
       <section
-        onClick={() => navigate(`${PATH_FEED}/${order._id}`)}
+        onClick={() => navigate(`${location.pathname}/${order._id}`)}
         className={styles["order-feeds"]}
       >
         <h2

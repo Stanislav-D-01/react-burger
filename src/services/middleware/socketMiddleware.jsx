@@ -1,15 +1,8 @@
-import {
-  WS_CONNECTION_CLOSED,
-  WS_CONNECTION_START,
-  WS_CONNECTION_SUCCESS,
-  WS_GET_MESSAGE,
-  WS_CLEAR_STATE,
-} from "../actions/feeds";
-
 export const socketMiddleware = (wsAction) => {
   return (store) => {
     let socket;
     const { dispatch } = store;
+
     return (next) => {
       return (action) => {
         switch (action.type) {

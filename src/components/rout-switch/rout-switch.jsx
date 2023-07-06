@@ -91,6 +91,12 @@ const RoutSwitch = () => {
               path={PATH_PROFILE_ORDERS}
               element={<ProtectedRouteElement element={<HistoryOrderPage />} />}
             />
+            <Route
+              path={`${PATH_PROFILE_ORDERS}/:_id`}
+              element={
+                <ProtectedRouteElement element={<ViewIngredientPage />} />
+              }
+            />
           </Route>
           <Route path={PATH_FEED} element={<FeedsPage />} />
           <Route path={`${PATH_FEED}/:id`} element={<OrderViewPage />} />

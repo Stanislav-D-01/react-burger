@@ -5,17 +5,18 @@ import { getCookie } from "../../utils/utils";
 import OrderFeeds from "../order-feeds/order-feeds";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import styles from "./profile-orders.module.css";
+import { WS_USER_ORDER_CONNECTION_START } from "../../services/actions/userOrder";
 
 const ProfileOrders = () => {
   const dispatch = useDispatch();
-  const orders = useSelector((store) => store.feeds);
+  const orders = useSelector((store) => store.userOrders);
   const ingredients = useSelector((store) => store.ingredients.ingredients);
 
   useEffect(() => {
     const accessToken = getCookie("token");
 
     dispatch({
-      type: WS_CONNECTION_START_FEED,
+      type: WS_USER_ORDER_CONNECTION_START,
       url: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
     });
   }, []);

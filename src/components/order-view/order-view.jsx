@@ -11,26 +11,50 @@ import {
   WS_CONNECTION_START_FEED,
   WS_CONNECTION_CLOSED_FEED,
 } from "../../services/actions/feeds";
+import { WS_USER_ORDER_CONNECTION_START } from "../../services/actions/userOrder";
+
 import { getIngredients } from "../../services/actions/burger-ingredients";
+import { getCookie } from "../../utils/utils";
 
 const OrderView = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { feeds, ingredients } = useSelector((store) => ({
+  const { feeds, ingredients, profileOrders } = useSelector((store) => ({
     feeds: store.feeds,
     ingredients: store.ingredients.ingredients,
+    profileOrders: store.userOrders,
   }));
   const [order, setOrder] = useState("");
-  const [status, setStatus] = useState("");
+  const [page, setPage] = useState("");
   const [total, setTotal] = useState([]);
   const [ingredientsOrder, setIngredientsOrder] = useState([]);
 
   useEffect(() => {
-    !feeds.wsConnected &&
-      dispatch({
-        type: WS_CONNECTION_START_FEED,
-        url: "wss://norma.nomoreparties.space/orders/all",
-      });
+    const accessToken = getCookie("token");
+    if (location.pathname.split("/")[1] === "feed") {
+      setPage("feed");
+    } else {
+      setPage("profile");
+    }
+
+    switch (page) {
+      case "feed": {
+        !feeds.wsConnected &&
+          !feeds.wsOpen &&
+          dispatch({
+            type: WS_CONNECTION_START_FEED,
+            url: "wss://norma.nomoreparties.space/orders/all",
+          });
+      }
+      case "profile": {
+        !profileOrders.wsConnected &&
+          !profileOrders.wsOpen &&
+          dispatch({
+            type: WS_USER_ORDER_CONNECTION_START,
+            url: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
+          });
+      }
+    }
   }, []);
   useEffect(() => {
     if (ingredients.length === 0) {
@@ -39,8 +63,11 @@ const OrderView = () => {
   }, []);
 
   useEffect(() => {
-    const id = location.pathname.split("/")[2];
-    console.log(feeds);
+    const id =
+      page === "feed"
+        ? location.pathname.split("/")[2]
+        : location.pathname.split("/")[3];
+
     if (feeds.orders.length > 0) {
       feeds && setOrder(feeds.orders.find((el) => el._id === id));
 
