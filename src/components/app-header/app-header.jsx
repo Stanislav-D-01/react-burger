@@ -46,7 +46,7 @@ const AppHeader = () => {
           <li className={styles.header__listItem}>
             <ListIcon type="secondary" />
             <NavLink
-              to="/feeds"
+              to="/feed"
               className={({ isActive }) =>
                 isActive
                   ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`

@@ -77,3 +77,10 @@
 .burger-constructor__list-main::-webkit-scrollbar-corner {
   visibility: hidden;
 }
+
+.burger-constructor__img-load {
+  max-width: 214px;
+  width: 100vw;
+  max-height: 56px;
+  object-fit: contain;
+}
