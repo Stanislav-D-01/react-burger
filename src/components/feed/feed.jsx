@@ -9,18 +9,21 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/burger-ingredients";
-import Modal from "../modal/modal";
+import { useLocation } from "react-router-dom";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const feeds = useSelector((store) => store.feeds);
   const ingredients = useSelector((store) => store.ingredients.ingredients);
-
+  const location = useLocation();
   useEffect(() => {
     dispatch({
       type: WS_CONNECTION_START_FEED,
       url: "wss://norma.nomoreparties.space/orders/all",
     });
+    return () => {
+      dispatch({ type: WS_CONNECTION_CLOSED_FEED });
+    };
   }, []);
   useEffect(() => {
     if (ingredients.length === 0) {
@@ -29,9 +32,10 @@ const Feed = () => {
   }, []);
 
   const renderOrderFeeds = (orders, ingredients) => {
-    return orders.map((element) => {
+    return orders.map((element, index) => {
       return (
         <OrderFeeds
+          key={index}
           statusFlag={false}
           order={element}
           ingredients={ingredients}

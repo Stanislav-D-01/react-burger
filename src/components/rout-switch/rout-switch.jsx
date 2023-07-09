@@ -91,13 +91,12 @@ const RoutSwitch = () => {
               path={PATH_PROFILE_ORDERS}
               element={<ProtectedRouteElement element={<HistoryOrderPage />} />}
             />
-            <Route
-              path={`${PATH_PROFILE_ORDERS}/:_id`}
-              element={
-                <ProtectedRouteElement element={<ViewIngredientPage />} />
-              }
-            />
           </Route>
+          <Route
+            path={`${PATH_PROFILE_ORDERS}/:_id`}
+            exact
+            element={<ProtectedRouteElement element={<OrderViewPage />} />}
+          />
           <Route path={PATH_FEED} element={<FeedsPage />} />
           <Route path={`${PATH_FEED}/:id`} element={<OrderViewPage />} />
           <Route
@@ -108,6 +107,13 @@ const RoutSwitch = () => {
         </Routes>
 
         <Routes>
+          {background && (
+            <Route
+              path={`${PATH_INGREDIENTS}/:_id`}
+              exact
+              element={<ModalIngredient />}
+            />
+          )}
           {background && !requestOrder && (
             <Route path={PATH_ORDER} exact element={<ModalOrder />} />
           )}

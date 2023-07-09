@@ -11,10 +11,15 @@ import {
   WS_CONNECTION_START_FEED,
   WS_CONNECTION_CLOSED_FEED,
 } from "../../services/actions/feeds";
-import { WS_USER_ORDER_CONNECTION_START } from "../../services/actions/userOrder";
+import {
+  WS_USER_ORDER_CONNECTION_CLOSED,
+  WS_USER_ORDER_CONNECTION_START,
+} from "../../services/actions/userOrder";
 
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import { getCookie } from "../../utils/utils";
+import OrderFeeds from "../order-feeds/order-feeds";
+import Modal from "../modal/modal";
 
 const OrderView = () => {
   const location = useLocation();
@@ -31,12 +36,14 @@ const OrderView = () => {
 
   useEffect(() => {
     const accessToken = getCookie("token");
+
     if (location.pathname.split("/")[1] === "feed") {
       setPage("feed");
-    } else {
+    }
+    if (location.pathname.split("/")[1] === "profile") {
       setPage("profile");
     }
-
+    console.log(page);
     switch (page) {
       case "feed": {
         !feeds.wsConnected &&
@@ -45,6 +52,7 @@ const OrderView = () => {
             type: WS_CONNECTION_START_FEED,
             url: "wss://norma.nomoreparties.space/orders/all",
           });
+        break;
       }
       case "profile": {
         !profileOrders.wsConnected &&
@@ -53,27 +61,46 @@ const OrderView = () => {
             type: WS_USER_ORDER_CONNECTION_START,
             url: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
           });
+        break;
       }
     }
-  }, []);
+    return () => {
+      if (page === "feed") {
+        dispatch({ type: WS_CONNECTION_CLOSED_FEED });
+      }
+
+      if (page === "profile") {
+        dispatch({ type: WS_USER_ORDER_CONNECTION_CLOSED });
+      }
+    };
+  }, [page]);
   useEffect(() => {
-    if (ingredients.length === 0) {
+    if (ingredients.length == 0) {
       dispatch(getIngredients());
     }
   }, []);
 
   useEffect(() => {
-    const id =
-      page === "feed"
-        ? location.pathname.split("/")[2]
-        : location.pathname.split("/")[3];
+    if (ingredients.length > 0) {
+      const id =
+        page === "feed"
+          ? location.pathname.split("/")[2]
+          : location.pathname.split("/")[3];
 
-    if (feeds.orders.length > 0) {
-      feeds && setOrder(feeds.orders.find((el) => el._id === id));
+      if (feeds.orders.length > 0 && profileOrders.orders.length == 0) {
+        console.log(id);
+        setOrder(feeds.orders.find((el) => el._id === id));
 
-      order && createListIngredientsOrder(order);
+        order && createListIngredientsOrder(order);
+      }
+      if (feeds.orders.length == 0 && profileOrders.orders.length > 0) {
+        console.log(profileOrders.orders);
+        setOrder(profileOrders.orders.find((el) => el._id === id));
+
+        order && createListIngredientsOrder(order);
+      }
     }
-  }, [feeds, order]);
+  }, [feeds, profileOrders, ingredients, order]);
 
   const renderStatusOrder = (status) => {
     switch (status) {

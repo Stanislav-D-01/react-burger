@@ -5,10 +5,15 @@ import { getCookie } from "../../utils/utils";
 import OrderFeeds from "../order-feeds/order-feeds";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import styles from "./profile-orders.module.css";
-import { WS_USER_ORDER_CONNECTION_START } from "../../services/actions/userOrder";
+import {
+  WS_USER_ORDER_CONNECTION_START,
+  WS_USER_ORDER_CONNECTION_CLOSED,
+} from "../../services/actions/userOrder";
+import { useLocation } from "react-router-dom";
 
 const ProfileOrders = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const orders = useSelector((store) => store.userOrders);
   const ingredients = useSelector((store) => store.ingredients.ingredients);
 
@@ -19,6 +24,9 @@ const ProfileOrders = () => {
       type: WS_USER_ORDER_CONNECTION_START,
       url: `wss://norma.nomoreparties.space/orders?token=${accessToken}`,
     });
+    return () => {
+      dispatch({ type: WS_USER_ORDER_CONNECTION_CLOSED });
+    };
   }, []);
 
   useEffect(() => {
@@ -29,9 +37,10 @@ const ProfileOrders = () => {
 
   const renderOrderFeeds = (orders, ingredients) => {
     return orders
-      .map((element) => {
+      .map((element, index) => {
         return (
           <OrderFeeds
+            key={index}
             statusFlag={true}
             order={element}
             ingredients={ingredients}

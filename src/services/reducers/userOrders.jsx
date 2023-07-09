@@ -38,6 +38,7 @@ export const userOrdersReducer = (state = initialState, action) => {
         ...state,
         wsConnected: false,
         wsOpen: false,
+        orders: [],
       };
     }
     default: {

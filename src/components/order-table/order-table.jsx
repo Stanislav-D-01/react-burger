@@ -6,9 +6,10 @@ const OrderTable = ({ data }) => {
     if (status === "done") {
       const doneOrders = orders.filter((el) => el.status === "done");
 
-      return doneOrders.map((el) => {
+      return doneOrders.map((el, index) => {
         return (
           <li
+            key={index}
             className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
           >
             {el.number}

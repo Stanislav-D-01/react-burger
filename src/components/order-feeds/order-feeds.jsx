@@ -9,13 +9,10 @@ import { PATH_FEED } from "../../utils/utils";
 const OrderFeeds = ({ order, ingredients, statusFlag }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { orders } = useSelector((store) => ({
-    orders: store.feeds.orders,
-  }));
+
   const [total, setTotal] = useState(0);
   const [ingredientsOrder, setIngredientsOrder] = useState([]);
   useEffect(() => {
-    console.log(location);
     order.ingredients.length > 0 && createListIngredientsOrder(order);
   }, [order]);
 
@@ -147,7 +144,11 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
   return (
     ingredientsOrder.length > 0 && (
       <section
-        onClick={() => navigate(`${location.pathname}/${order._id}`)}
+        onClick={() =>
+          navigate(`${location.pathname}/${order._id}`, {
+            state: [{ background: location }],
+          })
+        }
         className={styles["order-feeds"]}
       >
         <h2

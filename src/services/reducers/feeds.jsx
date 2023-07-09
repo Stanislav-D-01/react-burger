@@ -28,7 +28,15 @@ export const feedsReducer = (state = initialState, action) => {
       return { ...state, wsConnected: false, error: action.error };
     }
     case WS_CONNECTION_CLOSED_FEED: {
-      return { ...state, wsConnected: false, error: undefined };
+      return {
+        ...state,
+        wsConnected: false,
+        wsOpen: false,
+        orders: [],
+        total: "",
+        totalTd: "",
+        error: undefined,
+      };
     }
     case WS_GET_MESSAGE_FEED: {
       return {
