@@ -134,9 +134,6 @@ export const saveNewProfile = (name, email, pass) => {
   };
 };
 
-
-
-
 export const logout = () => {
   return function (dispatch) {
     dispatch({ type: "LOGOUT_REQUEST" });

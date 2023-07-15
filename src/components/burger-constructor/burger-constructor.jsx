@@ -104,7 +104,7 @@ function BurgerConstructor() {
         openModalOrder();
       }
     } else {
-      navigate("/login");
+      navigate("/login", { state: { history: location.pathname } });
     }
   };
 

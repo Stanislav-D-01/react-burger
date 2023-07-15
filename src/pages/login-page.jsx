@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import styles from "./login-page.module.css";
 import { authorization } from "../services/actions/authorization";
 import { getCookie } from "../utils/utils";
@@ -22,8 +22,7 @@ const LoginPage = () => {
     resetPass: store.auth.resetPassword,
     request: store.auth.request,
   }));
-
-  
+  const location = useLocation();
   const logIn = (login, pass) => {
     dispatch(authorization(login, pass));
   };
@@ -32,7 +31,10 @@ const LoginPage = () => {
     return (
       <div className={styles["login-page"]}>
         <form
-          onSubmit={() => logIn(login, pass)}
+          onSubmit={(event) => {
+            event.preventDefault();
+            logIn(login, pass, event);
+          }}
           className={styles["login-page__form"]}
         >
           <h2 className="text text_type_main-medium">Вход</h2>
@@ -58,13 +60,13 @@ const LoginPage = () => {
             Войти
           </Button>
           <p className="text text_type_main-default text_color_inactive">
-            Вы — новый пользователь?{" "}
+            Вы — новый пользователь?
             <Link className={styles["login-page__link"]} to="/register">
               Зарегистрироваться
             </Link>
           </p>
           <p className="text text_type_main-default text_color_inactive mt-4">
-            Забыли пароль?{" "}
+            Забыли пароль?
             <Link className={styles["login-page__link"]} to="/forgot-password">
               Восстановить пароль
             </Link>
@@ -72,9 +74,6 @@ const LoginPage = () => {
         </form>
       </div>
     );
-  }
-  if (email && !request) {
-    return <Navigate to="/" replace />;
   }
 };
 
