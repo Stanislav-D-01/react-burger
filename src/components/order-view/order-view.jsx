@@ -1,6 +1,6 @@
 import styles from "./order-view.module.css";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
@@ -23,6 +23,7 @@ import Modal from "../modal/modal";
 
 const OrderView = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { feeds, ingredients, profileOrders } = useSelector((store) => ({
     feeds: store.feeds,
@@ -43,7 +44,7 @@ const OrderView = () => {
     if (location.pathname.split("/")[1] === "profile") {
       setPage("profile");
     }
-    console.log(page);
+
     switch (page) {
       case "feed": {
         !feeds.wsConnected &&
@@ -78,6 +79,10 @@ const OrderView = () => {
     if (ingredients.length == 0) {
       dispatch(getIngredients());
     }
+    document.addEventListener("keydown", pageReturn);
+    return () => {
+      document.removeEventListener("keydown", pageReturn);
+    };
   }, []);
 
   useEffect(() => {
@@ -101,6 +106,12 @@ const OrderView = () => {
       }
     }
   }, [feeds, profileOrders, ingredients, order]);
+
+  const pageReturn = (e) => {
+    if (e.key === "Escape") {
+      navigate(-1);
+    }
+  };
 
   const renderStatusOrder = (status) => {
     switch (status) {

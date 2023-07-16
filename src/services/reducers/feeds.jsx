@@ -43,7 +43,7 @@ export const feedsReducer = (state = initialState, action) => {
         ...state,
         orders: action.data.orders,
         total: action.data.total,
-        totalTd: action.data.totalTd,
+        totalTd: action.data.totalToday,
       };
     }
     case WS_CLEAR_STATE_FEED: {

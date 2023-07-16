@@ -43,7 +43,6 @@ const ProfileMenu = () => {
                     : styles["profile-page__link"]
                 }
                 to="/profile/orders"
-                end
               >
                 История заказов
               </NavLink>

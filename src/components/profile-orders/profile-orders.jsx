@@ -9,11 +9,12 @@ import {
   WS_USER_ORDER_CONNECTION_START,
   WS_USER_ORDER_CONNECTION_CLOSED,
 } from "../../services/actions/userOrder";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfileOrders = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const orders = useSelector((store) => store.userOrders);
   const ingredients = useSelector((store) => store.ingredients.ingredients);
 
