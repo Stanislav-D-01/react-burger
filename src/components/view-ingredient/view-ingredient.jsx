@@ -19,9 +19,8 @@ const ViewIngredient = () => {
       dispatch(getIngredients());
     }
     const id = location.pathname.split("/")[2];
-    console.log(ingredients.length);
+
     if (ingredients.length > 0) {
-      console.log(ingredients);
       dispatch({
         type: SET_INGREDIENT_IN_MODAL,
         value: ingredients.find((item) => item._id === id),

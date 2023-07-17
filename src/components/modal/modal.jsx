@@ -30,7 +30,7 @@ const Modal = (props) => {
     //   setIsModal(false);
   };
   const close = () => {
-    navigate("/");
+    navigate(-1);
   };
   return ReactDOM.createPortal(
     <div onClick={(e) => e.stopPropagation()} className={styles.modal}>

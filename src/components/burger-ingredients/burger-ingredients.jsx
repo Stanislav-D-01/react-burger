@@ -2,21 +2,15 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../../utils/utils.js";
-import IngredientsDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
-import { ModalContext } from "../modal/modal-context";
+
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState, useMemo } from "react";
-import {
-  DEL_INGREDIENT_IN_MODAL,
-  SET_INGREDIENT_IN_MODAL,
-} from "../../services/actions/modal";
+
 import { useInView } from "react-intersection-observer";
 import Ingredient from "../ingredient/ingredient";
-import { useLocation, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState("bun");
-  const [isModal, setIsModal] = useState(false);
 
   const {
     dataIngredients,
@@ -29,8 +23,6 @@ const BurgerIngredients = () => {
     ingrLoad: store.ingredients.ingredientsSuccess,
     ingredientInModal: store.modal.ingredient,
   }));
-  const dispatch = useDispatch();
-  let location = useLocation();
 
   const [refBun, inViewBun] = useInView({ threshold: 0.2 });
   const [refMain, inViewMain] = useInView({ threshold: 0.3 });

@@ -4,12 +4,15 @@ import { modalReducer } from "./modal";
 import { orderReducer } from "./order";
 import { combineReducers } from "redux";
 import { authorizationReducer } from "./authorization";
-
+import { feedsReducer } from "./feeds";
+import { userOrdersReducer } from "./userOrders";
 
 export const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   ingredients: burgerIngredientsReducer,
   modal: modalReducer,
   order: orderReducer,
-  auth: authorizationReducer
+  auth: authorizationReducer,
+  feeds: feedsReducer,
+  userOrders: userOrdersReducer,
 });

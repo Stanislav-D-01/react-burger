@@ -5,27 +5,9 @@ import {
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./app-header.module.css";
-import { NavLink, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 
 const AppHeader = () => {
-  let location = useLocation();
-  const [profileActive, setProfileActive] = useState(
-    location.pathname === ("/profile" || "/history-order") ? true : false
-  );
-
-  useEffect(() => {
-    if (
-      location.pathname === "/profile" ||
-      location.pathname === "/history-order"
-    ) {
-      setProfileActive(true);
-    } else {
-      setProfileActive(false);
-    }
-  }, [location.pathname]);
-
   return (
     <header className={styles.header}>
       <nav className={styles.header__nav}>
@@ -46,7 +28,7 @@ const AppHeader = () => {
           <li className={styles.header__listItem}>
             <ListIcon type="secondary" />
             <NavLink
-              to="/feeds"
+              to="/feed"
               className={({ isActive }) =>
                 isActive
                   ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
@@ -65,8 +47,8 @@ const AppHeader = () => {
             <ProfileIcon type="secondary" />
             <NavLink
               to="/profile"
-              className={
-                profileActive
+              className={({ isActive }) =>
+                isActive
                   ? `${styles.header__text} ${styles.header__text_type_inactive} text text_type_main-default`
                   : `${styles.header__text} text text_type_main-default`
               }

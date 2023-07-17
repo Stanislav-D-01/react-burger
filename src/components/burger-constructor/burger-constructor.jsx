@@ -20,6 +20,7 @@ import { sendOrder } from "../../services/actions/order";
 import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import loadImg from "../../image/loading.gif";
 
 function BurgerConstructor() {
   const {
@@ -92,8 +93,6 @@ function BurgerConstructor() {
     }
   };
 
-
-
   const openModalOrder = () => {
     navigate("/order-details", { state: { background: location } });
   };
@@ -105,7 +104,7 @@ function BurgerConstructor() {
         openModalOrder();
       }
     } else {
-      navigate("/login");
+      navigate("/login", { state: { history: location.pathname } });
     }
   };
 
@@ -176,15 +175,22 @@ function BurgerConstructor() {
           <p className="text text_type_digits-medium mr-10">
             {total} <img className="pl-2" src={priceSym} />
           </p>
-
-          <Button
-            onClick={createOrder}
-            htmlType="button"
-            type="primary"
-            size="medium"
-          >
-            Оформить заказ
-          </Button>
+          {!orderRequest && (
+            <Button
+              onClick={createOrder}
+              htmlType="button"
+              type="primary"
+              size="medium"
+            >
+              Оформить заказ
+            </Button>
+          )}
+          {orderRequest && (
+            <img
+              className={styles["burger-constructor__img-load"]}
+              src={loadImg}
+            />
+          )}
         </div>
 
         {isModal && !orderRequest && !orderFailed && (
