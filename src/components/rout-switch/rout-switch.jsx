@@ -61,6 +61,7 @@ const RoutSwitch = () => {
       <>
         <Routes location={background || location}>
           <Route path={PATH_HOME_PAGE} element={<HomePage />} />
+          <Route path={"/react-burger"} element={<HomePage />} />
           <Route
             path={PATH_LOGIN}
             element={
