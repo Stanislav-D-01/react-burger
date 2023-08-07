@@ -47,8 +47,8 @@ function BurgerConstructor() {
   const [, dropRef] = useDrop({
     accept: "ingred",
 
-    drop(item) {
-      const ingredient = ingr.find((el) => el._id === item._id);
+    drop(item: any) {
+      const ingredient = ingr.find((el: any) => el._id === item._id);
 
       if (ingredient && ingredient.type !== "bun") {
         const uuid = uuidv4();
@@ -61,7 +61,6 @@ function BurgerConstructor() {
         const uuidBunBottom = uuidv4();
         dispatch({
           type: ADD_BUN_IN_CONSTRUCTOR,
-
           valueTop: { ...ingredient, uuid: uuidBunTop },
           valueBottom: { ...ingredient, uuid: uuidBunBottom },
         });

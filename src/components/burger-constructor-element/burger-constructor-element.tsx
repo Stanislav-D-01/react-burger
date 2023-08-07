@@ -1,11 +1,25 @@
 import styles from "./burger-constructor-element.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MOVE_INGR_CONSTRUCTOR } from "../../services/actions/burger-constructor";
 
-const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
+interface IBurgerConstructorElementProps {
+  data: any;
+  id: string;
+  deleteIngr: any;
+  type: "top" | "bottom" | undefined;
+  isLocked: boolean;
+}
+
+const BurgerConstructorElement: FC<IBurgerConstructorElementProps> = ({
+  data,
+  id,
+  deleteIngr,
+  type,
+  isLocked,
+}) => {
   const [, dragRef] = useDrag({
     type: "element-ingr",
     item: { id },
@@ -15,10 +29,10 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
     (store) => store.burgerConstructor.ingredientsConstructor
   );
   const dispatch = useDispatch();
-
+  const ref: any = useRef(null);
   const [, dropRef] = useDrop({
     accept: "element-ingr",
-    drop(id) {
+    drop(id: any) {
       if (id.id != ref.current.id) {
         dispatch({
           type: MOVE_INGR_CONSTRUCTOR,
@@ -30,7 +44,7 @@ const BurgerConstructorElement = ({ data, id, deleteIngr, type, isLocked }) => {
       }
     },
   });
-  const ref = useRef(null);
+
   const dragDropRef = dragRef(dropRef(ref));
   const className =
     type === "top"

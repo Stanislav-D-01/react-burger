@@ -3,16 +3,16 @@ import ModalIngredient from "../../pages/modal-ingredient";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "../../pages/home-page.jsx";
-import AppHeader from "../app-header/app-header.jsx";
+import AppHeader from "../app-header/app-header";
 
-import LoginPage from "../../pages/login-page.jsx";
-import ForgotPassword from "../../pages/forgot-password.jsx";
-import RegisterPage from "../../pages/register-page.jsx";
-import ResetPasswordPage from "../../pages/reset-password-page.jsx";
-import ProfilePage from "../../pages/profile-page.jsx";
-import ProtectedRouteElement from "../protected-route-element/protected-route-element.jsx";
+import LoginPage from "../../pages/login-page";
+import ForgotPassword from "../../pages/forgot-password";
+import RegisterPage from "../../pages/register-page";
+import ResetPasswordPage from "../../pages/reset-password-page";
+import ProfilePage from "../../pages/profile-page";
+import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import { useEffect } from "react";
-import { checkAuthorization } from "../../services/actions/check-autorization.jsx";
+import { checkAuthorization } from "../../services/actions/check-autorization";
 import { useDispatch, useSelector } from "react-redux";
 import ModalOrder from "../../pages/modal-order";
 import ViewIngredientPage from "../../pages/view-ingredient-page";
@@ -61,7 +61,7 @@ const RoutSwitch = () => {
       <>
         <Routes location={background || location}>
           <Route path={PATH_HOME_PAGE} element={<HomePage />} />
-          <Route path={"/react-burger"} element={<HomePage />} />
+
           <Route
             path={PATH_LOGIN}
             element={
