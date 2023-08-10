@@ -1,12 +1,12 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import BurgerIngridients from "../components/burger-ingredients/burger-ingredients.jsx";
+import BurgerIngridients from "../components/burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
 import styles from "./home-page.module.css";
 import { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../services/actions/burger-ingredients";
-import { checkAuthorization } from "../services/actions/check-autorization.jsx";
+import { checkAuthorization } from "../services/actions/check-autorization";
 
 const HomePage = () => {
   const errBlock = useRef();
@@ -30,7 +30,7 @@ const HomePage = () => {
         </DndProvider>
       </main>
     )
-  ); 
+  );
 };
 
 export default HomePage;

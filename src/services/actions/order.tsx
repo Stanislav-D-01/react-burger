@@ -1,15 +1,34 @@
 import { BASE_URL } from "../../utils/utils";
-import { request } from "../../utils/burger-api";
 import { CLEAN_CONSTRUCTOR } from "./burger-constructor";
 import { fetchWithRefresh } from "../../utils/burger-api";
 import { getCookie } from "../../utils/utils";
 
-export const SEND_ORDER_REQUEST = "SEND_ORDER_REQUEST";
-export const SEND_ORDER_SUCCSESS = "SEND_ORDER_SUCCSESS";
-export const SEND_ORDER_ERROR = "SEND_ORDER_ERROR";
-export const CLEAN_ORDER = "CLEAR_ORDER";
+export const SEND_ORDER_REQUEST: "SEND_ORDER_REQUEST" = "SEND_ORDER_REQUEST";
+export const SEND_ORDER_SUCCSESS: "SEND_ORDER_SUCCSESS" = "SEND_ORDER_SUCCSESS";
+export const SEND_ORDER_ERROR: "SEND_ORDER_ERROR" = "SEND_ORDER_ERROR";
+export const CLEAN_ORDER: "CLEAR_ORDER" = "CLEAR_ORDER";
 
-export function sendOrder(ingr) {
+export type TSendOrderRequest = {
+  readonly type: typeof SEND_ORDER_REQUEST;
+};
+export type TSendOrderSuccsess = {
+  readonly type: typeof SEND_ORDER_SUCCSESS;
+};
+export type TSendOrderError = {
+  readonly type: typeof SEND_ORDER_ERROR;
+};
+
+export type TCleanOrder = {
+  readonly type: typeof CLEAN_ORDER;
+};
+
+export type TOrderActions =
+  | TSendOrderRequest
+  | TSendOrderSuccsess
+  | TSendOrderError
+  | TCleanOrder;
+
+export function sendOrder(ingr: any) {
   return function (dispatch) {
     dispatch({ type: SEND_ORDER_REQUEST });
     const token = getCookie("token");

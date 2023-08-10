@@ -29,7 +29,23 @@ import {
   GET_NEW_TOKEN_ERROR,
 } from "../actions/check-autorization";
 
-const initialState = {
+import { TAuthorizationActions } from "../actions/authorization";
+import { TCheckAutorizationAction } from "../actions/check-autorization";
+
+type TAuthorizationState = {
+  name: string;
+  email: string;
+  pass: string;
+  request: boolean;
+  requestError: boolean;
+  requestSuccess: boolean;
+  autorization: boolean;
+  sendEmailSuccess: boolean;
+  resetPassword: boolean;
+  loadEnd: boolean;
+};
+
+const initialState: TAuthorizationState = {
   name: "",
   email: "",
   pass: "",
@@ -42,7 +58,10 @@ const initialState = {
   loadEnd: false,
 };
 
-export const authorizationReducer = (state = initialState, action) => {
+export const authorizationReducer = (
+  state = initialState,
+  action: TAuthorizationActions | TCheckAutorizationAction
+) => {
   switch (action.type) {
     case SEND_REGISTRATION_REQUEST: {
       return {

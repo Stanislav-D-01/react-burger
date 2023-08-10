@@ -5,6 +5,12 @@ import {
   TOGGLE_MODAL_ORDER,
 } from "../actions/modal";
 
+type TInitialState = {
+  ingredient: object;
+  isModalIngr: boolean;
+  isModalOrder: boolean;
+};
+
 const initialState = {
   ingredient: {},
   isModalIngr: false,

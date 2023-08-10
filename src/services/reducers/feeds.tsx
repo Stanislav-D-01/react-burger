@@ -7,6 +7,17 @@ import {
   WS_CONNECTION_OPEN_FEED,
 } from "../actions/feeds";
 
+import { TFeedsActions } from "../actions/feeds";
+
+type TInitialState = {
+  wsConnected: boolean;
+  wsOpen: boolean;
+  orders: object[];
+  total: number;
+  totalTd: number;
+  error: string;
+};
+
 const initialState = {
   wsConnected: false,
   wsOpen: false,
@@ -16,7 +27,7 @@ const initialState = {
   error: undefined,
 };
 
-export const feedsReducer = (state = initialState, action) => {
+export const feedsReducer = (state = initialState, action: TFeedsActions) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS_FEED: {
       return { ...state, wsConnected: true, error: undefined };

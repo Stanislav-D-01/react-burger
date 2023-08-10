@@ -2,5 +2,5 @@
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "cSpell.words": ["Сircle", "INGR"],
-  "cSpell.ignoreWords": ["uuidv"]
+  "cSpell.ignoreWords": ["Succsess", "TOGGAL", "autorization", "uuidv"]
 }

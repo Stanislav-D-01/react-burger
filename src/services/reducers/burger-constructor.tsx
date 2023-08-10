@@ -7,12 +7,22 @@ import {
   CLEAN_CONSTRUCTOR,
 } from "../actions/burger-constructor";
 
-const initialState = {
+import { TBurgerConstructorActions } from "../actions/burger-constructor";
+
+type TInitialState = {
+  ingredientsConstructor: object[];
+  total: number;
+};
+
+const initialState: TInitialState = {
   ingredientsConstructor: [],
   total: 0,
 };
 
-export const burgerConstructorReducer = (state = initialState, action) => {
+export const burgerConstructorReducer = (
+  state = initialState,
+  action: TBurgerConstructorActions
+) => {
   switch (action.type) {
     case CALC_TOTAL_PRICE: {
       return { ...state, total: action.value };
@@ -49,7 +59,7 @@ export const burgerConstructorReducer = (state = initialState, action) => {
       const ingDrop = arrayIngr.find(
         (item, index) => action.indexDrop == index
       );
-      const ingrDrag = arrayIngr.find(
+      const ingrDrag: any = arrayIngr.find(
         (item, index) => action.indexDrag == index
       );
       arrayIngr.splice(action.indexDrag, 1);

@@ -4,6 +4,15 @@ import {
   GET_INGREDIENTS_ERROR,
 } from "../actions/burger-ingredients";
 
+import { TBurgerIngredientsActions } from "../actions/burger-ingredients";
+
+type TInitialState = {
+  ingredients: object[];
+  ingredientsRequest: Boolean;
+  ingredientsSuccess: Boolean;
+  ingredientsFailed: Boolean;
+};
+
 const initialState = {
   ingredients: [],
   ingredientsRequest: false,
@@ -11,7 +20,10 @@ const initialState = {
   ingredientsFailed: false,
 };
 
-export const burgerIngredientsReducer = (state = initialState, action) => {
+export const burgerIngredientsReducer = (
+  state = initialState,
+  action: TBurgerIngredientsActions
+) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return { ...state, ingredientsRequest: true };
