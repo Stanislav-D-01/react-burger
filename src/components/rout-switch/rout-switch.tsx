@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import ModalIngredient from "../../pages/modal-ingredient";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import HomePage from "../../pages/home-page.jsx";
+import HomePage from "../../pages/home-page";
 import AppHeader from "../app-header/app-header";
 
 import LoginPage from "../../pages/login-page";
@@ -13,7 +13,7 @@ import ProfilePage from "../../pages/profile-page";
 import ProtectedRouteElement from "../protected-route-element/protected-route-element";
 import { useEffect } from "react";
 import { checkAuthorization } from "../../services/actions/check-autorization";
-import { useDispatch, useSelector } from "react-redux";
+
 import ModalOrder from "../../pages/modal-order";
 import ViewIngredientPage from "../../pages/view-ingredient-page";
 import ErrorPage from "../../pages/404-page";
@@ -34,6 +34,9 @@ import {
 import FeedsPage from "../../pages/feeds-page";
 import OrderViewPage from "../../pages/order-view-page";
 import { getIngredients } from "../../services/actions/burger-ingredients";
+import { RootState } from "../../index";
+import { useSelector } from "../../services/types/hooks-types";
+import { useDispatch } from "../../services/types/hooks-types";
 
 const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -95,7 +98,6 @@ const RoutSwitch = () => {
           </Route>
           <Route
             path={`${PATH_PROFILE_ORDERS}/:_id`}
-            exact
             element={<ProtectedRouteElement element={<OrderViewPage />} />}
           />
           <Route path={PATH_FEED} element={<FeedsPage />} />
@@ -111,17 +113,16 @@ const RoutSwitch = () => {
           {background && (
             <Route
               path={`${PATH_INGREDIENTS}/:_id`}
-              exact
               element={<ModalIngredient />}
             />
           )}
           {background && !requestOrder && (
-            <Route path={PATH_ORDER} exact element={<ModalOrder />} />
+            <Route path={PATH_ORDER} element={<ModalOrder />} />
           )}
         </Routes>
       </>
     );
-  }
+  } else return <></>;
 };
 
 export default RoutSwitch;

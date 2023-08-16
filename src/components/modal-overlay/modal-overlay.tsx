@@ -2,7 +2,11 @@ import styles from "./modal-overlay.module.css";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-const ModalOverlay = ({ onClose }) => {
+type TModalOverlay = {
+  onClose: () => void;
+};
+
+const ModalOverlay = ({ onClose }: TModalOverlay) => {
   const navigate = useNavigate();
 
   return (

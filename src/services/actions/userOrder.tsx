@@ -9,6 +9,7 @@ export const WS_USER_ORDER_CONNECTION_CLOSED: "WS_USER_ORDER_CONNECTION_CLOSED" 
 
 export type TWSUserOrderGetMessage = {
   readonly type: typeof WS_USER_ORDER_GET_MESSAGE;
+  data: { orders: any };
 };
 export type TWSUserOrderConnectionStart = {
   readonly type: typeof WS_USER_ORDER_CONNECTION_START;

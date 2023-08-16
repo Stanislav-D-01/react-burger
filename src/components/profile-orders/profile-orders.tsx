@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/types/hooks-types";
 import { useEffect } from "react";
 import { WS_CONNECTION_START_FEED } from "../../services/actions/feeds";
 import { getCookie } from "../../utils/utils";
@@ -10,7 +10,7 @@ import {
   WS_USER_ORDER_CONNECTION_CLOSED,
 } from "../../services/actions/userOrder";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import { TIngredients, TOrders } from "../../services/types/types";
 const ProfileOrders = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -36,7 +36,7 @@ const ProfileOrders = () => {
     }
   }, []);
 
-  const renderOrderFeeds = (orders, ingredients) => {
+  const renderOrderFeeds = (orders: TOrders[], ingredients: TIngredients[]) => {
     return orders
       .map((element, index) => {
         return (

@@ -6,14 +6,14 @@ import {
 
 import { TBurgerIngredientsActions } from "../actions/burger-ingredients";
 
-type TInitialState = {
-  ingredients: object[];
+type TBurgerIngredientsState = {
+  ingredients: any;
   ingredientsRequest: Boolean;
   ingredientsSuccess: Boolean;
   ingredientsFailed: Boolean;
 };
 
-const initialState = {
+const initialState: TBurgerIngredientsState = {
   ingredients: [],
   ingredientsRequest: false,
   ingredientsSuccess: false,

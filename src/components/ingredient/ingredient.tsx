@@ -3,8 +3,14 @@ import styles from "../ingredient/ingredient.module.css";
 import priceSym from "../../image/Subtract.svg";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
+import { TIngredients } from "../../services/types/types";
+import { FC } from "react";
+type TIngredient = {
+  ingr: TIngredients;
+  counter: number;
+};
 
-const Ingredient = ({ ingr, counter }) => {
+const Ingredient: FC<TIngredient> = ({ ingr, counter }) => {
   const { _id } = ingr;
   let location = useLocation();
 

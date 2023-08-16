@@ -6,16 +6,17 @@ import {
   WS_CONNECTION_START_FEED,
   WS_CONNECTION_CLOSED_FEED,
 } from "../../services/actions/feeds";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import { useLocation } from "react-router-dom";
+import { TOrders, TIngredients } from "../../services/types/types";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const feeds = useSelector((store) => store.feeds);
   const ingredients = useSelector((store) => store.ingredients.ingredients);
   const location = useLocation();
+
   useEffect(() => {
     dispatch({
       type: WS_CONNECTION_START_FEED,
@@ -31,7 +32,7 @@ const Feed = () => {
     }
   }, []);
 
-  const renderOrderFeeds = (orders, ingredients) => {
+  const renderOrderFeeds = (orders: TOrders[], ingredients: TIngredients[]) => {
     return orders.map((element, index) => {
       return (
         <OrderFeeds

@@ -4,7 +4,7 @@ import BurgerIngridients from "../components/burger-ingredients/burger-ingredien
 import BurgerConstructor from "../components/burger-constructor/burger-constructor";
 import styles from "./home-page.module.css";
 import { useRef, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/types/hooks-types";
 import { getIngredients } from "../services/actions/burger-ingredients";
 import { checkAuthorization } from "../services/actions/check-autorization";
 
@@ -20,17 +20,16 @@ const HomePage = () => {
     dispatch(getIngredients());
   }, []);
 
-  return (
-    !ingredientsRequest &&
-    !request && (
+  if (!ingredientsRequest && !request) {
+    return (
       <main className={styles.home}>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngridients />
           <BurgerConstructor />
         </DndProvider>
       </main>
-    )
-  );
+    );
+  } else return <></>;
 };
 
 export default HomePage;

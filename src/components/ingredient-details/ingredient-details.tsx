@@ -1,5 +1,5 @@
 import styles from "./ingredient-details.module.css";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../services/types/hooks-types";
 
 const IngredientsDetails = () => {
   const data = useSelector((store) => store.modal.ingredient);

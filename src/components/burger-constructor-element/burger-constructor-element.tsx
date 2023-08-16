@@ -2,16 +2,20 @@ import styles from "./burger-constructor-element.module.css";
 import { ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDrag, useDrop } from "react-dnd";
 import { useEffect, useRef, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../services/types/hooks-types";
 import { MOVE_INGR_CONSTRUCTOR } from "../../services/actions/burger-constructor";
+import { TIngredients } from "../../services/types/types";
 
 interface IBurgerConstructorElementProps {
-  data: any;
+  data: TIngredients;
   id: string;
-  deleteIngr: any;
-  type: "top" | "bottom" | undefined;
-  isLocked: boolean;
+  deleteIngr?: () => void;
+  type?: "top" | "bottom" | undefined;
+  isLocked?: boolean;
 }
+type TId = {
+  id: string;
+};
 
 const BurgerConstructorElement: FC<IBurgerConstructorElementProps> = ({
   data,
@@ -29,17 +33,22 @@ const BurgerConstructorElement: FC<IBurgerConstructorElementProps> = ({
     (store) => store.burgerConstructor.ingredientsConstructor
   );
   const dispatch = useDispatch();
-  const ref: any = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
   const [, dropRef] = useDrop({
     accept: "element-ingr",
-    drop(id: any) {
-      if (id.id != ref.current.id) {
+    drop(id: TId) {
+      console.log(id);
+      if (id.id != ref.current!.id) {
         dispatch({
           type: MOVE_INGR_CONSTRUCTOR,
-          indexDrop: ref.current.id,
-          valueDrag: ingrConstr.find((item, index) => index == id.id),
+          indexDrop: ref.current!.id,
+          valueDrag: ingrConstr.find(
+            (item, index) => index.toString() == id.id
+          ),
           indexDrag: id.id,
-          valueDrop: ingrConstr.find((item, index) => index == ref.current.id),
+          valueDrop: ingrConstr.find(
+            (item, index) => index.toString() == ref.current!.id
+          ),
         });
       }
     },

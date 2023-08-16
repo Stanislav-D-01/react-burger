@@ -5,13 +5,24 @@ import {
   WS_USER_ORDER_CONNECTION_CLOSED,
 } from "../actions/userOrder";
 
-const initialState = {
+import { TUserOrderActions } from "../actions/userOrder";
+
+type TUserOrderState = {
+  wsConnected: boolean;
+  wsOpen: boolean;
+  orders: object[];
+};
+
+const initialState: TUserOrderState = {
   wsConnected: false,
   wsOpen: false,
   orders: [],
 };
 
-export const userOrdersReducer = (state = initialState, action) => {
+export const userOrdersReducer = (
+  state = initialState,
+  action: TUserOrderActions
+) => {
   switch (action.type) {
     case WS_USER_ORDER_GET_MESSAGE: {
       return {

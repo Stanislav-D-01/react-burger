@@ -3,6 +3,9 @@ import { request } from "../../utils/burger-api";
 
 import { setCookie, getCookie } from "../../utils/utils";
 import { fetchWithRefresh } from "../../utils/burger-api";
+import { AppThunk } from "../types/thunk-types";
+import { AppDispatch } from "../types/dispatch-types";
+
 export const SEND_REGISTRATION_REQUEST: "SEND_REGISTRATION_REQUEST" =
   "SEND_REGISTRATION_REQUEST";
 export const SEND_REGISTRATION_SUCCSESS: "SEND_REGISTRATION_SUCCSESS" =
@@ -124,8 +127,8 @@ export type TAuthorizationActions =
   | TSaveNewProfileSuccess
   | TSaveNewProfileError;
 
-export const resetPassword = (newPass: string, token: string) => {
-  return function (dispatch) {
+export const resetPassword: AppThunk = (newPass: string, token: string) => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: "RESET_PASSWORD_REQUEST" });
     request(`${BASE_URL}password-reset/reset`, {
       method: "POST",
@@ -141,8 +144,8 @@ export const resetPassword = (newPass: string, token: string) => {
   };
 };
 
-export const authorization = (email: string, pass: string) => {
-  return function (dispatch) {
+export const authorization: AppThunk = (email: string, pass: string) => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: "AUTHORIZATION_REQUEST" });
     request(`${BASE_URL}auth/login`, {
       method: "POST",
@@ -166,8 +169,12 @@ export const authorization = (email: string, pass: string) => {
   };
 };
 
-export const sendRegitration = (email: string, pass: string, name: string) => {
-  return function (dispatch) {
+export const sendRegitration: AppThunk = (
+  email: string,
+  pass: string,
+  name: string
+) => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: "SEND_REGISTRATION_REQUEST" });
     request(`${BASE_URL}auth/register`, {
       method: "POST",
@@ -191,9 +198,9 @@ export const sendRegitration = (email: string, pass: string, name: string) => {
   };
 };
 
-export const forgotPassSendEmail = (email: string) => {
-  return function (dispatch) {
-    dispatch({ type: "FORGOT_PASS_SEND_EMAIL_REQUEST" });
+export const forgotPassSendEmail: AppThunk = (email: string) => {
+  return function (dispatch: AppDispatch) {
+    dispatch({ type: FORGOT_PASS_SEND_EMAIL_REQUEST });
     request(`${BASE_URL}password-reset`, {
       method: "POST",
       headers: {
@@ -202,16 +209,20 @@ export const forgotPassSendEmail = (email: string) => {
       body: JSON.stringify({ email: email }),
     })
       .then(() => {
-        dispatch({ type: "FORGOT_PASS_SEND_EMAIL_SUCCSESS" });
+        dispatch({ type: FORGOT_PASS_SEND_EMAIL_SUCCSESS });
       })
       .catch((err) =>
-        dispatch({ type: "FORGOT_PASS_SEND_EMAIL_ERROR", err: err })
+        dispatch({ type: FORGOT_PASS_SEND_EMAIL_ERROR, err: err })
       );
   };
 };
 
-export const saveNewProfile = (name, email, pass) => {
-  return function (dispatch) {
+export const saveNewProfile: AppThunk = (
+  name: string,
+  email: string,
+  pass: string
+) => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: "SAVE_NEW_PROFILE_REQUEST" });
     const token = getCookie("token");
     if (token) {
@@ -233,8 +244,8 @@ export const saveNewProfile = (name, email, pass) => {
   };
 };
 
-export const logout = () => {
-  return function (dispatch) {
+export const logout: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: "LOGOUT_REQUEST" });
     const token = getCookie("refreshToken");
     request(`${BASE_URL}auth/logout`, {

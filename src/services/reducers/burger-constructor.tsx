@@ -6,15 +6,16 @@ import {
   CALC_TOTAL_PRICE,
   CLEAN_CONSTRUCTOR,
 } from "../actions/burger-constructor";
+import { TIngredients } from "../types/types";
 
 import { TBurgerConstructorActions } from "../actions/burger-constructor";
 
-type TInitialState = {
-  ingredientsConstructor: object[];
+type TBurgerConstructorState = {
+  ingredientsConstructor: TIngredients[];
   total: number;
 };
 
-const initialState: TInitialState = {
+const initialState: TBurgerConstructorState = {
   ingredientsConstructor: [],
   total: 0,
 };

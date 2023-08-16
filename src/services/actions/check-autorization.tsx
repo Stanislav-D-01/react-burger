@@ -1,6 +1,8 @@
 import { BASE_URL } from "../../utils/utils";
 import { request, fetchWithRefresh } from "../../utils/burger-api";
 import { setCookie, getCookie } from "../../utils/utils";
+import { AppThunk } from "../types/thunk-types";
+import { AppDispatch } from "../types/dispatch-types";
 export const CHECK_AUTHORIZATION_REQUEST: "CHECK_AUTHORIZATION_REQUEST" =
   "CHECK_AUTHORIZATION_REQUEST";
 export const CHECK_AUTHORIZATION_SUCCESS: "CHECK_AUTHORIZATION_SUCCESS" =
@@ -41,8 +43,8 @@ export type TCheckAutorizationAction =
   | TGetNewTokenSuccess
   | TGetNewTokenError;
 
-export const checkAuthorization = () => {
-  return function (dispatch) {
+export const checkAuthorization: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({ type: CHECK_AUTHORIZATION_REQUEST });
     const token = getCookie("token");
     if (token) {

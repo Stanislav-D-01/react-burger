@@ -3,14 +3,15 @@ import styles from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
 import { dataPropTypes } from "../../utils/utils.js";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { useEffect, useState, useMemo } from "react";
 
 import { useInView } from "react-intersection-observer";
 import Ingredient from "../ingredient/ingredient";
 import { useLocation } from "react-router-dom";
+import { TIngredients } from "../../services/types/types";
 const BurgerIngredients = () => {
-  const [current, setCurrent] = useState("bun");
+  const [current, setCurrent] = useState<string>("bun");
 
   const {
     dataIngredients,
@@ -42,16 +43,16 @@ const BurgerIngredients = () => {
 
   useEffect(() => {
     if (document.getElementById(current)) {
-      document.getElementById(current).scrollIntoView({ behavior: "smooth" });
+      document.getElementById(current)!.scrollIntoView({ behavior: "smooth" });
     }
   }, [current]);
 
   const loadIngredients = useMemo(
-    () => (data, type) => {
-      return data.map((element, index) => {
+    () => (data: TIngredients[], type: string) => {
+      return data.map((element: TIngredients, index: number) => {
         if (element.type === type) {
           const counter = ingredientsConstructor.filter(
-            (item) => item._id === element._id
+            (item: TIngredients) => item._id === element._id
           ).length;
           return <Ingredient key={index} ingr={element} counter={counter} />;
         }
@@ -60,7 +61,7 @@ const BurgerIngredients = () => {
     [ingredientsConstructor]
   );
 
-  const renderIngredients = (data) => {
+  const renderIngredients = (data: TIngredients[]) => {
     return (
       <>
         <h3 id="bun" className="text text_type_main-medium mt-10">

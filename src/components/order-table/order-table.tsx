@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import styles from "./order-table.module.css";
 
+type;
+
 const OrderTable = ({ data }) => {
+  console.log(data);
   const getListOrders = (orders, status) => {
     if (status === "done") {
       const doneOrders = orders.filter((el) => el.status === "done");

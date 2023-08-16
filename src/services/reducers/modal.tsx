@@ -5,19 +5,21 @@ import {
   TOGGLE_MODAL_ORDER,
 } from "../actions/modal";
 
-type TInitialState = {
+import { TModalActions } from "../actions/modal";
+
+type TModalState = {
   ingredient: object;
   isModalIngr: boolean;
   isModalOrder: boolean;
 };
 
-const initialState = {
+const initialState: TModalState = {
   ingredient: {},
   isModalIngr: false,
   isModalOrder: false,
 };
 
-export const modalReducer = (state = initialState, action) => {
+export const modalReducer = (state = initialState, action: TModalActions) => {
   switch (action.type) {
     case SET_INGREDIENT_IN_MODAL: {
       return { ...state, ingredient: action.value };

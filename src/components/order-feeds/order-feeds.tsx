@@ -1,34 +1,56 @@
 import { FormattedDate } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState, useMemo } from "react";
-import { useSelector, useDispatch } from "react-redux";
+
 import styles from "./order-feeds.module.css";
 import priceSym from "../../image/Subtract.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PATH_FEED } from "../../utils/utils";
+import { TOrders, TIngredients } from "../../services/types/types";
 
-const OrderFeeds = ({ order, ingredients, statusFlag }) => {
+type TOrder = {
+  name: string;
+  number: number;
+  status: string;
+  updatedAt: string;
+  _id: string;
+  ingredients: string[];
+  createdAt?: string | number | Date;
+};
+
+type TOrderFeeds = {
+  order: TOrder;
+  ingredients: TIngredients[] | undefined;
+  statusFlag: boolean;
+};
+
+type TIngredientsNoDuplicates = {
+  ingredient: TIngredients | undefined;
+  num: number;
+};
+const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [total, setTotal] = useState(0);
-  const [ingredientsOrder, setIngredientsOrder] = useState([]);
+  const [ingredientsOrder, setIngredientsOrder] =
+    useState<TIngredientsNoDuplicates[]>();
   useEffect(() => {
     order.ingredients.length > 0 && createListIngredientsOrder(order);
   }, [order]);
 
-  const createListIngredientsOrder = (order) => {
+  const createListIngredientsOrder = (order: TOrder) => {
     const arrayOrderIngredients = order.ingredients.map((el) => {
       const numbIngredients = order.ingredients.filter(
         (item) => item === el
       ).length;
 
       return {
-        ingredient: ingredients.find((item) => item._id === el),
+        ingredient: ingredients!.find((item) => item._id === el),
         num: numbIngredients,
       };
     });
 
-    let arrayOrderIngredientsNoDuplicates = [];
+    let arrayOrderIngredientsNoDuplicates: TIngredientsNoDuplicates[] = [];
     for (let i = 0; i < arrayOrderIngredients.length; i++) {
       for (let y = 0; y < arrayOrderIngredients.length; y++) {
         if (
@@ -36,12 +58,12 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
           arrayOrderIngredients[y].ingredient
         ) {
           if (
-            arrayOrderIngredients[i].ingredient._id ==
-              arrayOrderIngredients[y].ingredient._id &&
+            arrayOrderIngredients[i].ingredient!._id ==
+              arrayOrderIngredients[y].ingredient!._id &&
             y == i &&
             !arrayOrderIngredientsNoDuplicates.find(
               (el) =>
-                el.ingredient._id == arrayOrderIngredients[y].ingredient._id
+                el.ingredient!._id == arrayOrderIngredients[y].ingredient!._id
             )
           ) {
             arrayOrderIngredientsNoDuplicates.push(arrayOrderIngredients[i]);
@@ -49,15 +71,17 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
         }
       }
     }
+
     const total = arrayOrderIngredientsNoDuplicates.reduce(
-      (sum, el) => sum + el.ingredient.price * el.num,
+      (sum, el) => sum + el.ingredient!.price * el.num,
       0
     );
+
     setIngredientsOrder(arrayOrderIngredientsNoDuplicates);
     setTotal(total);
   };
 
-  const renderStatusOrder = (status) => {
+  const renderStatusOrder = (status: string) => {
     switch (status) {
       case "done": {
         return (
@@ -102,7 +126,10 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
     }
   };
 
-  const renderIngredients = (orderIngredients, ingredients) => {
+  const renderIngredients = (
+    orderIngredients: TIngredientsNoDuplicates[],
+    ingredients: TIngredients[]
+  ) => {
     if (orderIngredients.length > 0) {
       let numСircle = 0;
 
@@ -110,7 +137,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
         numСircle = numСircle + 1;
 
         let ingredient = ingredients.find(
-          (el) => el._id === elem.ingredient._id
+          (el) => el._id === elem.ingredient!._id
         );
 
         if (numСircle <= 6 && ingredient) {
@@ -141,8 +168,8 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
       return imageIngredients;
     }
   };
-  return (
-    ingredientsOrder.length > 0 && (
+  if (ingredientsOrder && ingredientsOrder!.length > 0) {
+    return (
       <section
         onClick={() =>
           navigate(`${location.pathname}/${order._id}`, {
@@ -159,7 +186,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
 
         <FormattedDate
           className={`${styles["order-feeds__date"]} text text_type_main-default text_color_inactive`}
-          date={new Date(order.createdAt)}
+          date={new Date(order.createdAt!)}
         />
         <h2
           className={`${styles["order-feeds__name"]} text text_type_main-medium`}
@@ -169,7 +196,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
         </h2>
 
         <section className={styles["ingredients-circle"]}>
-          {renderIngredients(ingredientsOrder, ingredients)}
+          {renderIngredients(ingredientsOrder, ingredients!)}
         </section>
         <p
           className={`${styles["order-feeds__price"]} text text_type_digits-default mt-4`}
@@ -177,8 +204,8 @@ const OrderFeeds = ({ order, ingredients, statusFlag }) => {
           {total} <img src={priceSym} />
         </p>
       </section>
-    )
-  );
+    );
+  } else return <></>;
 };
 
 export default OrderFeeds;

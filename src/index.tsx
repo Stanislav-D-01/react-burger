@@ -8,27 +8,30 @@ import {
   applyMiddleware,
 } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import thunk, { ThunkAction } from "redux-thunk";
 import { socketMiddleware } from "./services/middleware/socketMiddleware";
 import {
   WS_CONNECTION_CLOSED_FEED,
   WS_CONNECTION_START_FEED,
-  WS_CONNECTION_SUCCESS_FEED,
   WS_GET_MESSAGE_FEED,
-  WS_CLEAR_STATE_FEED,
   WS_CONNECTION_OPEN_FEED,
-} from "../src/services/actions/feeds";
+} from "./services/actions/feeds";
 
 import {
   WS_USER_ORDER_GET_MESSAGE,
   WS_USER_ORDER_CONNECTION_START,
   WS_USER_ORDER_CONNECTION_OPEN,
   WS_USER_ORDER_CONNECTION_CLOSED,
-} from "../src/services/actions/userOrder";
+} from "./services/actions/userOrder";
 
+declare global {
+  interface Window {
+    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+  }
+}
 const composeEnhancers =
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     : compose;
 
 const enhancer = composeEnhancers(
@@ -49,14 +52,19 @@ const enhancer = composeEnhancers(
   )
 );
 const store = createStore(rootReducer, enhancer);
+export type RootState = ReturnType<typeof store.getState>;
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const rootHtml = document.getElementById("root") as HTMLElement | null;
 
-root.render(
-  <>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </>
-);
+if (rootHtml != null) {
+  const root = ReactDOM.createRoot(rootHtml);
+
+  root.render(
+    <>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </>
+  );
+}
 reportWebVitals();

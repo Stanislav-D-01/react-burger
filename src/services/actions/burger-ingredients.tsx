@@ -1,6 +1,8 @@
 import { request } from "../../utils/burger-api";
 import { BASE_URL } from "../../utils/utils";
 import { CLEAN_CONSTRUCTOR } from "./burger-constructor";
+import { AppThunk } from "../types/thunk-types";
+import { AppDispatch } from "../types/dispatch-types";
 
 export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" =
   "GET_INGREDIENTS_REQUEST";
@@ -26,8 +28,8 @@ export type TBurgerIngredientsActions =
   | TGetIngredientsSuccsess
   | TGetIngredientsError;
 
-export function getIngredients() {
-  return function (dispatch) {
+export const getIngredients: AppThunk = () => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
     });
@@ -40,4 +42,4 @@ export function getIngredients() {
         dispatch({ type: CLEAN_CONSTRUCTOR });
       });
   };
-}
+};

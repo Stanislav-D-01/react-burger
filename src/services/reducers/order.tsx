@@ -4,15 +4,23 @@ import {
   SEND_ORDER_ERROR,
   CLEAN_ORDER,
 } from "../actions/order";
+import { TOrderActions } from "../actions/order";
 
-const initialState = {
+type TOrderState = {
+  order: object;
+  orderRequest: boolean;
+  orderFailed: boolean;
+  ingredients: object;
+};
+
+const initialState: TOrderState = {
   order: {},
   orderRequest: false,
   orderFailed: false,
   ingredients: {},
 };
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderActions) => {
   switch (action.type) {
     case SEND_ORDER_REQUEST: {
       return { ...state, orderRequest: true };

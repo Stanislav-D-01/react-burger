@@ -1,13 +1,14 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-constructor.module.css";
 import priceSym from "../../image/Subtract_constructor.svg";
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import PropTypes from "prop-types";
 import OrderDetails from "../order-details/order-details";
 import Modal from "../modal/modal";
 import { ModalContext } from "../modal/modal-context";
 import { dataPropTypes } from "../../utils/utils";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { useDrop } from "react-dnd";
 import BurgerConstructorElement from "../burger-constructor-element/burger-constructor-element";
 import {
@@ -21,6 +22,11 @@ import { v4 as uuidv4 } from "uuid";
 import { useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import loadImg from "../../image/loading.gif";
+import {
+  TIngredients,
+  TTypeBun,
+  TIngredientId,
+} from "../../services/types/types";
 
 function BurgerConstructor() {
   const {
@@ -47,8 +53,8 @@ function BurgerConstructor() {
   const [, dropRef] = useDrop({
     accept: "ingred",
 
-    drop(item: any) {
-      const ingredient = ingr.find((el: any) => el._id === item._id);
+    drop(item: TIngredientId) {
+      const ingredient = ingr.find((el: TIngredients) => el._id === item._id);
 
       if (ingredient && ingredient.type !== "bun") {
         const uuid = uuidv4();
@@ -77,7 +83,7 @@ function BurgerConstructor() {
     ingrConstr.length == 0 && addBunStart(ingr);
   }, [ingr]);
 
-  const addBunStart = (arrIngr) => {
+  const addBunStart = (arrIngr: TIngredients[]) => {
     if (arrIngr.length > 0) {
       const bunTop = {
         ...arrIngr.find((item) => item.type == "bun"),
@@ -107,17 +113,22 @@ function BurgerConstructor() {
     }
   };
 
-  const deleteIngr = (e) => {
-    dispatch({ type: DEL_INGR_CONSTRUCTOR, value: e.target.closest("li").id });
-    totalPrice(ingrConstr);
+  const deleteIngr = (e: Event) => {
+    if (e.target != null) {
+      dispatch({
+        type: DEL_INGR_CONSTRUCTOR,
+        value: (e.target as HTMLElement).closest("li")!.id,
+      });
+      totalPrice(ingrConstr);
+    }
   };
 
-  const renderBun = (arr, type) => {
+  const renderBun = (arr: TIngredients[], type: TTypeBun) => {
     if (type === "top") {
       return (
         <BurgerConstructorElement
           data={arr[0]}
-          id={0}
+          id={"0"}
           type={type}
           isLocked={true}
           key={arr[0].uuid}
@@ -127,7 +138,7 @@ function BurgerConstructor() {
       return (
         <BurgerConstructorElement
           data={arr[1]}
-          id={1}
+          id={"1"}
           type={type}
           isLocked={true}
           key={arr[1].uuid}
@@ -136,14 +147,14 @@ function BurgerConstructor() {
     }
   };
 
-  const renderMain = (data) => {
+  const renderMain = (data: TIngredients[]) => {
     return data.map((element, index) => {
       if (element.type !== "bun") {
         return (
           <BurgerConstructorElement
             data={element}
-            id={index}
-            deleteIngr={deleteIngr}
+            id={index.toString()}
+            deleteIngr={deleteIngr as () => void}
             key={element.uuid}
           />
         );
@@ -152,7 +163,7 @@ function BurgerConstructor() {
   };
 
   const totalPrice = useMemo(
-    () => (data) => {
+    () => (data: TIngredients[]) => {
       const sum = data.reduce((sum, element) => sum + element.price, 0);
       dispatch({ type: CALC_TOTAL_PRICE, value: sum });
     },

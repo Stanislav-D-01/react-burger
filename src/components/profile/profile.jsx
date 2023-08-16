@@ -135,7 +135,7 @@ const Profile = () => {
         )}
       </form>
     );
-  }
+  } else return <></>;
 };
 
 export default Profile;

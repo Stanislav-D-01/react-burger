@@ -33,3 +33,7 @@
   justify-content: space-between;
   margin-top: 28px;
 }
+
+.modal__close {
+  margin: 4px;
+}

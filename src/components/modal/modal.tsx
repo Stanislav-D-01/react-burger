@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 import styles from "./modal.module.css";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
@@ -7,10 +7,16 @@ import { ModalContext } from "./modal-context";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Modal = (props) => {
+type TProps = {
+  name: string;
+  children: ReactNode;
+};
+
+const Modal: FC<TProps> = (props) => {
   //const [setIsModal] = React.useContext(ModalContext);
   const navigate = useNavigate();
   React.useEffect(() => {
+    console.log(props);
     document.addEventListener("keydown", keydownEsc);
 
     return () => {
@@ -18,7 +24,7 @@ const Modal = (props) => {
     };
   }, []);
 
-  const keydownEsc = (e) => {
+  const keydownEsc = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       navigate(-1);
       //  setIsModal(false);
@@ -29,7 +35,7 @@ const Modal = (props) => {
   const closeModal = () => {
     //   setIsModal(false);
   };
-  const close = () => {
+  const close: () => void = () => {
     navigate(-1);
   };
   return ReactDOM.createPortal(
@@ -37,18 +43,12 @@ const Modal = (props) => {
       <ModalOverlay onClose={closeModal} />
       <section className={styles["modal__heading"]}>
         <h2 className="text text_type_main-large mt-10 ">{props.name}</h2>
-        <CloseIcon onClick={close} type="primary" className="mr-4" />
+        <CloseIcon onClick={close} type="primary" />
       </section>
       {props.children}
     </div>,
-    document.getElementById("modals")
+    document.getElementById("modals")!
   );
 };
 
 export default Modal;
-
-Modal.propTypes = {
-  name: PropTypes.string,
-
-  children: PropTypes.node,
-};

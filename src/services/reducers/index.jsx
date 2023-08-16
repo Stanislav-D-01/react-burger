@@ -12,7 +12,7 @@ export const rootReducer = combineReducers({
   ingredients: burgerIngredientsReducer,
   modal: modalReducer,
   order: orderReducer,
-  auth: authorizationReducer,
   feeds: feedsReducer,
+  auth: authorizationReducer,
   userOrders: userOrdersReducer,
 });

@@ -74,7 +74,7 @@ const LoginPage = () => {
         </form>
       </div>
     );
-  }
+  } else return <></>;
 };
 
 export default LoginPage;
