@@ -9,7 +9,7 @@ import { Link, Navigate } from "react-router-dom";
 import styles from "./login-page.module.css";
 import { authorizationReducer } from "../services/reducers/authorization";
 import { sendRegitration } from "../services/actions/authorization";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/types/hooks-types";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
@@ -20,7 +20,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const nameUser = useSelector((store) => store.auth.name);
 
-  const registrUser = (name, email, pass) => {
+  const registrUser = (name: string, email: string, pass: string): void => {
     if (name && email && pass) {
       dispatch(sendRegitration(email, pass, name));
     }
@@ -51,7 +51,6 @@ const RegisterPage = () => {
           placeholder={"E-mail"}
           isIcon={false}
           extraClass="mt-6"
-          onKeyUp={(e) => console.log(e.target.validity.typeMismatch)}
         />
         <PasswordInput
           onChange={(e) => setPass(e.target.value)}
@@ -76,7 +75,6 @@ const RegisterPage = () => {
       </form>
     </div>
   );
-  
 };
 
 export default RegisterPage;

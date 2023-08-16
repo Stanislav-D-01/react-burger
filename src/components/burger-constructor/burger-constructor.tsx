@@ -54,7 +54,7 @@ function BurgerConstructor() {
     accept: "ingred",
 
     drop(item: TIngredientId) {
-      const ingredient = ingr.find((el: TIngredients) => el._id === item._id);
+      const ingredient = ingr!.find((el: TIngredients) => el._id === item._id);
 
       if (ingredient && ingredient.type !== "bun") {
         const uuid = uuidv4();
@@ -83,14 +83,14 @@ function BurgerConstructor() {
     ingrConstr.length == 0 && addBunStart(ingr);
   }, [ingr]);
 
-  const addBunStart = (arrIngr: TIngredients[]) => {
-    if (arrIngr.length > 0) {
+  const addBunStart = (arrIngr: TIngredients[] | undefined) => {
+    if (arrIngr!.length > 0) {
       const bunTop = {
-        ...arrIngr.find((item) => item.type == "bun"),
+        ...arrIngr!.find((item) => item.type == "bun"),
         uuid: uuidv4(),
       };
       const bunBottom = {
-        ...arrIngr.find((item) => item.type == "bun"),
+        ...arrIngr!.find((item) => item.type == "bun"),
         uuid: uuidv4(),
       };
       dispatch({ type: ADD_INGR_IN_CONSTRUCTOR, value: bunTop });
@@ -214,7 +214,7 @@ function BurgerConstructor() {
         )}
       </section>
     );
-  }
+  } else return <></>;
 }
 
 export default BurgerConstructor;

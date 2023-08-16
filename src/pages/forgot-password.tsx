@@ -5,7 +5,7 @@ import {
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import styles from "./login-page.module.css";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/types/hooks-types";
 import { forgotPassSendEmail } from "../services/actions/authorization";
 import { PATH_RESET_PASS } from "../utils/utils";
 const ForgotPassword = () => {
@@ -23,7 +23,7 @@ const ForgotPassword = () => {
 
   const dispatch = useDispatch();
 
-  const sendEmail = (email) => {
+  const sendEmail = (email: string): void => {
     dispatch(forgotPassSendEmail(email));
   };
 

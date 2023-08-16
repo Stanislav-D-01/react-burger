@@ -8,11 +8,12 @@ import {
 } from "../actions/feeds";
 
 import { TFeedsActions } from "../actions/feeds";
+import { TOrders } from "../types/types";
 
 type TFeedState = {
   wsConnected?: boolean;
   wsOpen?: boolean;
-  orders: any[];
+  orders: TOrders[] | undefined;
   total: number;
   totalTd: number;
   error: string;
@@ -21,29 +22,43 @@ type TFeedState = {
 const initialState: TFeedState = {
   wsConnected: false,
   wsOpen: false,
-  orders: [],
+  orders: undefined,
   total: 0,
   totalTd: 0,
   error: "",
 };
 
-export const feedsReducer = (state = initialState, action: TFeedsActions) => {
+export const feedsReducer = (
+  state = initialState,
+  action: TFeedsActions
+): TFeedState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS_FEED: {
-      return { ...state, wsConnected: true, error: "" };
+      return { ...state, orders: undefined, wsConnected: true, error: "" };
     }
     case WS_CONNECTION_OPEN_FEED: {
-      return { ...state, wsConnected: false, wsOpen: true, error: "" };
+      return {
+        ...state,
+
+        wsConnected: false,
+        wsOpen: true,
+        error: "",
+      };
     }
     case WS_CONNECTION_ERROR_FEED: {
-      return { ...state, wsConnected: false, error: action.error };
+      return {
+        ...state,
+
+        wsConnected: false,
+        error: action.error,
+      };
     }
     case WS_CONNECTION_CLOSED_FEED: {
       return {
         ...state,
         wsConnected: false,
         wsOpen: false,
-        orders: [],
+
         total: 0,
         totalTd: 0,
         error: "",
@@ -60,7 +75,7 @@ export const feedsReducer = (state = initialState, action: TFeedsActions) => {
     case WS_CLEAR_STATE_FEED: {
       return {
         wsConnected: false,
-        orders: [],
+        orders: undefined,
         total: 0,
         totalTd: 0,
         error: "",

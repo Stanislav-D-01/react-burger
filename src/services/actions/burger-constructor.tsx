@@ -1,3 +1,5 @@
+import { TIngredients } from "../types/types";
+
 export const ADD_INGR_IN_CONSTRUCTOR: "ADD_INGR_IN_CONSTRUCTOR" =
   "ADD_INGR_IN_CONSTRUCTOR";
 export const ADD_BUN_IN_CONSTRUCTOR: "ADD_BUN_IN_CONSTRUCTOR" =
@@ -16,8 +18,8 @@ export type TAddIngrInConstructor = {
 
 export type TAddBunInConstructor = {
   readonly type: typeof ADD_BUN_IN_CONSTRUCTOR;
-  readonly valueTop: any;
-  readonly valueBottom: any;
+  readonly valueTop: TIngredients;
+  readonly valueBottom: TIngredients;
 };
 
 export type TDelIngrConstructor = {

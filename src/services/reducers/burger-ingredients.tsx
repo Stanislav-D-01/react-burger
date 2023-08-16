@@ -5,9 +5,10 @@ import {
 } from "../actions/burger-ingredients";
 
 import { TBurgerIngredientsActions } from "../actions/burger-ingredients";
+import { TIngredients } from "../types/types";
 
 type TBurgerIngredientsState = {
-  ingredients: any;
+  ingredients: Array<TIngredients> | undefined;
   ingredientsRequest: Boolean;
   ingredientsSuccess: Boolean;
   ingredientsFailed: Boolean;
@@ -23,7 +24,7 @@ const initialState: TBurgerIngredientsState = {
 export const burgerIngredientsReducer = (
   state = initialState,
   action: TBurgerIngredientsActions
-) => {
+): TBurgerIngredientsState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return { ...state, ingredientsRequest: true };

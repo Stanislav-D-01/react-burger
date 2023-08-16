@@ -31,7 +31,7 @@ const ProfileOrders = () => {
   }, []);
 
   useEffect(() => {
-    if (ingredients.length === 0) {
+    if (ingredients!.length === 0) {
       dispatch(getIngredients());
     }
   }, []);
@@ -51,12 +51,11 @@ const ProfileOrders = () => {
       .reverse();
   };
   return (
-    orders.orders &&
-    ingredients && (
+    (orders.orders && ingredients && (
       <div className={styles["profile-orders"]}>
         {renderOrderFeeds(orders.orders, ingredients)}
       </div>
-    )
+    )) || <></>
   );
 };
 

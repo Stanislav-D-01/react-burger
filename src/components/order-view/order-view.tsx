@@ -1,7 +1,7 @@
 import styles from "./order-view.module.css";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { Link } from "react-router-dom";
 import {
   CurrencyIcon,
@@ -20,6 +20,12 @@ import { getIngredients } from "../../services/actions/burger-ingredients";
 import { getCookie } from "../../utils/utils";
 import OrderFeeds from "../order-feeds/order-feeds";
 import Modal from "../modal/modal";
+import { TOrders, TIngredients } from "../../services/types/types";
+
+type TIngredientsNoDuplicates = {
+  ingredient: TIngredients | undefined;
+  num: number;
+};
 
 const OrderView = () => {
   const location = useLocation();
@@ -30,10 +36,11 @@ const OrderView = () => {
     ingredients: store.ingredients.ingredients,
     profileOrders: store.userOrders,
   }));
-  const [order, setOrder] = useState("");
-  const [page, setPage] = useState("");
-  const [total, setTotal] = useState([]);
-  const [ingredientsOrder, setIngredientsOrder] = useState([]);
+  const [order, setOrder] = useState<TOrders>();
+  const [page, setPage] = useState<string>("");
+  const [total, setTotal] = useState<number>();
+  const [ingredientsOrder, setIngredientsOrder] =
+    useState<TIngredientsNoDuplicates[]>();
 
   useEffect(() => {
     const accessToken = getCookie("token");
@@ -76,7 +83,7 @@ const OrderView = () => {
     };
   }, [page]);
   useEffect(() => {
-    if (ingredients.length == 0) {
+    if (ingredients && ingredients!.length == 0) {
       dispatch(getIngredients());
     }
     document.addEventListener("keydown", pageReturn);
@@ -86,34 +93,32 @@ const OrderView = () => {
   }, []);
 
   useEffect(() => {
-    if (ingredients.length > 0) {
+    if (ingredients && ingredients!.length > 0) {
       const id =
         page === "feed"
           ? location.pathname.split("/")[2]
           : location.pathname.split("/")[3];
 
-      if (feeds.orders.length > 0 && profileOrders.orders.length == 0) {
-        console.log(id);
-        setOrder(feeds.orders.find((el) => el._id === id));
+      if (feeds.orders!.length > 0 && profileOrders.orders.length == 0) {
+        setOrder(feeds.orders!.find((el: TOrders) => el._id === id));
 
         order && createListIngredientsOrder(order);
       }
-      if (feeds.orders.length == 0 && profileOrders.orders.length > 0) {
-        console.log(profileOrders.orders);
-        setOrder(profileOrders.orders.find((el) => el._id === id));
+      if (feeds.orders!.length == 0 && profileOrders.orders.length > 0) {
+        setOrder(profileOrders.orders.find((el: TOrders) => el._id === id));
 
         order && createListIngredientsOrder(order);
       }
     }
   }, [feeds, profileOrders, ingredients, order]);
 
-  const pageReturn = (e) => {
+  const pageReturn = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       navigate(-1);
     }
   };
 
-  const renderStatusOrder = (status) => {
+  const renderStatusOrder = (status: string) => {
     switch (status) {
       case "done": {
         return (
@@ -158,64 +163,66 @@ const OrderView = () => {
     }
   };
 
-  const createListIngredientsOrder = (order) => {
+  const createListIngredientsOrder = (order: TOrders) => {
     const arrayOrderIngredients = order.ingredients.map((el) => {
       const numbIngredients = order.ingredients.filter(
         (item) => item === el
       ).length;
 
       return {
-        ingredient: ingredients.find((item) => item._id === el),
+        ingredient: ingredients!.find((item) => item._id === el),
         num: numbIngredients,
       };
     });
-    let arrayOrderIngredientsNoDuplicates = [];
+    let arrayOrderIngredientsNoDuplicates: TIngredientsNoDuplicates[] = [];
+
     for (let i = 0; i < arrayOrderIngredients.length; i++) {
       for (let y = 0; y < arrayOrderIngredients.length; y++) {
         if (
-          arrayOrderIngredients[i].ingredient._id ===
-            arrayOrderIngredients[y].ingredient._id &&
+          arrayOrderIngredients[i].ingredient!._id ===
+            arrayOrderIngredients[y].ingredient!._id &&
           y === i &&
           !arrayOrderIngredientsNoDuplicates.find(
             (el) =>
-              el.ingredient._id === arrayOrderIngredients[y].ingredient._id
+              el.ingredient!._id === arrayOrderIngredients[y].ingredient!._id
           )
         ) {
           arrayOrderIngredientsNoDuplicates.push(arrayOrderIngredients[i]);
         }
       }
     }
+
     const total = arrayOrderIngredientsNoDuplicates.reduce(
-      (sum, el) => sum + el.ingredient.price * el.num,
+      (sum, el) => sum + el.ingredient!.price * el.num,
       0
     );
     setIngredientsOrder(arrayOrderIngredientsNoDuplicates);
     setTotal(total);
   };
 
-  const renderIngredients = (ingredients) => {
+  const renderIngredients = (ingredients: TIngredientsNoDuplicates[]) => {
     return ingredients.map((el) => {
       return (
         <Link
           className={styles["order-view__ingredient-block"]}
-          to={`/ingredients/${el.ingredient._id}`}
+          to={`/ingredients/${el.ingredient!._id}`}
           state={{ background: location }}
         >
           <div className={styles["order-view__image-border"]}>
             <img
               className={styles["order-view__image-ingredient"]}
-              src={el.ingredient.image}
+              src={el.ingredient!.image}
             />
           </div>
           <h2
             className={`text text_type_main-default ${styles["order-view__nameIngredient"]}`}
           >
-            {el.ingredient.name}
+            {el.ingredient!.name}
           </h2>
           <p
             className={`text text_type_main-medium ${styles["order-view__price"]}`}
           >
-            {`${el.num} x ${el.ingredient.price} `}
+            {`${el.num} x ${el.ingredient!.price} `}
             <CurrencyIcon type="primary" />
           </p>
         </Link>
@@ -224,9 +231,7 @@ const OrderView = () => {
   };
 
   return (
-    ingredientsOrder &&
-    total &&
-    order && (
+    (ingredientsOrder && total && order && (
       <div className={`${styles["order-view"]}`}>
         <div className={`${styles["order-view__section"]}`}>
           <h2
@@ -253,7 +258,7 @@ const OrderView = () => {
           </section>
         </div>
       </div>
-    )
+    )) || <></>
   );
 };
 

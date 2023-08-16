@@ -27,12 +27,15 @@ const Feed = () => {
     };
   }, []);
   useEffect(() => {
-    if (ingredients.length === 0) {
+    if (ingredients!.length === 0) {
       dispatch(getIngredients());
     }
   }, []);
 
-  const renderOrderFeeds = (orders: TOrders[], ingredients: TIngredients[]) => {
+  const renderOrderFeeds = (
+    orders: TOrders[],
+    ingredients: TIngredients[] | undefined
+  ) => {
     return orders.map((element, index) => {
       return (
         <OrderFeeds
@@ -46,7 +49,7 @@ const Feed = () => {
   };
 
   return (
-    feeds.orders.length > 0 && (
+    (feeds.orders && feeds.orders!.length > 0 && (
       <div className={styles.feeds}>
         <h2 className={`${styles.feeds__text} text text_type_main-large mt-10`}>
           Лента заказов
@@ -58,7 +61,7 @@ const Feed = () => {
           <OrderTable data={feeds} />
         </section>
       </div>
-    )
+    )) || <></>
   );
 };
 

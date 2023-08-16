@@ -8,7 +8,7 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate, useLocation } from "react-router-dom";
 
 type TProps = {
-  name: string;
+  name?: string;
   children: ReactNode;
 };
 
@@ -16,7 +16,6 @@ const Modal: FC<TProps> = (props) => {
   //const [setIsModal] = React.useContext(ModalContext);
   const navigate = useNavigate();
   React.useEffect(() => {
-    console.log(props);
     document.addEventListener("keydown", keydownEsc);
 
     return () => {

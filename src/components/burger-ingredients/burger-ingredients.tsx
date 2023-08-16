@@ -116,12 +116,12 @@ const BurgerIngredients = () => {
           </div>
 
           <div className={styles["section-burger-ingridients__list"]}>
-            {renderIngredients(dataIngredients)}
+            {renderIngredients(dataIngredients!)}
           </div>
         </section>
       </>
     );
-  }
+  } else return <></>;
 };
 
 export default BurgerIngredients;

@@ -7,10 +7,20 @@ import {
 
 import { TUserOrderActions } from "../actions/userOrder";
 
+type TUserOrders = {
+  _id: string;
+  ingredients: string[];
+  status: string;
+  name: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  number: number;
+};
+
 type TUserOrderState = {
   wsConnected: boolean;
   wsOpen: boolean;
-  orders: object[];
+  orders: TUserOrders[];
 };
 
 const initialState: TUserOrderState = {
@@ -22,7 +32,7 @@ const initialState: TUserOrderState = {
 export const userOrdersReducer = (
   state = initialState,
   action: TUserOrderActions
-) => {
+): TUserOrderState => {
   switch (action.type) {
     case WS_USER_ORDER_GET_MESSAGE: {
       return {

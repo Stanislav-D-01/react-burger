@@ -3,7 +3,7 @@ import { BASE_URL } from "../../utils/utils";
 import { CLEAN_CONSTRUCTOR } from "./burger-constructor";
 import { AppThunk } from "../types/thunk-types";
 import { AppDispatch } from "../types/dispatch-types";
-
+import { TIngredients } from "../types/types";
 export const GET_INGREDIENTS_REQUEST: "GET_INGREDIENTS_REQUEST" =
   "GET_INGREDIENTS_REQUEST";
 export const GET_INGREDIENTS_SUCCSESS: "GET_INGREDIENTS_SUCCSESS" =
@@ -17,7 +17,7 @@ export type TGetIngredientsRequest = {
 
 export type TGetIngredientsSuccsess = {
   readonly type: typeof GET_INGREDIENTS_SUCCSESS;
-  readonly ingr: object[];
+  readonly ingr: TIngredients[];
 };
 export type TGetIngredientsError = {
   readonly type: typeof GET_INGREDIENTS_ERROR;

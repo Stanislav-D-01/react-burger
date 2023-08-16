@@ -1,7 +1,7 @@
 import styles from "./profile-menu.module.css";
 import { NavLink } from "react-router-dom";
 import { logout } from "../../services/actions/authorization";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../services/types/hooks-types";
 
 import { deleteCookie, getCookie } from "../../utils/utils";
 

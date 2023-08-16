@@ -5,10 +5,10 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
+
 import styles from "./profile.module.css";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "../../services/types/hooks-types";
 import { useNavigate, NavLink, Link } from "react-router-dom";
 import { logout } from "../../services/actions/authorization";
 import { deleteCookie, getCookie } from "../../utils/utils";
@@ -22,23 +22,27 @@ const Profile = () => {
   const [email, setEmail] = useState(emailUser);
   const [pass, setPass] = useState("");
   const [edit, setEdit] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    inputRef.current.addEventListener("focusout", (e) => {
-      e.target.disabled = true;
-      inputRef.current.style.cursor = "not-allowed";
-      inputRef.current.style.color = "#8585AD";
-    });
+    if (inputRef.current != null) {
+      inputRef.current.addEventListener("focusout", (e: Event): void => {
+        if (e.target != null) {
+          inputRef.current!.disabled = true;
+          inputRef.current!.style.cursor = "not-allowed";
+          inputRef.current!.style.color = "#8585AD";
+        }
+      });
 
-    navigate("/profile", {
-      state: { path: "/", url: "profile", title: "profile" },
-    });
+      navigate("/profile", {
+        state: { path: "/", url: "profile", title: "profile" },
+      });
+    }
   }, []);
 
-  const saveForm = (e) => {
+  const saveForm = (e: React.FormEvent) => {
     e.preventDefault();
     if (name !== nameUser || email !== emailUser || pass.length > 0) {
       dispatch(saveNewProfile(name, email, pass));
@@ -82,10 +86,10 @@ const Profile = () => {
           extraClass="mt-6"
           ref={inputRef}
           onIconClick={(e) => {
-            inputRef.current.disabled = false;
-            inputRef.current.style.cursor = "text";
-            inputRef.current.style.color = "white";
-            setTimeout(() => inputRef.current.focus(), 0);
+            inputRef.current!.disabled = false;
+            inputRef.current!.style.cursor = "text";
+            inputRef.current!.style.color = "white";
+            setTimeout(() => inputRef.current!.focus(), 0);
           }}
         />
         <EmailInput

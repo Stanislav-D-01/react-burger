@@ -4,7 +4,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/types/hooks-types";
 import { Link, useNavigate, Navigate, useLocation } from "react-router-dom";
 import styles from "./login-page.module.css";
 import { authorization } from "../services/actions/authorization";
@@ -23,7 +23,7 @@ const LoginPage = () => {
     request: store.auth.request,
   }));
   const location = useLocation();
-  const logIn = (login, pass) => {
+  const logIn = (login: string, pass: string): void => {
     dispatch(authorization(login, pass));
   };
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
         <form
           onSubmit={(event) => {
             event.preventDefault();
-            logIn(login, pass, event);
+            logIn(login, pass);
           }}
           className={styles["login-page__form"]}
         >

@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../services/types/hooks-types";
 import { resetPassword } from "../services/actions/authorization";
 import { useNavigate } from "react-router-dom";
 import { PATH_LOGIN } from "../utils/utils";

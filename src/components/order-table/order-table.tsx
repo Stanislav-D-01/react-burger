@@ -1,11 +1,20 @@
 import { useEffect } from "react";
 import styles from "./order-table.module.css";
+import { TOrders } from "../../services/types/types";
 
-type;
+type TOrderTableProps = {
+  data: {
+    error: string;
+    orders: TOrders[] | undefined;
+    total: number;
+    totalTd: number;
+    wsConnected?: boolean | undefined;
+    wsOpen?: boolean | undefined;
+  };
+};
 
-const OrderTable = ({ data }) => {
-  console.log(data);
-  const getListOrders = (orders, status) => {
+const OrderTable = ({ data }: TOrderTableProps) => {
+  const getListOrders = (orders: TOrders[], status: string) => {
     if (status === "done") {
       const doneOrders = orders.filter((el) => el.status === "done");
 
@@ -37,13 +46,13 @@ const OrderTable = ({ data }) => {
         <div className={styles["order-table__status-block"]}>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
           <ul className={styles["order-table__ul"]}>
-            {getListOrders(data.orders, "done")}
+            {getListOrders(data.orders!, "done")}
           </ul>
         </div>
         <div className={styles["order-table__status-block"]}>
           <p className="text text_type_main-medium mb-6">В работе:</p>
           <ul className={styles["order-table__ul"]}>
-            {getListOrders(data.orders, "work")}
+            {getListOrders(data.orders!, "work")}
           </ul>
         </div>
       </section>

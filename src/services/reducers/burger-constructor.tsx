@@ -23,7 +23,7 @@ const initialState: TBurgerConstructorState = {
 export const burgerConstructorReducer = (
   state = initialState,
   action: TBurgerConstructorActions
-) => {
+): TBurgerConstructorState => {
   switch (action.type) {
     case CALC_TOTAL_PRICE: {
       return { ...state, total: action.value };
@@ -35,23 +35,18 @@ export const burgerConstructorReducer = (
       };
     }
     case ADD_BUN_IN_CONSTRUCTOR: {
+      state.ingredientsConstructor[0] = action.valueTop;
+      state.ingredientsConstructor[1] = action.valueBottom;
       return {
         ...state,
-        state: [
-          state.ingredientsConstructor.splice(
-            0,
-            2,
-            action.valueTop,
-            action.valueBottom
-          ),
-        ],
       };
     }
 
     case DEL_INGR_CONSTRUCTOR: {
+      state.ingredientsConstructor.splice(action.value, 1);
+
       return {
         ...state,
-        state: [...state.ingredientsConstructor.splice(action.value, 1)],
       };
     }
     case MOVE_INGR_CONSTRUCTOR: {
@@ -72,14 +67,12 @@ export const burgerConstructorReducer = (
       };
     }
     case CLEAN_CONSTRUCTOR: {
+      state.ingredientsConstructor.splice(
+        2,
+        state.ingredientsConstructor.length
+      );
       return {
         ...state,
-        state: [
-          ...state.ingredientsConstructor.splice(
-            2,
-            state.ingredientsConstructor.length
-          ),
-        ],
       };
     }
 

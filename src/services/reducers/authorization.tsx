@@ -61,7 +61,7 @@ const initialState: TAuthorizationState = {
 export const authorizationReducer = (
   state = initialState,
   action: TAuthorizationActions | TCheckAutorizationAction
-) => {
+): TAuthorizationState => {
   switch (action.type) {
     case SEND_REGISTRATION_REQUEST: {
       return {

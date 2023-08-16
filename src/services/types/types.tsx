@@ -21,11 +21,11 @@ export type TIngredientId = {
 };
 
 export type TOrders = {
-  createdAt: string;
+  createdAt: string | Date;
   ingredients: string[];
   name: string;
   number: number;
   status: string;
-  updatedAt: string;
+  updatedAt: string | Date;
   _id: string;
 };

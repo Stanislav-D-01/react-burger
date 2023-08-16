@@ -1,7 +1,7 @@
 import IngredientsDetails from "../ingredient-details/ingredient-details";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import {
   SET_INGREDIENT_IN_MODAL,
   DEL_INGREDIENT_IN_MODAL,
@@ -15,15 +15,15 @@ const ViewIngredient = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (ingredients.length == 0) {
+    if (ingredients!.length == 0) {
       dispatch(getIngredients());
     }
     const id = location.pathname.split("/")[2];
 
-    if (ingredients.length > 0) {
+    if (ingredients!.length > 0) {
       dispatch({
         type: SET_INGREDIENT_IN_MODAL,
-        value: ingredients.find((item) => item._id === id),
+        value: ingredients!.find((item) => item._id === id),
       });
     }
     return () => {

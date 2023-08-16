@@ -11,10 +11,10 @@ type TOrder = {
   name: string;
   number: number;
   status: string;
-  updatedAt: string;
+  updatedAt: string | Date;
   _id: string;
   ingredients: string[];
-  createdAt?: string | number | Date;
+  createdAt?: string | Date;
 };
 
 type TOrderFeeds = {
