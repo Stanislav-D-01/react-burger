@@ -29,3 +29,22 @@ export type TOrders = {
   updatedAt: string | Date;
   _id: string;
 };
+
+export type TOrder = {
+  ingredients: TIngredients[];
+  _id: string;
+  owner: TOwner;
+  status: string;
+  name: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  number: number;
+  price: number;
+};
+
+type TOwner = {
+  name: string;
+  email: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+};

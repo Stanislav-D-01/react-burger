@@ -49,6 +49,7 @@ function BurgerConstructor() {
   const [isModal, setIsModal] = React.useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const location = useLocation();
   const [, dropRef] = useDrop({
     accept: "ingred",
@@ -99,13 +100,16 @@ function BurgerConstructor() {
   };
 
   const openModalOrder = () => {
-    navigate("/order-details", { state: { background: location } });
+    navigate("/order-details", {
+      state: { background: location, history: location.pathname },
+    });
   };
 
   const createOrder = () => {
     if (nameUser) {
       if (ingrConstr.length > 2) {
         dispatch(sendOrder(ingrConstr));
+
         openModalOrder();
       }
     } else {

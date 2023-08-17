@@ -5,26 +5,7 @@ import {
   CLEAN_ORDER,
 } from "../actions/order";
 import { TOrderActions } from "../actions/order";
-import { TIngredients } from "../types/types";
-
-type TOwner = {
-  name: string;
-  email: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-};
-
-type TOrder = {
-  ingredients: TIngredients[];
-  _id: string;
-  owner: TOwner;
-  status: string;
-  name: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-  number: number;
-  price: number;
-};
+import { TIngredients, TOrder } from "../types/types";
 
 type TOrderState = {
   order: TOrder | undefined;
