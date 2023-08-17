@@ -2,7 +2,8 @@ import Modal from "../components/modal/modal";
 
 import OrderViewPage from "./order-view-page";
 
-const ModalOrderFeed = () => {
+const ModalOrderUser = () => {
+  console.log("eeeee");
   return (
     <Modal>
       <OrderViewPage />
@@ -10,4 +11,4 @@ const ModalOrderFeed = () => {
   );
 };
 
-export default ModalOrderFeed;
+export default ModalOrderUser;

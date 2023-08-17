@@ -15,9 +15,6 @@ const ViewIngredient = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (ingredients!.length == 0) {
-      dispatch(getIngredients());
-    }
     const id = location.pathname.split("/")[2];
 
     if (ingredients!.length > 0) {

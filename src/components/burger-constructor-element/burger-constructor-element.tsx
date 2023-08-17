@@ -67,7 +67,13 @@ const BurgerConstructorElement: FC<IBurgerConstructorElementProps> = ({
         <ConstructorElement
           type={type}
           isLocked={isLocked}
-          text={data.name}
+          text={
+            type == "top"
+              ? `${data.name} (верх)`
+              : type == "bottom"
+              ? `${data.name} (низ)`
+              : data.name
+          }
           price={data.price}
           thumbnail={data.image}
           handleClose={deleteIngr}

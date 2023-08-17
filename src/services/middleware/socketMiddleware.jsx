@@ -9,7 +9,7 @@ export const socketMiddleware = (wsAction) => {
           case wsAction.start: {
             if (!socket) {
               socket = new WebSocket(action.url);
-              console.log("socket");
+
               socket.onopen = (event) => {
                 dispatch({ type: wsAction.onOpen });
               };
@@ -21,6 +21,7 @@ export const socketMiddleware = (wsAction) => {
                 });
               };
               socket.onerror = () => {
+                console.log("socket");
                 dispatch({ type: wsAction.onError });
               };
 

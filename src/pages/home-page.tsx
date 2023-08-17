@@ -16,10 +16,6 @@ const HomePage = () => {
     request: store.auth.request,
   }));
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
-
   if (!ingredientsRequest && !request) {
     return (
       <main className={styles.home}>

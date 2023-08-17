@@ -30,12 +30,6 @@ const ProfileOrders = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (ingredients!.length === 0) {
-      dispatch(getIngredients());
-    }
-  }, []);
-
   const renderOrderFeeds = (orders: TOrders[], ingredients: TIngredients[]) => {
     return orders
       .map((element, index) => {

@@ -24,7 +24,7 @@ const Ingredient: FC<TIngredient> = ({ ingr, counter }) => {
       <Link
         className={styles["section-burger-menu__link"]}
         to={`/ingredients/${_id}`}
-        state={{ background: location }}
+        state={{ background: location, history: location.pathname }}
       >
         <img
           ref={refImg}

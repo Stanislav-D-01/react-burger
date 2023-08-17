@@ -18,18 +18,15 @@ const Feed = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START_FEED,
-      url: "wss://norma.nomoreparties.space/orders/all",
-    });
+    if (feeds.wsOpen == false) {
+      dispatch({
+        type: WS_CONNECTION_START_FEED,
+        url: "wss://norma.nomoreparties.space/orders/all",
+      });
+    }
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED_FEED });
     };
-  }, []);
-  useEffect(() => {
-    if (ingredients!.length === 0) {
-      dispatch(getIngredients());
-    }
   }, []);
 
   const renderOrderFeeds = (

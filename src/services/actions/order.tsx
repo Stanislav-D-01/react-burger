@@ -4,7 +4,7 @@ import { fetchWithRefresh } from "../../utils/burger-api";
 import { getCookie } from "../../utils/utils";
 import { AppThunk } from "../types/thunk-types";
 import { AppDispatch } from "../types/dispatch-types";
-
+import { TIngredients } from "../types/types";
 export const SEND_ORDER_REQUEST: "SEND_ORDER_REQUEST" = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCSESS: "SEND_ORDER_SUCCSESS" = "SEND_ORDER_SUCCSESS";
 export const SEND_ORDER_ERROR: "SEND_ORDER_ERROR" = "SEND_ORDER_ERROR";
@@ -16,7 +16,7 @@ export type TSendOrderRequest = {
 export type TSendOrderSuccsess = {
   readonly type: typeof SEND_ORDER_SUCCSESS;
   order: any;
-  ingredients: any;
+  ingredients: string[];
 };
 export type TSendOrderError = {
   readonly type: typeof SEND_ORDER_ERROR;

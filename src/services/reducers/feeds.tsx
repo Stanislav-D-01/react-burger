@@ -5,6 +5,7 @@ import {
   WS_GET_MESSAGE_FEED,
   WS_CLEAR_STATE_FEED,
   WS_CONNECTION_OPEN_FEED,
+  WS_CONNECTION_START_FEED,
 } from "../actions/feeds";
 
 import { TFeedsActions } from "../actions/feeds";
@@ -34,7 +35,10 @@ export const feedsReducer = (
 ): TFeedState => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS_FEED: {
-      return { ...state, orders: undefined, wsConnected: true, error: "" };
+      return { ...state, wsOpen: true, error: "" };
+    }
+    case WS_CONNECTION_START_FEED: {
+      return { ...state, wsConnected: true, error: "" };
     }
     case WS_CONNECTION_OPEN_FEED: {
       return {
@@ -75,7 +79,7 @@ export const feedsReducer = (
     case WS_CLEAR_STATE_FEED: {
       return {
         wsConnected: false,
-        orders: undefined,
+        orders: [],
         total: 0,
         totalTd: 0,
         error: "",

@@ -39,10 +39,18 @@ const OrderView = () => {
   const [order, setOrder] = useState<TOrders>();
   const [page, setPage] = useState<string>();
   const [total, setTotal] = useState<number>();
+  const [isModal, setIsModal] = useState<boolean>();
   const [ingredientsOrder, setIngredientsOrder] =
     useState<TIngredientsNoDuplicates[]>();
 
   useEffect(() => {
+    const background = location.state && location.state.background;
+    if (background) {
+      setIsModal(true);
+      console.log(isModal);
+    } else {
+      setIsModal(false);
+    }
     const accessToken = getCookie("token");
 
     if (location.pathname.split("/")[1] === "feed") {
@@ -71,27 +79,10 @@ const OrderView = () => {
           });
         break;
       }
+      default:
+        return undefined;
     }
-    return () => {
-      if (page === "feed") {
-        dispatch({ type: WS_CONNECTION_CLOSED_FEED });
-      }
-
-      if (page === "profile") {
-        dispatch({ type: WS_USER_ORDER_CONNECTION_CLOSED });
-      }
-    };
-  }, [page]);
-
-  useEffect(() => {
-    if (ingredients && ingredients!.length == 0) {
-      dispatch(getIngredients());
-    }
-    document.addEventListener("keydown", pageReturn);
-    return () => {
-      document.removeEventListener("keydown", pageReturn);
-    };
-  }, []);
+  }, [page, ingredients, order]);
 
   useEffect(() => {
     if (ingredients && ingredients!.length > 0) {
@@ -109,21 +100,18 @@ const OrderView = () => {
 
         order && createListIngredientsOrder(order);
       }
-      if (
-        feeds.orders! &&
-        feeds.orders!.length == 0 &&
-        profileOrders.orders.length > 0
-      ) {
+      console.log(profileOrders.orders.length);
+      if (feeds.orders! && profileOrders.orders.length > 0) {
         setOrder(profileOrders.orders.find((el: TOrders) => el._id === id));
 
         order && createListIngredientsOrder(order);
       }
     }
-  }, [page, order]);
+  }, [page, order, ingredients, feeds, profileOrders.orders]);
 
   const pageReturn = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      navigate(-1);
+    if (e.key === "Escape" && isModal == false) {
+      console.log(isModal);
     }
   };
 
@@ -206,13 +194,12 @@ const OrderView = () => {
       (sum, el) => sum + el.ingredient!.price * el.num,
       0
     );
-    console.log(arrayOrderIngredientsNoDuplicates);
+
     setIngredientsOrder(arrayOrderIngredientsNoDuplicates);
     setTotal(total);
   };
 
   const renderIngredients = (ingredients: TIngredientsNoDuplicates[]) => {
-    console.log(ingredients);
     return ingredients.map((el) => {
       return (
         <Link
@@ -255,7 +242,13 @@ const OrderView = () => {
           <section>
             <h3 className="text text_type_main-medium">
               Состав:
-              <section className={`${styles["order-view__ingredients-block"]}`}>
+              <section
+                className={
+                  isModal
+                    ? `${styles["order-view__ingredients-block_type_modal"]}`
+                    : `${styles["order-view__ingredients-block"]}`
+                }
+              >
                 {renderIngredients(ingredientsOrder)}
               </section>
             </h3>

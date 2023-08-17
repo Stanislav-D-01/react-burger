@@ -9,10 +9,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 type TProps = {
   name?: string;
+  page?: string;
   children: ReactNode;
 };
 
 const Modal: FC<TProps> = (props) => {
+  const location = useLocation();
   //const [setIsModal] = React.useContext(ModalContext);
   const navigate = useNavigate();
   React.useEffect(() => {
@@ -24,18 +26,17 @@ const Modal: FC<TProps> = (props) => {
   }, []);
 
   const keydownEsc = (e: KeyboardEvent) => {
-    if (e.key === "Escape") {
-      navigate(-1);
+    if (e.key === "Escape" && location.state.history) {
+      navigate(location.state.history);
       //  setIsModal(false);
     }
   };
 
-  const location = useLocation();
   const closeModal = () => {
     //   setIsModal(false);
   };
   const close: () => void = () => {
-    navigate(-1);
+    location.state.history && navigate(location.state.history);
   };
   return ReactDOM.createPortal(
     <div onClick={(e) => e.stopPropagation()} className={styles.modal}>
@@ -44,7 +45,7 @@ const Modal: FC<TProps> = (props) => {
         <h2 className="text text_type_main-large mt-10 ">{props.name}</h2>
         <CloseIcon onClick={close} type="primary" />
       </section>
-      {props.children}
+      <div className={styles.children}>{props.children}</div>
     </div>,
     document.getElementById("modals")!
   );

@@ -38,6 +38,7 @@ import { RootState } from "../../index";
 import { useSelector } from "../../services/types/hooks-types";
 import { useDispatch } from "../../services/types/hooks-types";
 import ModalOrderFeed from "../../pages/modal-order-feed";
+import ModalOrderUser from "../../pages/modal-order-user";
 
 const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -52,7 +53,7 @@ const RoutSwitch = () => {
     if (!name && !requestAuth) {
       dispatch(checkAuthorization());
     }
-    if (!ingredients) {
+    if (ingredients!.length == 0) {
       dispatch(getIngredients());
     }
   }, []);
@@ -122,6 +123,12 @@ const RoutSwitch = () => {
           )}
           {background && (
             <Route path={`${PATH_FEED}/:id`} element={<ModalOrderFeed />} />
+          )}
+          {background && (
+            <Route
+              path={`${PATH_PROFILE_ORDERS}/:id`}
+              element={<ProtectedRouteElement element={<ModalOrderUser />} />}
+            />
           )}
         </Routes>
       </>

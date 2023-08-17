@@ -176,7 +176,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
         key={uuidv4()}
         onClick={() => {
           navigate(`${location.pathname}/${order._id}`, {
-            state: { background: location },
+            state: { background: location, history: location.pathname },
           });
         }}
         className={styles["order-feeds"]}
