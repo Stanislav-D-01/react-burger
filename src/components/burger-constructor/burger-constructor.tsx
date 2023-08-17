@@ -46,7 +46,7 @@ function BurgerConstructor() {
     orderFailed: store.order.orderFailed,
     nameUser: store.auth.name,
   }));
-  const [isModal, setIsModal] = React.useState(false);
+  const [isModal, setIsModal] = React.useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -205,7 +205,7 @@ function BurgerConstructor() {
 
         {isModal && !orderRequest && !orderFailed && (
           <>
-            <ModalContext.Provider value={[setIsModal]}>
+            <ModalContext.Provider value={setIsModal}>
               <Modal name={""}>
                 <OrderDetails />
               </Modal>

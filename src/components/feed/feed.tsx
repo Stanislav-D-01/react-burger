@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { getIngredients } from "../../services/actions/burger-ingredients";
 import { useLocation } from "react-router-dom";
 import { TOrders, TIngredients } from "../../services/types/types";
-
+import { v4 as uuidv4 } from "uuid";
 const Feed = () => {
   const dispatch = useDispatch();
   const feeds = useSelector((store) => store.feeds);
@@ -39,7 +39,7 @@ const Feed = () => {
     return orders.map((element, index) => {
       return (
         <OrderFeeds
-          key={index}
+          key={uuidv4()}
           statusFlag={false}
           order={element}
           ingredients={ingredients}
@@ -54,8 +54,8 @@ const Feed = () => {
         <h2 className={`${styles.feeds__text} text text_type_main-large mt-10`}>
           Лента заказов
         </h2>
-        <section className={styles.feeds__sections}>
-          <div className={styles.feeds__feeds}>
+        <section key={uuidv4()} className={styles.feeds__sections}>
+          <div key={uuidv4()} className={styles.feeds__feeds}>
             {renderOrderFeeds(feeds.orders, ingredients)}
           </div>
           <OrderTable data={feeds} />

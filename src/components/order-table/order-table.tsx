@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import styles from "./order-table.module.css";
 import { TOrders } from "../../services/types/types";
-
+import { v4 as uuidv4 } from "uuid";
 type TOrderTableProps = {
   data: {
     error: string;
@@ -21,7 +21,7 @@ const OrderTable = ({ data }: TOrderTableProps) => {
       return doneOrders.map((el, index) => {
         return (
           <li
-            key={index}
+            key={uuidv4()}
             className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
           >
             {el.number}
@@ -34,7 +34,9 @@ const OrderTable = ({ data }: TOrderTableProps) => {
 
       return workOrders.map((el) => {
         return (
-          <li className={` text text_type_digits-default mb-2`}>{el.number}</li>
+          <li key={uuidv4()} className={` text text_type_digits-default mb-2`}>
+            {el.number}
+          </li>
         );
       });
     }

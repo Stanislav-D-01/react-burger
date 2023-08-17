@@ -22,7 +22,7 @@ type TFeedState = {
 const initialState: TFeedState = {
   wsConnected: false,
   wsOpen: false,
-  orders: undefined,
+  orders: [],
   total: 0,
   totalTd: 0,
   error: "",

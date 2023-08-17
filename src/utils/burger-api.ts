@@ -1,14 +1,14 @@
 import { getCookie, BASE_URL, setCookie } from "./utils";
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const request = (url, options) => {
+export const request = (url: string, options?: RequestInit) => {
   return fetch(url, options).then(checkResponse);
 };
 
-const getNewToken = (refreshToken) => {
+const getNewToken = (refreshToken: string) => {
   if (refreshToken) {
     return request(`${BASE_URL}auth/token`, {
       method: "POST",
@@ -20,17 +20,16 @@ const getNewToken = (refreshToken) => {
   }
 };
 
-export const fetchWithRefresh = async (url, options) => {
+export const fetchWithRefresh = async (url: string, options: RequestInit) => {
   try {
     const res = await fetch(url, options);
-  
+
     return await checkResponse(res);
-  } catch (err) {
-   
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       const refreshToken = getCookie("refreshToken");
-      
-      const refreshData = await getNewToken(refreshToken);
+
+      const refreshData = await getNewToken(refreshToken!);
 
       let authToken;
       if (refreshData.accessToken.indexOf("Bearer") === 0) {
@@ -55,7 +54,7 @@ export const fetchWithRefresh = async (url, options) => {
   }
 };
 
-const updateData = (token) => {
+const updateData = (token: string) => {
   return request(`${BASE_URL}auth/user`, {
     method: "GET",
     headers: {

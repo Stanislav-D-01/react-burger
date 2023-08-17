@@ -37,6 +37,7 @@ import { getIngredients } from "../../services/actions/burger-ingredients";
 import { RootState } from "../../index";
 import { useSelector } from "../../services/types/hooks-types";
 import { useDispatch } from "../../services/types/hooks-types";
+import ModalOrderFeed from "../../pages/modal-order-feed";
 
 const RoutSwitch = () => {
   const name = useSelector((store) => store.auth.name);
@@ -118,6 +119,9 @@ const RoutSwitch = () => {
           )}
           {background && !requestOrder && (
             <Route path={PATH_ORDER} element={<ModalOrder />} />
+          )}
+          {background && (
+            <Route path={`${PATH_FEED}/:id`} element={<ModalOrderFeed />} />
           )}
         </Routes>
       </>

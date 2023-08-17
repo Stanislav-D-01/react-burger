@@ -1,7 +1,7 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
 import PropTypes from "prop-types";
-import { dataPropTypes } from "../../utils/utils.js";
+import { dataPropTypes } from "../../utils/utils";
 
 import { useSelector, useDispatch } from "../../services/types/hooks-types";
 import { useEffect, useState, useMemo } from "react";

@@ -21,7 +21,7 @@ import { getCookie } from "../../utils/utils";
 import OrderFeeds from "../order-feeds/order-feeds";
 import Modal from "../modal/modal";
 import { TOrders, TIngredients } from "../../services/types/types";
-
+import { v4 as uuidv4 } from "uuid";
 type TIngredientsNoDuplicates = {
   ingredient: TIngredients | undefined;
   num: number;
@@ -37,7 +37,7 @@ const OrderView = () => {
     profileOrders: store.userOrders,
   }));
   const [order, setOrder] = useState<TOrders>();
-  const [page, setPage] = useState<string>("");
+  const [page, setPage] = useState<string>();
   const [total, setTotal] = useState<number>();
   const [ingredientsOrder, setIngredientsOrder] =
     useState<TIngredientsNoDuplicates[]>();
@@ -82,6 +82,7 @@ const OrderView = () => {
       }
     };
   }, [page]);
+
   useEffect(() => {
     if (ingredients && ingredients!.length == 0) {
       dispatch(getIngredients());
@@ -99,18 +100,26 @@ const OrderView = () => {
           ? location.pathname.split("/")[2]
           : location.pathname.split("/")[3];
 
-      if (feeds.orders!.length > 0 && profileOrders.orders.length == 0) {
+      if (
+        feeds.orders! &&
+        feeds.orders!.length > 0 &&
+        profileOrders.orders.length == 0
+      ) {
         setOrder(feeds.orders!.find((el: TOrders) => el._id === id));
 
         order && createListIngredientsOrder(order);
       }
-      if (feeds.orders!.length == 0 && profileOrders.orders.length > 0) {
+      if (
+        feeds.orders! &&
+        feeds.orders!.length == 0 &&
+        profileOrders.orders.length > 0
+      ) {
         setOrder(profileOrders.orders.find((el: TOrders) => el._id === id));
 
         order && createListIngredientsOrder(order);
       }
     }
-  }, [feeds, profileOrders, ingredients, order]);
+  }, [page, order]);
 
   const pageReturn = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -164,6 +173,7 @@ const OrderView = () => {
   };
 
   const createListIngredientsOrder = (order: TOrders) => {
+    console.log("!!!!");
     const arrayOrderIngredients = order.ingredients.map((el) => {
       const numbIngredients = order.ingredients.filter(
         (item) => item === el
@@ -196,17 +206,20 @@ const OrderView = () => {
       (sum, el) => sum + el.ingredient!.price * el.num,
       0
     );
+    console.log(arrayOrderIngredientsNoDuplicates);
     setIngredientsOrder(arrayOrderIngredientsNoDuplicates);
     setTotal(total);
   };
 
   const renderIngredients = (ingredients: TIngredientsNoDuplicates[]) => {
+    console.log(ingredients);
     return ingredients.map((el) => {
       return (
         <Link
           className={styles["order-view__ingredient-block"]}
           to={`/ingredients/${el.ingredient!._id}`}
           state={{ background: location }}
+          key={uuidv4()}
         >
           <div className={styles["order-view__image-border"]}>
             <img
@@ -231,7 +244,7 @@ const OrderView = () => {
   };
 
   return (
-    (ingredientsOrder && total && order && (
+    (order && ingredientsOrder && (
       <div className={`${styles["order-view"]}`}>
         <div className={`${styles["order-view__section"]}`}>
           <h2

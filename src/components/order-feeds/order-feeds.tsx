@@ -6,7 +6,7 @@ import priceSym from "../../image/Subtract.svg";
 import { useNavigate, useLocation } from "react-router-dom";
 import { PATH_FEED } from "../../utils/utils";
 import { TOrders, TIngredients } from "../../services/types/types";
-
+import { v4 as uuidv4 } from "uuid";
 type TOrder = {
   name: string;
   number: number;
@@ -142,11 +142,13 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
 
         if (numСircle <= 6 && ingredient) {
           return (
-            <div
-              className={`${styles["image-border"]} `}
-              style={{ zIndex: 6 - numСircle }}
-            >
-              <img className={styles.image} src={ingredient.image} />
+            <div key={uuidv4()}>
+              <div
+                className={`${styles["image-border"]} `}
+                style={{ zIndex: 6 - numСircle }}
+              >
+                <img className={styles.image} src={ingredient.image} />
+              </div>
             </div>
           );
         }
@@ -154,14 +156,14 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
           const numOtherIngredient = orderIngredients.length - 5;
           numСircle = numСircle + 1;
           return (
-            <>
-              <div className={`${styles["image-border"]}`}>
+            <div key={uuidv4()}>
+              <div key={uuidv4()} className={`${styles["image-border"]}`}>
                 <img className={styles.image} src={ingredient.image} />
                 <p
                   className={`${styles["image_text"]} text text_type_digits-default`}
                 >{`+${numOtherIngredient}`}</p>
               </div>
-            </>
+            </div>
           );
         }
       });
@@ -170,12 +172,13 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
   };
   if (ingredientsOrder && ingredientsOrder!.length > 0) {
     return (
-      <section
-        onClick={() =>
+      <div
+        key={uuidv4()}
+        onClick={() => {
           navigate(`${location.pathname}/${order._id}`, {
-            state: [{ background: location }],
-          })
-        }
+            state: { background: location },
+          });
+        }}
         className={styles["order-feeds"]}
       >
         <h2
@@ -195,7 +198,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
           {statusFlag && renderStatusOrder(order.status)}
         </h2>
 
-        <section className={styles["ingredients-circle"]}>
+        <section key={uuidv4()} className={styles["ingredients-circle"]}>
           {renderIngredients(ingredientsOrder, ingredients!)}
         </section>
         <p
@@ -203,7 +206,7 @@ const OrderFeeds = ({ order, ingredients, statusFlag }: TOrderFeeds) => {
         >
           {total} <img src={priceSym} />
         </p>
-      </section>
+      </div>
     );
   } else return <></>;
 };
