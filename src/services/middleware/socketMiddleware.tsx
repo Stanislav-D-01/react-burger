@@ -15,7 +15,7 @@ export const socketMiddleware: any = (
   wsAction: TMiddleware
 ): Middleware<{}, RootState> => {
   return (store) => {
-    let socket: any;
+    let socket: WebSocket | null = null;
     const { dispatch } = store;
 
     return (next) => {
@@ -36,21 +36,23 @@ export const socketMiddleware: any = (
                   data: data,
                 });
               };
-              socket.onError = () => {
+              socket.onerror = () => {
                 dispatch({ type: wsAction.onError });
               };
 
               break;
             }
           }
+          // @ts-ignore
           case wsAction.closed: {
-            socket.close();
+            if (socket) {
+              socket.close();
 
-            socket = "";
+              socket = null;
 
-            break;
+              break;
+            }
           }
-
           default: {
           }
         }
