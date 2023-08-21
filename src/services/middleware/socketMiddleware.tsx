@@ -20,42 +20,34 @@ export const socketMiddleware: any = (
 
     return (next) => {
       return (action: TFeedsActions | TUserOrderActions) => {
-        switch (action.type) {
-          // @ts-ignore
-          case wsAction.start: {
-            if (!socket) {
-              socket = new WebSocket(action.url);
+        if (action.type === wsAction.start) {
+          if (!socket) {
+            socket = new WebSocket(action.url);
 
-              socket.onopen = (event: Event) => {
-                dispatch({ type: wsAction.onOpen });
-              };
-              socket.onmessage = (event: MessageEvent) => {
-                const data = JSON.parse(event.data);
-                dispatch({
-                  type: wsAction.onMessage,
-                  data: data,
-                });
-              };
-              socket.onerror = () => {
-                dispatch({ type: wsAction.onError });
-              };
-
-              break;
-            }
-          }
-          // @ts-ignore
-          case wsAction.closed: {
-            if (socket) {
-              socket.close();
-
-              socket = null;
-
-              break;
-            }
-          }
-          default: {
+            socket.onopen = (event: Event) => {
+              dispatch({ type: wsAction.onOpen });
+            };
+            socket.onmessage = (event: MessageEvent) => {
+              const data = JSON.parse(event.data);
+              dispatch({
+                type: wsAction.onMessage,
+                data: data,
+              });
+            };
+            socket.onerror = () => {
+              dispatch({ type: wsAction.onError });
+            };
           }
         }
+
+        if (action.type === wsAction.closed) {
+          if (socket) {
+            socket.close();
+
+            socket = null;
+          }
+        }
+
         next(action);
       };
     };
