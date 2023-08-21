@@ -15,6 +15,7 @@ import {
   WS_CONNECTION_START_FEED,
   WS_GET_MESSAGE_FEED,
   WS_CONNECTION_OPEN_FEED,
+  WS_CONNECTION_ERROR_FEED,
 } from "./services/actions/feeds";
 
 import {
@@ -22,6 +23,7 @@ import {
   WS_USER_ORDER_CONNECTION_START,
   WS_USER_ORDER_CONNECTION_OPEN,
   WS_USER_ORDER_CONNECTION_CLOSED,
+  WS_USER_ORDER_ERROR,
 } from "./services/actions/userOrder";
 
 declare global {
@@ -42,12 +44,14 @@ const enhancer = composeEnhancers(
       onOpen: WS_CONNECTION_OPEN_FEED,
       closed: WS_CONNECTION_CLOSED_FEED,
       onMessage: WS_GET_MESSAGE_FEED,
+      onError: WS_CONNECTION_ERROR_FEED,
     }),
     socketMiddleware({
       start: WS_USER_ORDER_CONNECTION_START,
       onOpen: WS_USER_ORDER_CONNECTION_OPEN,
       closed: WS_USER_ORDER_CONNECTION_CLOSED,
       onMessage: WS_USER_ORDER_GET_MESSAGE,
+      onError: WS_USER_ORDER_ERROR,
     })
   )
 );

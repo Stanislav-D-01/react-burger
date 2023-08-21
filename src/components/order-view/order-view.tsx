@@ -47,7 +47,6 @@ const OrderView = () => {
     const background = location.state && location.state.background;
     if (background) {
       setIsModal(true);
-      console.log(isModal);
     } else {
       setIsModal(false);
     }
@@ -100,7 +99,7 @@ const OrderView = () => {
 
         order && createListIngredientsOrder(order);
       }
-      console.log(profileOrders.orders.length);
+
       if (feeds.orders! && profileOrders.orders.length > 0) {
         setOrder(profileOrders.orders.find((el: TOrders) => el._id === id));
 
@@ -161,7 +160,6 @@ const OrderView = () => {
   };
 
   const createListIngredientsOrder = (order: TOrders) => {
-    console.log("!!!!");
     const arrayOrderIngredients = order.ingredients.map((el) => {
       const numbIngredients = order.ingredients.filter(
         (item) => item === el
