@@ -1,5 +1,5 @@
 .order-view {
-  margin-top: 122px;
+  margin-top: 1px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,6 +91,21 @@
   scroll-margin: 16px;
 }
 .order-view__ingredients-block::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.order-view__ingredients-block_type_modal {
+  max-height: 240px;
+  overflow-y: scroll;
+  margin-top: 24px;
+  padding-right: 16px;
+  box-sizing: border-box;
+}
+.order-view__ingredients-block_type_modal::-webkit-scrollbar {
+  width: 8px;
+  scroll-margin: 16px;
+}
+.order-view__ingredients-block_type_modal::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
 
