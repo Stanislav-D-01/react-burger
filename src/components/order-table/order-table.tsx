@@ -16,26 +16,28 @@ type TOrderTableProps = {
 const OrderTable = ({ data }: TOrderTableProps) => {
   const getListOrders = (orders: TOrders[], status: string) => {
     if (status === "done") {
-      const doneOrders = orders.filter((el) => el.status === "done");
+      const doneOrders = orders.filter((el, index) => el.status === "done");
 
       return doneOrders.map((el, index) => {
-        return (
+        if (index<30){return (
           <li
             key={uuidv4()}
             className={`${styles["order-table__order-num"]} text text_type_digits-default mb-2`}
           >
             {el.number}
           </li>
-        );
+        )};
       });
     }
     if (status !== "done") {
       const workOrders = orders.filter((el) => el.status !== "done");
-
+      let i: number= 0;
       return workOrders.map((el) => {
+
         return (
           <li key={uuidv4()} className={` text text_type_digits-default mb-2`}>
             {el.number}
+
           </li>
         );
       });
